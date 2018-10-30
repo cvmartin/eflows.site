@@ -1,0 +1,27 @@
+Several variables can be chosen to manipulate the fitting curve
+
+- `.demand` : total demand (it changes over iterations of the algorithm, and serves as feedback mechanism)
+- `.demand_fixed`: fixed demand
+- `.production_fixed`: sum of all the production that is deemed fixed (renewable energy). Confusingly, the renewable energy is fixed, because unlike fossil fuels, it cannot be produced on demand; instead, the production is *fixed* already. 
+- `.price`: energy price.
+
+`.demand` shall be normally included, because unlike any other vector, it changes as `foreshift()` runs and the flexible demand is allocated, acting as a feedback mechanism; otherwise, the demand would be allocated in the same spots
+
+This means that it is possible to customize what is considered a good allocation of the future demand. Until now we have considered only the option of peak shaving (`1* .demand`), that is very visual, but there are an infinite combination of alternatives available, that can be combined in a formula: 
+
+- **To the lowest demand** (`1*.demand_fixed`): This is a good example of what happens when the allocation of flexible demand is not taking into account during simulation. The optimum points to allocate energy are always the same (the local minimum of demand), so all the energy is foreshifted there, with the only limitation of the grid cap. 
+
+- **To the minimum price**(`1* .price`): In this occasion, the points with lower price are targeted, with the resulting peaks of demand. Of course, this scenario ignores that assigning energy consumption to a given moment changes in turn the energy prices at that moment. 
+
+- **To the renewable energy** (`- 1*.production_fixed`): If the last example targets without restrain the points of minimum price, this formula targets the points of maximum renewable energy production. Note that `.production_fixed` is multiplied by `-1`, so the maximum assignment of energy is produced when the fitting curve is the lowest.
+
+- **Net balance**(`.demand - .production_fixed`): This is the scenario of "use renewable energy when possible, otherwise try to apply peak shaving". The demand is assigned either durign nights or when the sun shines, skipping the morning and evening peaks. To get a more "accentuated" result, square: `.demand^2 - .production_fixed^2`
+
+- **Market price**(`(0.5 * .price) + (0.5 * .demand)`): the resulting fitting curve is a combination of both price and total demand, meaning a negative feedback loop is established as `foreshift()` runs: The demand is assigned to the points of lower price, but this increases the demand, what makes this same spot less fitting for further allocation of energy. This is a more realistic scenario in a real-life marked situation.
+
+- **The middle point**(`(0.3 * .price) + (0.4 * .demand) + (-0.3 * .production_fixed))`): this is a weighted average of energy demand, energy price and renewable energy availability. Of coruse, infinite variations can be obtained changing the weighting parameters. What is the most important in energy optimization?
+
+- **Conditional day and night**(`ifelse(.production_fixed > 0, .demand - .production_fixed, (0.5 * .price) + (0.5 * .demand))`): this is just an example to illustrate how flexible it can get the fitting curve customization. Depending wether there is sun or not, the calculation of the curve flips between *Net balance* and *Market price*.
+
+- **Indifferent to other factors** (`.demand - .demand_fixed`): It is also possible to assign energy ignoring all the factors except the difference between `.demand_fixed` and `.demand`, namely, the flexible demand. Because there is no reason to be assigned otherwise, the foreshifted profile is virtually identical to the original one. 
+
