@@ -25,12 +25,13 @@ do_fore_extended <- function(obj){
   post_ev <- viz_fore_output(obj, aggregate = "object")
   post_flex <- viz_fore_output(obj, aggregate = "flex")
   comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
+  unstacked <- viz_fore_output(obj, aggregate = "object", show_fixed = FALSE, stacked = FALSE)
   
   m2 <- max_yaxis(list_stacked = list(pre), list_unstacked = list(comp))
   
-  viz_bundle(pre, post, post_ev,post_flex, comp,
+  viz_bundle(pre, post, post_ev,post_flex, comp, unstacked,
              ymax = m2,
-             names = c("original", "foreshifted","aggregated by ev", "aggregated by flex", "comparison"))
+             names = c("original", "foreshifted","aggregated by ev", "aggregated by flex", "comparison", "unstacked"))
 }
 
 peak_in_zeroes <- function(l, pos, vol){

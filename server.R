@@ -3,12 +3,11 @@ library(eflows.viz)
 library(dplyr)
 
 
-source("utils.R", local = TRUE)
-
-load("www/preprocessed_data.rda")
-
-
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
+  
+  load("www/preprocessed_data.rda")
+  
+  source("utils.R", local = TRUE)
   
  
 
@@ -37,41 +36,6 @@ shinyServer(function(input, output) {
     test_bundle()[[input$test_rbutton]]
   })  
   
-
-# amsterdam ---------------------------------------------------------------
-  
-  amst <- e_frame$new(sept$datetime[1:168])
-  
-  original_data <-  evdistrict[["nieuw_west"]] %>%
-    select(-datetime, -`0`) %>%
-    slice(1:168) %>%
-    as.matrix()
-  
-  amst_demand_original <- e_demand$new(fixed = as.vector(sept$d_house_smooth[1:168]),
-                                       flex = list(flex_mtx$new(original_data, c(2,4,6,8,10,12), "ev")
-                                       ))
-  amst$set_demand(amst_demand_original)
-  
-  ams_bundle <- reactive({
-    evmatrix <- evdistrict[[input$selector]] %>%
-      select( -datetime, -`0`) %>%
-      slice(1:168) %>%
-      as.matrix()
-    
-    amst_demand_original$input$flex[[1]]$data <- evmatrix
-    
-    do_fore_bundle(amst)
-  })
-  
-  output$select_district <- renderUI({
-    selectInput("selector", "District", choices = names(evdistrict), selected = "zuid")
-  })
-  
-  output$ams_graph <- renderDygraph({
-    ams_bundle()[[input$ams.rbutton]]
-  })  
-  
-
 # electric vehicles -------------------------------------------------------
 
   evs_demand <- e_demand$new(fixed = sept$d_house_smooth[1:168]*10,
@@ -133,5 +97,10 @@ shinyServer(function(input, output) {
   output$fit_graphvars <- renderDygraph({
     fitvars[[input$fit.rbutton_vars]]
   })  
+  
+  observeEvent(input$fit_types, {
+    updateSearchInput(session = session, "fit_formula", value = input$fit_types, trigger = TRUE)
+  })
+  
 
 })

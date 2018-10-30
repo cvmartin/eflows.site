@@ -27,6 +27,16 @@ tabPanelEV <- function(int){
   )
 }
 
+list_formulas <- list(`Peak shaving` = "1* .demand", 
+                      `To the lowest demand` = "1*.demand_fixed",
+                      `To the minimum price` = "1* .price",
+                      `To the renewable energy` = "- 1*.production_fixed",
+                      `Net balance` = ".demand - .production_fixed",
+                      `Market price` = "(0.5 * .price) + (0.5 * .demand)",
+                      `The middle point` = "(0.3 * .price) + (0.4 * .demand) + (-0.3 * .production_fixed)",
+                      `Conditional day and night` = "ifelse(.production_fixed > 0, .demand - .production_fixed, (0.5 * .price) + (0.5 * .demand))",
+                      `Indifferent to other factors` = ".demand - .demand_fixed"
+                      )
 
 
 inputDiv <- function(...){
@@ -105,14 +115,6 @@ body <- dashboardBody(
             narrowDiv(
               includeMarkdown("./assets/foreshift_2.Rmd")
               ),
-            wideDiv(title = "Amsterdam districts",
-                  inputPanel(
-                    uiOutput("select_district")
-                  ),
-                  radioGroupButtons("ams.rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
-                  dygraphOutput("ams_graph", height = 250)
-            
-            ), 
             narrowDiv(
               includeMarkdown("./assets/foreshift_2.Rmd")
             ),
@@ -127,7 +129,8 @@ body <- dashboardBody(
                     )),
                  
                   box(width = 12, 
-                  radioGroupButtons("evs.rbutton", NULL, c("original", "foreshifted","aggregated by ev", "aggregated by flex", "comparison"), justified = TRUE), 
+                  radioGroupButtons("evs.rbutton", NULL, 
+                                    c("original", "foreshifted","aggregated by ev", "aggregated by flex", "comparison", "unstacked"), justified = TRUE), 
                   dygraphOutput("evs_graph", height = 230))
                   
             ), 
@@ -143,7 +146,7 @@ body <- dashboardBody(
                                        value = "1*.demand", btnSearch = icon("level-down"), width = "100%")
                     ), 
                     column(width = 4, 
-                           selectInput("fit_types", "Predefined formulas", c(seq(1:10))))
+                           selectInput("fit_types", "Predefined formulas", choices = list_formulas))
                     
                   ),
                   box(width = 12, title = "Factors that influence the fitting curve", collapsible = TRUE,
