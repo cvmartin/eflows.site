@@ -15,6 +15,8 @@ This means that it is possible to customize what is considered a good allocation
 
 - **To the renewable energy** (`- 1*.production_fixed`): If the last example targets without restrain the points of minimum price, this formula targets the points of maximum renewable energy production. Note that `.production_fixed` is multiplied by `-1`, so the maximum assignment of energy is produced when the fitting curve is the lowest.
 
+- **Renewable within a limit** (`ifelse(.demand < 60, (- 1*.production_fixed), NA)`): The grid cap can be included directly in the formula. In this case, whenever the total demand exceeds `60`, a point is disallowed to keep receiving demand.
+
 - **Net balance**(`.demand - .production_fixed`): This is the scenario of "use renewable energy when possible, otherwise try to apply peak shaving". The demand is assigned either durign nights or when the sun shines, skipping the morning and evening peaks. To get a more "accentuated" result, square: `.demand^2 - .production_fixed^2`
 
 - **Market price**(`(0.5 * .price) + (0.5 * .demand)`): the resulting fitting curve is a combination of both price and total demand, meaning a negative feedback loop is established as `foreshift()` runs: The demand is assigned to the points of lower price, but this increases the demand, what makes this same spot less fitting for further allocation of energy. This is a more realistic scenario in a real-life marked situation.

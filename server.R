@@ -1,11 +1,18 @@
 library(eflows)
 library(eflows.viz)
 library(dplyr)
+library(R6)
+
+source("data_preprocessing.R", local = TRUE)
+proto$demand$input$fixed[1:10]
+customfit$demand$input$fixed[1:10]
+
+# this is the problem; the above runs different depending on if it is just restarted R or not. 
 
 
 shinyServer(function(input, output, session) {
   
-  load("www/preprocessed_data.rda")
+  print(ls())
   
   source("utils.R", local = TRUE)
   
@@ -13,20 +20,25 @@ shinyServer(function(input, output, session) {
 
 # test --------------------------------------------------------------------
 
-  obj1 <- flex_mtx$new(data = as.matrix((rep(3,168))),
-                       steps = c(4),
-                       name = "flexibility")
+  # obj1 <- flex_mtx$new(data = as.matrix((rep(3,168))),
+  #                      steps = c(4),
+  #                      name = "flexibility")
+  # 
+  # p_demand <- e_demand$new(fixed = sept$d_house_smooth[1:168]*10,
+  #                          flex = list(obj1))
+  # 
+  # proto <- e_frame$new(sept$datetime[1:168])
   
-  p_demand <- e_demand$new(fixed = sept$d_house_smooth[1:168]*10,
-                           flex = list(obj1))
-  
-  proto <- e_frame$new(sept$datetime[1:168])
-  proto$set_demand(p_demand)
+  # proto2 <- proto$clone(deep = TRUE)
+  # 
+  # proto2$set_demand(p_demand)
   
   
   test_bundle <- reactive({
-    obj1$data <- as.matrix((rep(input$vol,168)))
-    obj1$steps <- input$hflex
+    proto$demand$input$flex[[1]]$data <- as.matrix((rep(input$vol,168)))
+    proto$demand$input$flex[[1]]$steps <- input$hflex
+    
+    print(ls())
     
     do_fore_bundle(proto)
   })
@@ -38,66 +50,63 @@ shinyServer(function(input, output, session) {
   
 # electric vehicles -------------------------------------------------------
 
-  evs_demand <- e_demand$new(fixed = sept$d_house_smooth[1:168]*10,
-                             flex = list(ev1, ev2, ev3, ev4))
-  
-  evs <- e_frame$new(sept$datetime[1:168])
-  evs$set_demand(evs_demand)
-  
+ 
   evs_bundle <- reactive({
     ev1$data[,1] <- peak_in_zeroes(168, input$ev1pos, input$ev1flex2)
     ev1$data[,2] <- peak_in_zeroes(168, input$ev1pos, input$ev1flex6)
     ev1$data[,3] <- peak_in_zeroes(168, input$ev1pos, input$ev1flex12)
-    
+
     ev2$data[,1] <- peak_in_zeroes(168, input$ev2pos, input$ev2flex2)
     ev2$data[,2] <- peak_in_zeroes(168, input$ev2pos, input$ev2flex6)
     ev2$data[,3] <- peak_in_zeroes(168, input$ev2pos, input$ev2flex12)
-    
+
     ev3$data[,1] <- peak_in_zeroes(168, input$ev3pos, input$ev3flex2)
     ev3$data[,2] <- peak_in_zeroes(168, input$ev3pos, input$ev3flex6)
     ev3$data[,3] <- peak_in_zeroes(168, input$ev3pos, input$ev3flex12)
-    
+
     ev4$data[,1] <- peak_in_zeroes(168, input$ev4pos, input$ev4flex2)
     ev4$data[,2] <- peak_in_zeroes(168, input$ev4pos, input$ev4flex6)
     ev4$data[,3] <- peak_in_zeroes(168, input$ev4pos, input$ev4flex12)
-    
+
     do_fore_extended(evs)
   })
-  
+
   output$evs_graph <- renderDygraph({
     evs_bundle()[[input$evs.rbutton]]
   })
-  
+
 
 # variable fit curve ------------------------------------------------------
+  
+  customfit <- customfit$clone(deep = TRUE)
 
   fit_fshifted <- eventReactive(c(input$fit_formula),{
     theformula <- as.formula(c("~", input$fit_formula))
     customfit$do_foreshift(fit = theformula)
   })
-  
+
   fit_bundle <- reactive({
     pre <- viz_fore_input(fit_fshifted())
     post <- viz_fore_output(fit_fshifted())
     comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
-    
+
     viz_bundle(pre, post, comp,
                ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
                names = c("original", "foreshifted", "comparison"))
   })
-  
+
   output$fit_fitcurve <- renderDygraph({
     viz_fit(fit_fshifted())
   })
-  
+
   output$fit_graph <- renderDygraph({
     fit_bundle()[[input$fit.rbutton]]
   })
-  
+
   output$fit_graphvars <- renderDygraph({
     fitvars[[input$fit.rbutton_vars]]
-  })  
-  
+  })
+
   observeEvent(input$fit_types, {
     updateSearchInput(session = session, "fit_formula", value = input$fit_types, trigger = TRUE)
   })
