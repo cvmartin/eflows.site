@@ -9,18 +9,21 @@ library(dygraphs)
 # generator labels --------------------------------------------------------
 tabPanelEV <- function(int){
   tabPanel(sprintf("EV %s", int), 
-           tags$strong("Battery allocation"),
-
-           flowLayout(sliderInput(sprintf("ev%sflex2", int), label = NULL, min = 0,
-                                  max = 40, value = 5, step = 1, ticks = FALSE, post = " kWh flex2"),
-                      sliderInput(sprintf("ev%sflex6", int), label = NULL, min = 0,
-                                  max = 40, value = 5, step = 1, ticks = FALSE, post = " kWh flex6"),
-                      sliderInput(sprintf("ev%sflex12", int), label = NULL, min = 0,
-                                  max = 40, value = 5, step = 1, ticks = FALSE, post = " kWh flex12")), 
-           tags$strong("Placement in time"),
-           
+           flowLayout(sliderInput(sprintf("ev%sflex2", int),
+                                  label = p("Charge in the next 2 hours", style = "color: white; padding:0px 3px;background-color: #338333;border-radius: 2px;margin-bottom:-1px;"), 
+                                  min = 0,max = 40, value = 10, step = 1, ticks = FALSE, post = " kWh flex2"),
+                      sliderInput(sprintf("ev%sflex6", int), 
+                                  label = p("Charge in the next 6 hours", style = "color: white; padding:0px 3px;background-color: #89a54f;border-radius: 2px;margin-bottom:-1px;"), 
+                                  min = 0, max = 40, value = 10, step = 1, ticks = FALSE, post = " kWh flex6"),
+                      sliderInput(sprintf("ev%sflex12", int),
+                                  label = p("Charge in the next 12 hours", style = "color: white; padding:0px 3px;background-color: #ffb733;border-radius: 2px;margin-bottom:-1px;"), 
+                                  min = 0, max = 40, value = 10, step = 1, ticks = FALSE, post = " kWh flex12"),
+                      sliderInput(sprintf("ev%scap", int), label = "Max charge power", min = 4,
+                                  max = 40, value = 20, step = 1, ticks = FALSE, post = " kW")), 
+           setSliderColor("#FF4500", 2),
+           tags$strong("Charging start time"),
                sliderInput(sprintf("ev%spos", int), label = NULL, min = 1, max = 168, value = sample(seq(1,168),1), 
-                           ticks = FALSE
+                           ticks = FALSE, post = " hours from start"
                            
                            
            )
@@ -31,6 +34,7 @@ list_formulas <- list(`Peak shaving` = "1* .demand",
                       `To the lowest demand` = "1*.demand_fixed",
                       `To the minimum price` = "1* .price",
                       `To the renewable energy` = "- 1*.production_fixed",
+                      `Renewable within a limit` = "ifelse(.demand < 60, (- 1*.production_fixed), NA)", # Change for real cap!
                       `Net balance` = ".demand - .production_fixed",
                       `Market price` = "(0.5 * .price) + (0.5 * .demand)",
                       `The middle point` = "(0.3 * .price) + (0.4 * .demand) + (-0.3 * .production_fixed)",
@@ -105,7 +109,7 @@ body <- dashboardBody(
                                 max = 12, value = 4, step = 1, ticks = FALSE)),
                     column(width = 6,
                     sliderInput("vol", label = "Flexible demand volume", min = 0,
-                                max = 3, value = 1, step = 0.1, ticks = FALSE))
+                                max = 30, value = 10, step = 0.1, ticks = FALSE))
                   ),
                   box(width = 12,
                   radioGroupButtons("test_rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
@@ -118,15 +122,22 @@ body <- dashboardBody(
             narrowDiv(
               includeMarkdown("./assets/foreshift_2.Rmd")
             ),
-            wideDiv(title = "Electric Vehicles example", 
-                    inputDiv(tabBox(title = "Electric Vehicles", width = 12,
+            wideDiv(title = "Electric Vehicle", 
+                    inputDiv(tabPanelEV("0")),
+                    box(width = 12, 
+                        radioGroupButtons("p_1ev_rbutton", NULL, 
+                                          c("original", "foreshifted", "comparison"), justified = TRUE), 
+                        dygraphOutput("p_1ev_graph", height = 230))
+                    
+            ), 
+            wideDiv(title = "Multiple Electric Vehicles", 
+                    tabBox(title = "Electric Vehicles", width = 12,
                       id = "tab_evs",
                       tabPanelEV("1"), 
                       tabPanelEV("2"), 
                       tabPanelEV("3"),
                       tabPanelEV("4") 
-                     
-                    )),
+                    ),
                  
                   box(width = 12, 
                   radioGroupButtons("evs.rbutton", NULL, 

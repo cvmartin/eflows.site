@@ -34,12 +34,37 @@ do_fore_extended <- function(obj){
              names = c("original", "foreshifted","aggregated by ev", "aggregated by flex", "comparison", "unstacked"))
 }
 
-peak_in_zeroes <- function(l, pos, vol){
+peak_in_zeroes <- function(l, pos, vol, cap = 0){
   v <- rep(0,l)
-  v[pos] <- vol
+  
+  if (cap == 0){
+    v[pos] <- vol
+    return(v)
+  }
+
+  full <- vol %/% cap
+  left <- vol %% cap
+  
+  if (full != 0)  v[pos: (pos + full)] <- cap
+  if (full == 0) {
+    v[pos] <- left
+  } else {
+    v[pos + full + 1] <- left
+  }
+  if (length(v) > l) v <- v[1:l]
   v
 }
+peak_in_zeroes(25, 23, 10, 3)
 
+do_ev_prof <- function(matrix, inputs = c(), pos, cap) {
+  l <- nrow(matrix)
+  ind_cap <- (inputs/sum(inputs)) * cap
+  
+  for (i in 1:length(inputs)) {
+    matrix[,i] <- peak_in_zeroes(l, pos, inputs[i], ind_cap[i])
+  }
+  matrix
+}
 
 # generators --------------------------------------------------------------
 

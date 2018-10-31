@@ -4,43 +4,22 @@ library(dplyr)
 library(R6)
 
 source("data_preprocessing.R", local = TRUE)
-proto$demand$input$fixed[1:10]
-customfit$demand$input$fixed[1:10]
-
-# this is the problem; the above runs different depending on if it is just restarted R or not. 
+source("utils.R", local = TRUE)
 
 
 shinyServer(function(input, output, session) {
-  
-  print(ls())
-  
-  source("utils.R", local = TRUE)
-  
  
 
 # test --------------------------------------------------------------------
 
-  # obj1 <- flex_mtx$new(data = as.matrix((rep(3,168))),
-  #                      steps = c(4),
-  #                      name = "flexibility")
-  # 
-  # p_demand <- e_demand$new(fixed = sept$d_house_smooth[1:168]*10,
-  #                          flex = list(obj1))
-  # 
-  # proto <- e_frame$new(sept$datetime[1:168])
-  
-  # proto2 <- proto$clone(deep = TRUE)
-  # 
-  # proto2$set_demand(p_demand)
+  p_basic <- o_1demand$clone(deep = TRUE)
   
   
   test_bundle <- reactive({
-    proto$demand$input$flex[[1]]$data <- as.matrix((rep(input$vol,168)))
-    proto$demand$input$flex[[1]]$steps <- input$hflex
+    p_basic$demand$input$flex[[1]]$data <- as.matrix((rep(input$vol,168)))
+    p_basic$demand$input$flex[[1]]$steps <- input$hflex
     
-    print(ls())
-    
-    do_fore_bundle(proto)
+    do_fore_bundle(p_basic)
   })
   
   
@@ -48,25 +27,50 @@ shinyServer(function(input, output, session) {
     test_bundle()[[input$test_rbutton]]
   })  
   
-# electric vehicles -------------------------------------------------------
 
- 
+# single electric vehicle -------------------------------------------------
+
+  p_1ev <- o_1ev$clone()
+  
+  p_1ev_init <- p_1ev$clone(deep = TRUE)
+  
+  
+  p_1ev_bundle <- reactive({
+    ev0$data <- do_ev_prof(ev0$data, 
+                           inputs = c(input$ev0flex2, input$ev0flex6, input$ev0flex12), 
+                           pos = input$ev0pos,
+                           cap = input$ev0cap)
+    
+    do_fore_bundle(p_1ev)
+  })
+  
+  output$p_1ev_graph <- renderDygraph({
+    p_1ev_bundle()[[input$p_1ev_rbutton]]
+  })
+  
+  
+# multiple electric vehicles -------------------------------------------------------
+  
+  evs <- o_Xev$clone()
+
   evs_bundle <- reactive({
-    ev1$data[,1] <- peak_in_zeroes(168, input$ev1pos, input$ev1flex2)
-    ev1$data[,2] <- peak_in_zeroes(168, input$ev1pos, input$ev1flex6)
-    ev1$data[,3] <- peak_in_zeroes(168, input$ev1pos, input$ev1flex12)
-
-    ev2$data[,1] <- peak_in_zeroes(168, input$ev2pos, input$ev2flex2)
-    ev2$data[,2] <- peak_in_zeroes(168, input$ev2pos, input$ev2flex6)
-    ev2$data[,3] <- peak_in_zeroes(168, input$ev2pos, input$ev2flex12)
-
-    ev3$data[,1] <- peak_in_zeroes(168, input$ev3pos, input$ev3flex2)
-    ev3$data[,2] <- peak_in_zeroes(168, input$ev3pos, input$ev3flex6)
-    ev3$data[,3] <- peak_in_zeroes(168, input$ev3pos, input$ev3flex12)
-
-    ev4$data[,1] <- peak_in_zeroes(168, input$ev4pos, input$ev4flex2)
-    ev4$data[,2] <- peak_in_zeroes(168, input$ev4pos, input$ev4flex6)
-    ev4$data[,3] <- peak_in_zeroes(168, input$ev4pos, input$ev4flex12)
+    
+    ev1$data <- do_ev_prof(ev1$data, 
+                           inputs = c(input$ev1flex2, input$ev1flex6, input$ev1flex12), 
+                           pos = input$ev1pos,
+                           cap = input$ev1cap)
+    ev2$data <- do_ev_prof(ev2$data, 
+                           inputs = c(input$ev2flex2, input$ev2flex6, input$ev2flex12), 
+                           pos = input$ev2pos,
+                           cap = input$ev2cap)
+    ev3$data <- do_ev_prof(ev3$data, 
+                           inputs = c(input$ev3flex2, input$ev3flex6, input$ev3flex12), 
+                           pos = input$ev3pos,
+                           cap = input$ev3cap)
+    ev4$data <- do_ev_prof(ev4$data, 
+                           inputs = c(input$ev4flex2, input$ev4flex6, input$ev4flex12), 
+                           pos = input$ev4pos,
+                           cap = input$ev4cap)
 
     do_fore_extended(evs)
   })
@@ -78,7 +82,7 @@ shinyServer(function(input, output, session) {
 
 # variable fit curve ------------------------------------------------------
   
-  customfit <- customfit$clone(deep = TRUE)
+  customfit <- o_Xdemand$clone(deep = TRUE)
 
   fit_fshifted <- eventReactive(c(input$fit_formula),{
     theformula <- as.formula(c("~", input$fit_formula))
