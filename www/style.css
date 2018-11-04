@@ -8,6 +8,16 @@
   border-radius: 2px;
 }
 
+.nav-tabs-custom > div {
+  border: 1px solid #e3e3e3;
+  border-radius: 2px;
+}
+
+#title_button{
+  font-size: 100%;
+  margin: auto;
+}
+
 .shiny-flow-layout > div {
   width: 24.5%;
   min-width: 150px;

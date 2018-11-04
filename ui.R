@@ -75,8 +75,31 @@ sidebar <- dashboardSidebar(
     tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
   ),
   sidebarMenu(
+    
     div(style = "text-align: center; font-size: 300%",
-        p("eflows")),
+        actionBttn(
+          inputId = "title_button",
+          label = "eflows", 
+          style = "minimal",
+          size = "lg"
+        )
+        # , 
+        # actionBttn(
+        #   inputId = "git_eflows",
+        #   label = "eflows", 
+        #   style = "bordered",
+        #   size = "xs",
+        #   icon = icon("github")
+        # ),
+        # actionBttn(
+        #   inputId = "git_eflows_viz",
+        #   label = "eflows.viz", 
+        #   style = "bordered",
+        #   size = "xs",
+        #   icon = icon("github")
+        # )
+        
+    ),
     menuItem("Home", tabName = "index"),
     menuItem("Principles", tabName = "principles"),
     menuItem("Flexibility", tabName = "flex")
@@ -152,11 +175,11 @@ body <- dashboardBody(
               
                   inputDiv(
                     
-                    column(width = 8, 
+                    column(width = 9, 
                            searchInput("fit_formula", tagList("Fit formula:", tags$code("fit = ~")),
                                        value = "1*.demand", btnSearch = icon("level-down"), width = "100%")
                     ), 
-                    column(width = 4, 
+                    column(width = 3, 
                            selectInput("fit_types", "Predefined formulas", choices = list_formulas))
                     
                   ),

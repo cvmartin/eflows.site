@@ -45,12 +45,13 @@ peak_in_zeroes <- function(l, pos, vol, cap = 0){
   full <- vol %/% cap
   left <- vol %% cap
   
-  if (full != 0)  v[pos: (pos + full)] <- cap
   if (full == 0) {
     v[pos] <- left
   } else {
-    v[pos + full + 1] <- left
+    v[pos: (pos + full-1)] <- cap
+    v[pos + full] <- left
   }
+  
   if (length(v) > l) v <- v[1:l]
   v
 }
