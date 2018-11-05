@@ -2,18 +2,17 @@
 title: "Principles"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
-
-
 eflows strives to be a declarative package and probably requires a lot of documentation. In this file I strive to write some of the principles that govern the API and the design of the package
 
-## Use of dataframes with the first column as POSIXt object
+## Use of dataframes with the first column as POSIXt object {.test}
+
 Time plays a vital role in eflows, yet the time series objects are not prefered. Instead, are used liberally data frames where the first column is time-based (and normally named "datetime"). This decision is taken for the sake of simplicity; a time series most of the times behaves like a data frame wehre the first column has different semantics. Where it is necessary to operate with actual time series, two helping functions to flip between data frames and time series are used: `df_to_ts` and `ts_to_df`
+
 
 ## No stochastic
 eflows is not a "black box"; it does not use any statistical approach to problem solving. This means that machine learning and lineal optimization methods are not considered in the core functions.    
+
+
 
 ## Based on energy, not power
 The energy flows are expressed on basis of kWh (the default unit to work with in the package), not kW or any other power unit. In principle kWh and kW are equivalent if the time step is one hour. This makes easier to read the changes in the battery: "25 kWh have flown, so the battery is charged with extra 25 kWh"

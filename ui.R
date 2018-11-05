@@ -53,6 +53,12 @@ narrowDiv <- function(...){
   ))
 }
 
+broadDiv <- function(..., title = NULL){
+  fluidRow(div(style = "max-width: 1150px;margin: 0 auto; padding: 20px", 
+               ...
+  ))
+}
+
 mreDiv <- function(..., title = NULL){
   fluidRow(div(style = "max-width: 700px;margin: 0 auto; padding: 20px;", 
                box(title = title, width = 12, collapsible = TRUE, collapsed = TRUE, ...)
@@ -75,31 +81,17 @@ sidebar <- dashboardSidebar(
     tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
   ),
   sidebarMenu(
-    
-    div(style = "text-align: center; font-size: 300%",
+    div(style = "text-align:center; font-size:300%", 
         actionBttn(
           inputId = "title_button",
-          label = "eflows", 
+          label = "eflows",
           style = "minimal",
           size = "lg"
-        )
-        # , 
-        # actionBttn(
-        #   inputId = "git_eflows",
-        #   label = "eflows", 
-        #   style = "bordered",
-        #   size = "xs",
-        #   icon = icon("github")
-        # ),
-        # actionBttn(
-        #   inputId = "git_eflows_viz",
-        #   label = "eflows.viz", 
-        #   style = "bordered",
-        #   size = "xs",
-        #   icon = icon("github")
-        # )
-        
-    ),
+        )),
+    div(style = "text-align:center", 
+        br(),
+        "Data driven energy transition", 
+        br()),
     menuItem("Home", tabName = "index"),
     menuItem("Principles", tabName = "principles"),
     menuItem("Flexibility", tabName = "flex")
@@ -110,11 +102,45 @@ sidebar <- dashboardSidebar(
 body <- dashboardBody(
   tabItems(
     tabItem("index", 
-            div(style = "text-align: center; font-size: 600%",
-                p("eflows")), 
-            div(style = "text-align: center;font-size: 200%;",
-                p("Data-driven energy transition"))
+            div(br(),br(), br()),
+            # div(style = "text-align: center; font-size: 600%",
+            #     p("eflows")), 
+            # div(style = "text-align: center;font-size: 200%;",
+            #     p("Data-driven energy transition")), 
+            broadDiv(img(src = "images/main-banner.png", width = "100%"), 
+                     fluidRow(style = "font-family: Georgia, Times, serif; font-size: 120%;", 
+                              column(width = 4, 
+                                     includeMarkdown("./assets/home/intro_column_1.Rmd")),
+                              column(width = 4, 
+                                     includeMarkdown("./assets/home/intro_column_2.Rmd")),
+                              column(width = 4, 
+                                     includeMarkdown("./assets/home/intro_column_3.Rmd"))
+                              
+                              ),
+                     fluidRow(
+                              column(width = 6, style = "text-align: right;", 
+                                     tags$a(href="https://github.com/cvmartin/eflows", target="_blank",
+                                     actionBttn(
+                                       inputId = "git_eflows",
+                                       label = "eflows",
+                                       color = "primary",
+                                       style = "bordered",
+                                       icon = icon("github")
+                                     ))),
+                              column(width = 6, style = "text-align: left;",
+                                     tags$a(href="https://github.com/cvmartin/eflows.viz", target="_blank",
+                                     actionBttn(
+                                       inputId = "git_eflows_viz",
+                                       label = "eflows.viz",
+                                       color = "primary",
+                                       style = "bordered",
+                                       icon = icon("github")
+                                     )))
+                              
+                              )
+                     )
             ),
+    
     tabItem("principles", 
             narrowDiv(
               includeMarkdown("./assets/principles.Rmd")
