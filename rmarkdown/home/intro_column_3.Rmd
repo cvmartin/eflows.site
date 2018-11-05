@@ -1,0 +1,1 @@
+Use the output object to execute actions over smart devices, or to dashboard (see eflows package). Easily extensible, write you own packages. 

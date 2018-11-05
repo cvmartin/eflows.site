@@ -75,7 +75,9 @@ wideDiv <- function(..., title = NULL){
 # Header elements for the visualization
 header <- dashboardHeader(title = "eflows", disable = TRUE)
 
-# Sidebar elements for the search visualizations
+
+# SIDEBAR -----------------------------------------------------------------
+
 sidebar <- dashboardSidebar(
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
@@ -91,114 +93,79 @@ sidebar <- dashboardSidebar(
     div(style = "text-align:center", 
         br(),
         "Data driven energy transition", 
-        br()),
-    menuItem("Home", tabName = "index"),
-    menuItem("Principles", tabName = "principles"),
-    menuItem("Flexibility", tabName = "flex")
+        br(),br()),
+    menuItem("Home", tabName = "home"),
+    menuItem("Articles", 
+             menuSubItem("Principles", tabName = "principles"),
+             menuSubItem("Fitting curve", tabName = "fitting")), 
+    menuItem("Functions", 
+             menuSubItem("foreshift()", tabName = "foreshift"),
+             menuSubItem("backshift()", tabName = "backshift"),
+             menuSubItem("simulate()", tabName = "simulate"),
+             menuSubItem("distribute()", tabName = "distribute")
+             ),
+    menuItem("Cases",
+             menuSubItem("Electric Vehicle charing", tabName = "ev"))
+    
   ) 
 ) 
 
-#Body elements for the search visualizations.
-body <- dashboardBody(
-  tabItems(
-    tabItem("index", 
-            div(br(),br(), br()),
-            # div(style = "text-align: center; font-size: 600%",
-            #     p("eflows")), 
-            # div(style = "text-align: center;font-size: 200%;",
-            #     p("Data-driven energy transition")), 
-            broadDiv(img(src = "images/main-banner.png", width = "100%"), 
-                     fluidRow(style = "font-family: Georgia, Times, serif; font-size: 120%;", 
-                              column(width = 4, 
-                                     includeMarkdown("./assets/home/intro_column_1.Rmd")),
-                              column(width = 4, 
-                                     includeMarkdown("./assets/home/intro_column_2.Rmd")),
-                              column(width = 4, 
-                                     includeMarkdown("./assets/home/intro_column_3.Rmd"))
-                              
-                              ),
-                     fluidRow(
-                              column(width = 6, style = "text-align: right;", 
-                                     tags$a(href="https://github.com/cvmartin/eflows", target="_blank",
-                                     actionBttn(
-                                       inputId = "git_eflows",
-                                       label = "eflows",
-                                       color = "primary",
-                                       style = "bordered",
-                                       icon = icon("github")
-                                     ))),
-                              column(width = 6, style = "text-align: left;",
-                                     tags$a(href="https://github.com/cvmartin/eflows.viz", target="_blank",
-                                     actionBttn(
-                                       inputId = "git_eflows_viz",
-                                       label = "eflows.viz",
-                                       color = "primary",
-                                       style = "bordered",
-                                       icon = icon("github")
-                                     )))
-                              
-                              )
-                     )
-            ),
-    
-    tabItem("principles", 
-            narrowDiv(
-              includeMarkdown("./assets/principles.Rmd")
-            ), 
-            wideDiv(
-            )),
-    tabItem("flex", 
-            narrowDiv(
-              includeMarkdown("./assets/foreshift_1.Rmd")
-            ),
-            wideDiv(title = "Basic example",
-                  inputDiv(
-                    column(width = 6, 
-                    sliderInput("hflex", label = "Hours of flexibility", min = 1,
-                                max = 12, value = 4, step = 1, ticks = FALSE)),
-                    column(width = 6,
-                    sliderInput("vol", label = "Flexible demand volume", min = 0,
-                                max = 30, value = 10, step = 0.1, ticks = FALSE))
-                  ),
-                  box(width = 12,
-                  radioGroupButtons("test_rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
-                  dygraphOutput("test_graph", height = 230))
-              
-            ), 
-            narrowDiv(
-              includeMarkdown("./assets/foreshift_2.Rmd")
-              ),
-            narrowDiv(
-              includeMarkdown("./assets/foreshift_2.Rmd")
-            ),
-            wideDiv(title = "Electric Vehicle", 
-                    inputDiv(tabPanelEV("0")),
-                    box(width = 12, 
-                        radioGroupButtons("p_1ev_rbutton", NULL, 
-                                          c("original", "foreshifted", "comparison"), justified = TRUE), 
-                        dygraphOutput("p_1ev_graph", height = 230))
-                    
-            ), 
-            wideDiv(title = "Multiple Electric Vehicles", 
-                    tabBox(title = "Electric Vehicles", width = 12,
-                      id = "tab_evs",
-                      tabPanelEV("1"), 
-                      tabPanelEV("2"), 
-                      tabPanelEV("3"),
-                      tabPanelEV("4") 
-                    ),
-                 
-                  box(width = 12, 
-                  radioGroupButtons("evs.rbutton", NULL, 
-                                    c("original", "foreshifted","aggregated by ev", "aggregated by flex", "comparison", "unstacked"), justified = TRUE), 
-                  dygraphOutput("evs_graph", height = 230))
+
+# BODY --------------------------------------------------------------------
+
+
+# home --------------------------------------------------------------------
+tab_home <- 
+  tabItem("home", 
+          div(br(),br(), br()),
+          # div(style = "text-align: center; font-size: 600%",
+          #     p("eflows")), 
+          # div(style = "text-align: center;font-size: 200%;",
+          #     p("Data-driven energy transition")), 
+          broadDiv(img(src = "images/main-banner.png", width = "100%"), 
+                   fluidRow(style = "font-family: Georgia, Times, serif; font-size: 120%;", 
+                            column(width = 4, 
+                                   includeMarkdown("./rmarkdown/home/intro_column_1.Rmd")),
+                            column(width = 4, 
+                                   includeMarkdown("./rmarkdown/home/intro_column_2.Rmd")),
+                            column(width = 4, 
+                                   includeMarkdown("./rmarkdown/home/intro_column_3.Rmd"))
+                            
+                   ),
+                   fluidRow(
+                     column(width = 6, style = "text-align: right;", 
+                            tags$a(href="https://github.com/cvmartin/eflows", target="_blank",
+                                   actionBttn(
+                                     inputId = "git_eflows",
+                                     label = "eflows",
+                                     color = "primary",
+                                     style = "bordered",
+                                     icon = icon("github")
+                                   ))),
+                     column(width = 6, style = "text-align: left;",
+                            tags$a(href="https://github.com/cvmartin/eflows.viz", target="_blank",
+                                   actionBttn(
+                                     inputId = "git_eflows_viz",
+                                     label = "eflows.viz",
+                                     color = "primary",
+                                     style = "bordered",
+                                     icon = icon("github")
+                                   )))
+                     
+                   )
+          )
+  )
+
+
+# fitting -----------------------------------------------------------------
+
+tab_fitting <- 
+  tabItem("fitting", 
+          narrowDiv(
+            includeMarkdown("./rmarkdown/fitting/fitting_curve.Rmd")
+          ),
+          wideDiv(title = "Custom fit curve",
                   
-            ), 
-            narrowDiv(
-              includeMarkdown("./assets/foreshift_4.Rmd")
-            ),
-            wideDiv(title = "Custom fit curve",
-              
                   inputDiv(
                     
                     column(width = 9, 
@@ -215,19 +182,88 @@ body <- dashboardBody(
                       )),
                   box(width = 12, title = "Fitting curves", collapsible = TRUE,
                       dygraphOutput("fit_fitcurve", height = 230)
-                      ), 
+                  ), 
                   box(width = 12,
                       radioGroupButtons("fit.rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
                       dygraphOutput("fit_graph", height = 230)
-                      )
+                  )
                   
+          )
+  )
+
+
+# ev ----------------------------------------------------------------------
+
+tab_ev <- 
+  tabItem("ev", 
+          wideDiv(title = "Electric Vehicle", 
+                  inputDiv(tabPanelEV("0")),
+                  box(width = 12, 
+                      radioGroupButtons("p_1ev_rbutton", NULL, 
+                                        c("original", "foreshifted", "comparison"), justified = TRUE), 
+                      dygraphOutput("p_1ev_graph", height = 230))
                   
+          ), 
+          wideDiv(title = "Multiple Electric Vehicles", 
+                  tabBox(title = "Electric Vehicles", width = 12,
+                         id = "tab_evs",
+                         tabPanelEV("1"), 
+                         tabPanelEV("2"), 
+                         tabPanelEV("3"),
+                         tabPanelEV("4") 
+                  ),
                   
-            ), 
-            mreDiv(title = "Example of a MRE", includeMarkdown("./assets/mre_example.Rmd"))
-    ) 
-    
-          
+                  box(width = 12, 
+                      radioGroupButtons("evs.rbutton", NULL, 
+                                        c("original", "foreshifted","aggregated by ev", "aggregated by flex", "comparison", "unstacked"), justified = TRUE), 
+                      dygraphOutput("evs_graph", height = 230))
+                  
+          ))
+
+
+# principles --------------------------------------------------------------
+
+tab_principles <- 
+  tabItem("principles", 
+          narrowDiv(
+            includeMarkdown("./rmarkdown/principles/principles.Rmd")
+          ), 
+          wideDiv(
+          ))
+
+
+# foreshift ---------------------------------------------------------------
+tab_foreshift <- 
+tabItem("foreshift", 
+        narrowDiv(
+          includeMarkdown("./rmarkdown/foreshift/foreshift.Rmd")
+        ),
+        wideDiv(title = "Basic example",
+                inputDiv(
+                  column(width = 6, 
+                         sliderInput("hflex", label = "Hours of flexibility", min = 1,
+                                     max = 12, value = 4, step = 1, ticks = FALSE)),
+                  column(width = 6,
+                         sliderInput("vol", label = "Flexible demand volume", min = 0,
+                                     max = 30, value = 10, step = 0.1, ticks = FALSE))
+                ),
+                box(width = 12,
+                    radioGroupButtons("test_rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
+                    dygraphOutput("test_graph", height = 230))
+                
+        ) 
+        
+) 
+
+###
+
+body <- dashboardBody(
+  tabItems(
+    tab_home,
+    tab_fitting,
+    tab_ev,
+    tab_principles,
+    tab_foreshift
 ))
 
 dashboardPage(header, sidebar, body, skin = "black")

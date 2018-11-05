@@ -1,7 +1,7 @@
 library(eflows)
 library(eflows.viz)
 
-source("utils.R", local = TRUE)
+source("functions/utils.R", local = TRUE)
 
 base_demand <- sept$d_house_smooth[1:168]*120
 

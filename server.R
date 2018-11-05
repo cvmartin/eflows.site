@@ -3,8 +3,8 @@ library(eflows.viz)
 library(dplyr)
 library(R6)
 
-source("data_preprocessing.R", local = TRUE)
-source("utils.R", local = TRUE)
+source("functions/data_preprocessing.R", local = TRUE)
+source("functions/utils.R", local = TRUE)
 
 
 shinyServer(function(input, output, session) {

@@ -1,0 +1,17 @@
+## GENERAL NOTES
+
+# From FLEXNET project notes
+
+In the FLEXNET project, flexibility is defined briefly as
+> the ability of the energy system to respond to the variability and uncertainty of the residual power load within the limits of the electricity grid
+
+Major characteristics of this definition are:
+- The problem (i.e. the demand for flexibility) is caused primarily by the power system;
+- The solution (i.e. the supply of flexibility) may come from the energy system as a whole;
+- The focus is on changes in residual power load, i.e. total power load minus power production from variable renewable energy (VRE), notably from sun and wind.
+
+three main sources (‘causes’) of the need for flexibility of the power sector:
+
+1. The demand for flexibility  due to  the variability of the residual power load, in particular due to the variability of power generation from VRE sources;
+2. The demand for flexibility due to the uncertainty of the residual power load, notably due to the uncertainty (or lower predictability) of electricity output from VRE sources (‘forecast error’);
+3. The demand for flexibility due to the congestion (overloading) of the power grid, resulting from the increase and changing profiles of electricity demand due to the increase in electric vehicles, heat pumps, etc. as well as the increase and changing profiles of power supply from VRE sources.

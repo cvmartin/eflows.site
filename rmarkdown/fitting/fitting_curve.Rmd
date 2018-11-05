@@ -1,3 +1,5 @@
+# Fitting curve
+
 Several variables can be chosen to manipulate the fitting curve
 
 - `.demand` : total demand (it changes over iterations of the algorithm, and serves as feedback mechanism)

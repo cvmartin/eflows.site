@@ -1,1 +1,0 @@
-Run algorithms to update the object, having full control over the algorithms. Coded in R for versatility, and in C++ for efficiency
