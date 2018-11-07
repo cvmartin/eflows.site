@@ -40,3 +40,10 @@
 .wideDivBox {
   padding:0;
 }
+
+.narrowDiv img {
+  width: 100%;
+}
+
+.narrowDiv h1, h2, h3, h4 {
+}

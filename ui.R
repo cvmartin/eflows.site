@@ -139,6 +139,9 @@ tab_fitting <-
 
 tab_ev <- 
   tabItem("ev", 
+          narrowDiv(
+            includeMarkdown("./rmarkdown/ev/ev-intro.Rmd")
+          ),
           wideDiv(title = "Electric Vehicle", 
                   inputDiv(tabPanelEV("0")),
                   box(width = 12, 

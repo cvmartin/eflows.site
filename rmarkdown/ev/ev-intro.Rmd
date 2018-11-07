@@ -1,0 +1,27 @@
+
+# Electric Vehicle charging
+
+Electric vehicles are one of the main cases for the application of eflows, and particularly the foreshifting of demand. 
+
+Normally, the optimization of car charging comes in two flavors: 
+
+- Charge a certain amount of energy within a timeframe, allocating the charge in the moments when it is the most beneficial.
+
+- Charge as fast as possible given a certain available power, and distribute the charging load in the best possible way among cars. 
+
+## Optimize allocation of energy within a timeframe
+
+Normally electric vehicle charging looks like this:
+
+![Business as usual](../../www/images/foreshift/case-usual.png)
+
+But we want to make it look like this:
+
+![Business as usual](../../www/images/foreshift/cases-charging.png)
+
+
+### Making use of the *large numbers*: estimating the congestion in districts and cities
+
+## Optimize distribution of power
+
+## A combined approach

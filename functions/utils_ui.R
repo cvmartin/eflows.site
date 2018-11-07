@@ -40,7 +40,7 @@ inputDiv <- function(...){
 }
 
 narrowDiv <- function(...){
-  fluidRow(div(style = "max-width: 700px;margin: 0 auto; padding: 20px; font-family: Georgia, Times, serif; font-size: 120%;", 
+  fluidRow(tags$div(class = "narrowDiv", style = "max-width: 700px;margin: 0 auto; padding: 20px; font-family: Georgia, Times, serif; font-size: 120%;", 
                ...
   ))
 }
