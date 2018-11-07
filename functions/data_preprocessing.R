@@ -70,6 +70,23 @@ o_Xdemand$set_demand(e_demand$new(fixed = base_demand,
 
 ##
 
+randomprof <- o_1demand$clone(deep = TRUE)
+# randomprof$set_demand(e_demand$new(fixed = base_demand,
+#                                   flex = list(flex_mtx$new(data = cbind(vec_spiked(168, 2),
+#                                                                         vec_spiked(168, 2),
+#                                                                         vec_spiked(168, 2),
+#                                                                         vec_spiked(168, 2),
+#                                                                         vec_spiked(168, 2),
+#                                                                         vec_spiked(168, 2)),
+#                                                            steps = c(2,4,6,8,10,12),
+#                                                            name = "obj"))))
+# 
+# viz_fore_input(randomprof)
+# viz_fore_input(o_Xdemand)
+# 
+# plot(vec_spiked(168, 2, round(168/10)), type = "l" )
+
+
 # proto$demand$input$fixed[1:10]
 # customfit$demand$input$fixed[1:10]
 

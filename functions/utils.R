@@ -67,6 +67,25 @@ do_ev_prof <- function(matrix, inputs = c(), pos, cap) {
   matrix
 }
 
+
+# profile generators ------------------------------------------------------
+
+vec_const <-function(l, v = 1){rep(v,l)}
+
+vec_normal <- function(l, v = 1, sd = v/2){rnorm(l, v, sd)}
+
+vec_spiked <- function(l, v = 1, k = round(l/10)) {
+  x <- cumsum(sample(c(-1, 1), l, TRUE))
+  y <- caTools::runquantile(x, k, probs = 0.3)
+  (ifelse(x-y >= 0, x-y, 0)) * v
+}
+
+vec_peak <- function(l, v = 1, loc) {
+  x <- rep(0, l)
+  x[loc] <- v
+  x
+}
+
 # generators --------------------------------------------------------------
 
 
