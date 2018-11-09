@@ -1,6 +1,8 @@
 
 # Foreshift
 
+![Foreshift](../../www/images/foreshift/fore.png)
+
 Foreshift consists in the displacement towards the future of demand that would be instead consumed in the present. 
 
 

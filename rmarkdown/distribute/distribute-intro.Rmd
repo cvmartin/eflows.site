@@ -1,0 +1,7 @@
+
+# Distribute
+
+Distribute shares according with a number of parameters a given amount of energy or power among consumers.
+
+![Distribute](../../www/images/distribute/distribute-inputoutput.png)
+

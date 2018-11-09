@@ -55,7 +55,12 @@ tab_home <-
           #     p("eflows")), 
           # div(style = "text-align: center;font-size: 200%;",
           #     p("Data-driven energy transition")), 
-          broadDiv(img(src = "images/main-banner.png", width = "100%"), 
+          narrowDiv(
+            includeMarkdown("./rmarkdown/home/header.Rmd")
+          ),
+          broadDiv(div(style = "text-align:center;", 
+                       img(src = "images/main-banner.png", width = "80%")
+                       ), 
                    fluidRow(style = "font-family: Georgia, Times, serif; font-size: 120%;", 
                             column(width = 4, 
                                    includeMarkdown("./rmarkdown/home/intro_column_1.Rmd")),
@@ -86,6 +91,9 @@ tab_home <-
                                    )))
                      
                    )
+          ),
+          narrowDiv(
+            includeMarkdown("./rmarkdown/home/description.Rmd")
           )
   )
 
@@ -178,6 +186,27 @@ tab_principles <-
           ))
 
 
+# backshift --------------------------------------------------------------
+
+tab_distribute <- 
+  tabItem("distribute", 
+          narrowDiv(
+            includeMarkdown("./rmarkdown/distribute/distribute-intro.Rmd")
+          ), 
+          wideDiv(
+          ))
+
+# backshift --------------------------------------------------------------
+
+tab_backshift <- 
+  tabItem("backshift", 
+          narrowDiv(
+            includeMarkdown("./rmarkdown/backshift/backshift-intro.Rmd")
+          ), 
+          wideDiv(
+          ))
+
+
 # foreshift ---------------------------------------------------------------
 tab_foreshift <- 
 tabItem("foreshift", 
@@ -213,8 +242,7 @@ tabItem("foreshift",
                           style = "bordered"
                         )
                         ))
-                
-        ) 
+                ) 
         
 ) 
 
@@ -227,6 +255,8 @@ body <- dashboardBody(
     tab_fitting,
     tab_ev,
     tab_principles,
+    tab_backshift,
+    tab_distribute,
     tab_foreshift
 ))
 

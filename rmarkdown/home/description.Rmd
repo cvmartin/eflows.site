@@ -1,0 +1,7 @@
+eflows is based on a number of functions, two of which involve timeshifting the energy demand:
+
+- `foreshift()` : If energy would be consumed in the present moment, consume it instead in the future. It involves devices whose energy consumption can be delayed, for instance electric vehicles. 
+
+- `backshift()`: If energy would be consumed in the future, counsume it instead in the present moment. It involves devices that allow for energy storage. This includes batteries, and also heat pumps with a heat buffer. 
+
+![Foreshift and backshift](../../www/images/general/fore-backshift.png)
