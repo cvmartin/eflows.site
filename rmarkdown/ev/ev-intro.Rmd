@@ -1,15 +1,22 @@
 
 # Electric Vehicle charging
 
-Electric vehicles are one of the main cases for the application of eflows, and particularly the foreshifting of demand. 
+Electric vehicles (EVs) are one of the first cases for the application of eflows; they are a "low hanging fruit" when managing the demand side management of the EMS. 
 
-Normally, the optimization of car charging comes in two flavors: 
+The optimization is done by commanding either the EV or the charging pole to charge at a given power, or to halt the charge if appropiate. The optimization of the charge comes in two varieties, depending on the objective: 
 
 - Charge a certain amount of energy within a timeframe, allocating the charge in the moments when it is the most beneficial.
 
 - Charge as fast as possible given a certain available power, and distribute the charging load in the best possible way among cars. 
 
+eflows considers both cases. The first one makes use of `foresehift()`, while the second uses `distribute()`
+
+
 ## Optimize allocation of energy within a timeframe
+
+Particularly, are an example of foreshifting where the demand is *punctual* in time. 
+
+
 
 Normally electric vehicle charging looks like this:
 
