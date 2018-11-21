@@ -1,5 +1,13 @@
 # Fitting curve
 
+Until now, we have considered peak shaving as the desired outcome from flexibility. 
+
+Ideally, we would like to combine serveral factors in a formula, a *fitting formula*:
+
+![Fitting formula](../../www/images/fitting/fitting-formula.png)javascript:;
+
+
+
 Several variables can be chosen to manipulate the fitting curve
 
 - `.demand` : total demand (it changes over iterations of the algorithm, and serves as feedback mechanism)
