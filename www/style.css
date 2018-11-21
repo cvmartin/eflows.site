@@ -43,7 +43,17 @@
 
 .narrowDiv img {
   width: 100%;
+  margin-top:15px;
+  margin-bottom:15px;
 }
 
-.narrowDiv h1, h2, h3, h4 {
+.narrowDiv blockquote {
+  font-family: 'Source Sans Pro';
+  font-size:100%;
+  color: #767171;
+  border-left-color: #767171;
 }
+
+
+
+

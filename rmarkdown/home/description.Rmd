@@ -4,11 +4,11 @@ eflows is based on a number of functions, two of which involve timeshifting the 
 
 - `backshift()`: If energy would be consumed in the future, counsume it instead in the present moment. It involves devices that allow for energy storage. This includes batteries, and also heat pumps with a heat buffer. 
 
-![Foreshift and backshift](../../www/images/general/fore-backshift.png).
+![Foreshift and backshift](../../www/images/general/fore-backshift.png)
 
 Note how the foreshifting and backshifting of demand roughly tanslates in the two main strategies used in the catch-all term "demand-side management": Either by regulating the time the demand is consumed (foreshift), or by using batteries at strategic moments (backshift). The proposed terms *foreshift* and *backshift* just highlight what happens to the electricity, as it is *timsehifted*.
 
-![Foreshift and backshift](../../www/images/general/timeshift.png).
+![Foreshift and backshift](../../www/images/general/timeshift.png)
 
 > Future development of `eflows` include a function `timeshift()`, that does `foreshift()` and `backshift()` at the same time. 
 
