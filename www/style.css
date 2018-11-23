@@ -55,5 +55,12 @@
 }
 
 
+@media (min-width: 770px) {
+  
+  .main-header {
+    display: none;
+  }
+  
+}
 
 

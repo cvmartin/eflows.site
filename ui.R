@@ -7,7 +7,7 @@ library(shinyjs)
 source("functions/utils_ui.R", local = TRUE)
 
 # Header elements for the visualization
-header <- dashboardHeader(title = "eflows", disable = TRUE)
+header <- dashboardHeader(title = "eflows", disable = FALSE)
 
 
 # SIDEBAR -----------------------------------------------------------------
