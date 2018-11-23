@@ -28,16 +28,44 @@ It is often the case that a user is indifferent to when the EV will be charged o
 
 At the far end of the flexibility, there are users that will not mind to have their battery fluctuating between half-charged and full-charged, meaning the requirements for charging can be fulfilled at any time in, perhaps, up to 24 hours. Many user cases will fall in between. 
 
-Ideally, the algorithm adapts the consumption within the time constrains and power requirements of the cars. 
-
 ![Business as usual](../../www/images/foreshift/cases-charging.png)
 
-## Several users
+Ideally, the algorithm use adapts the consumption within the time constrains and the power requirements:
 
+> Electric Vehicle charging: one EV
 
+### Inceeasing complexity
 
-### Making use of the *large numbers*: estimating the congestion in districts and cities
+From the example above, there are several advancements that can be made: 
+
+First, the algorithm should be able to process the preference of more than one EV. The charging profile of each one shall not depend on its particular preferences, but also *on the preferences of the other vehicles*. `e_flows` achieves this by allowing an indeterminate number of `flex_mtx` objects to be included into the `e_frame`.
+
+Second, the algorithm shall benefit fromt the capabilities of the `fitting formula`, so the energy for the EVs charging is allocated for purposes other than peak shaving. This is achieved adjusting the `fitting formula`, as described in the article. 
+
+> Electic Vehicle charging: several EVs
+
+### Estimating EV flexibility in districts and cities
+
+As the number of EVs increase, it is possible to take adavantage of the "law of big numbers" in order to estimate the potential for flexibility at district and city scale. 
+
+Here it is necessary to play with statistical models, that try to predict the average demand of EV charging over a whole area, depending on a number of factors (for instance, the hour of the day and the day of the week). More precisely, the objective is not only to predict the total demand, but also know what proportion of such demand could be delayed how much over time. 
+
+The resulting profile can be then foreshifted, to have an estimation of how the energy flows may look like. As any estimation, it has to be taken with a grain of salt, and its accuracy depends on the first place on the accuracy of the estimations regarding the demand necessary for the EV charging. 
+
+> Electric Vehicle charging: large scale
+
 
 ## Optimize distribution of power
+
+In this modality, the objective is to distribute a given amount of power among several charging EVs. In case the demand overpasses the power available, the power shall be distribute accordingly between EVS, following a preference. 
+
+This is achieved by using `distribute()`. This allows to consider the different user options. Let us suppose we have five EVs:
+
+1. Large battery half-full `soc = 40, vol = 75`, charges at high rate `cap = 20`, the owner is not in a hurry to charge `level = 1`.
+2. Average car almost full `soc = 40, vol = 50, cap = 12`; the user is a doctor, and must have the battery filled as soon as possible `level = 3`. 
+3. Small utilitarian for daily commutes `soc = 15, vol = 30, cap = 10`; the owner pays less in exchange for lower charging priority `level = 0`.
+4. Average car with the battery almost empty `soc = 5, vol = 50, cap = 12`. The user is going on a long trip soon, so has higher priority `level = 2`.
+5. Taxi driver, the battery is quite full `soc = 30, vol = 40` but is convenient to have it complete; the car can charge at a faster rate `cap = 20, level = 2`.
+
 
 ## A combined approach

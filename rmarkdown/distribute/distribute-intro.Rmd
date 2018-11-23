@@ -1,7 +1,100 @@
 
 # Distribute
 
-Distribute shares according with a number of parameters a given amount of energy or power among consumers.
+`distribute()` shares according with a number of parameters a given amount of energy or power among consumers.
+
+
+Basic parameters: 
+
+- `flow`: Energy or power to be exchanged with the energy storage (negative means discharge)
+- `soc`: Current state of charge.
+- `vol`: Objective state of charge to be achieved.
+
+The return is a list:
+
+- `soc`: Updated state of charge of the energy storage
+- `flow`: Energy or power flow exchanged with the energy storage
+- `left`: Energy that has not interacted with the energy storage.
 
 ![Distribute](../../www/images/distribute/distribute-inputoutput.png)
+
+
+```{r echo=TRUE}
+library(eflows)
+distribute(flow = 50, soc = 40, vol = 80)
+```
+
+The parameter `eff` reflects that not all the energy is effectively stored due to conversion loses. 
+
+```{r echo=TRUE}
+distribute(flow = 100, soc = 40, vol = 80, eff = 0.85)
+```
+`left` is reduced when `eff` is lower than one.
+
+The parameter `cap` expresses the technical capacity of the storage to assimilate energy in a single timestep.
+
+```{r echo=TRUE}
+distribute(flow = 100, soc = 40, vol = 80, eff = 0.85, cap = 30)
+```
+`flow` is limited, and `eff` causes than only part of it ends up in the `soc` of the storage.
+
+
+###`distribute()` is vectorized
+
+This means that the function can process `n` storages simultaneously, making the arguments (except `flow`) vectors of length `n`.
+
+```{r}
+distribute(flow = 90, 
+         soc = c(40, 50, 30), 
+         vol = c(80, 90, 70))
+```
+
+The argument `share` indicates how much of the proportion of the flow shall go to each storage. It serves to indicate that some storage shall be charged faster than other.
+
+```{r}
+distribute(flow = 90, 
+         soc = c(40, 50, 30), 
+         vol = c(80, 90, 70), 
+         share = c(0.4, 0.25, 0.35))
+```
+
+If `share` of one of the storages is `0`, it is served only *after* the energy flows to the rest of the storages have been resolved. 
+
+```{r echo=TRUE}
+distribute(flow = 90, 
+         soc = c(40, 50, 30), 
+         vol = c(80, 90, 70), 
+         share = c(0, 0.25, 0.35))
+```
+
+The argument `level` offers finer control over the storage charging priority. *Higher levels resolve first*, and if there is some `left`, this is resolved in successive lower levels. 
+
+```{r}
+distribute(flow = 60, 
+         soc = c(40, 50, 30), 
+         vol = c(80, 90, 70), 
+         level = c(3, 2, 1))
+```
+
+Last, `active` especifies if the storage actually participates in the energy allocation, regardless of `share` and `level` arguments.
+
+```{r}
+distribute(flow = 100, 
+         soc = c(40, 50, 30), 
+         vol = c(80, 90, 70), 
+         share = c(0.8, 0.1, 0.1),
+         level = c(3, 2, 1),
+         active = c(FALSE, TRUE, TRUE))
+```
+
+
+### Discharging
+
+All the previous can also be applied to storage discharge. To express it, `flow` shall be negative, and `vol` shall be `0`.
+
+```{r}
+distribute(flow = -100, soc = c(40, 50, 30), vol = c(0, 0, 0))
+```
+
+Note that `vol` can be any number between `0` and `soc`, so the storage can be discharged *but only up to a given point*. 
 
