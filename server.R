@@ -173,11 +173,20 @@ shinyServer(function(input, output, session) {
   s2 <- soc %>% 
     as.data.frame() %>% 
     mutate(minutes = seq(1:nrow(.))) %>% 
-    select(minutes, everything())
+    select(minutes, everything()) 
+  colnames(s2) <- c("minutes", "EV 1", "EV 2", "EV 3", "EV 4", "EV 5")
   
   s2graph <- dygraph(s2) %>% 
-    dyHighlight() %>% 
-    dyOptions(fillGraph = TRUE, colors = palette_pwr) 
+    dyHighlight(highlightSeriesBackgroundAlpha = 0.6,
+                highlightSeriesOpts = list(strokeWidth = 2)) %>% 
+    dyLegend(show = "onmouseover", width = 50) %>% 
+    dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz")) %>% 
+    dyOptions(fillGraph = TRUE, 
+              colors = palette_pwr, 
+              mobileDisableYTouch = TRUE,
+              retainDateWindow = TRUE) %>% 
+    dyAxis("x", label = "minutes") %>% 
+    dyAxis("y", "kWh")
   for (i in 1:length(completed)) {
     s2graph <-  dyEvent(s2graph,
                         x = completed[i], 
@@ -186,29 +195,31 @@ shinyServer(function(input, output, session) {
   }
   
   output$evs_soc <- renderDygraph({
-    s2graph %>% 
-      dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz"))
+    s2graph 
   })
   
-  
-  s2graph
-  
-  
   # flow
-  
-  
   flow <- do.call(rbind, f) 
   
   f2 <- flow %>% 
     as.data.frame() %>% 
     mutate(minutes = seq(1:nrow(.))) %>% 
     select(minutes, everything())
+  colnames(f2) <- c("minutes", "EV 1", "EV 2", "EV 3", "EV 4", "EV 5")
+  
   
   output$evs_flow <- renderDygraph({
     dygraph(f2) %>% 
-      dyHighlight() %>% 
-      dyOptions(stackedGraph = TRUE, colors = palette_pwr)%>% 
-      dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz"))
+      dyHighlight(highlightSeriesBackgroundAlpha = 0.6,
+                  highlightSeriesOpts = list(strokeWidth = 2)) %>% 
+      dyOptions(stackedGraph = TRUE, 
+                colors = palette_pwr, 
+                mobileDisableYTouch = TRUE,
+                retainDateWindow = TRUE)%>% 
+      dyAxis("x", label = "minutes") %>% 
+      dyAxis("y", "kWh") %>% 
+      dyLegend(show = "onmouseover", width = 50) %>% 
+      dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz")) 
   })
   
 

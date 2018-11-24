@@ -184,11 +184,17 @@ tab_ev <-
                          tabPanelPwrEV("4"), 
                          tabPanelPwrEV("5")
                   ),
-                  
-                  box(width = 12, 
-                      dygraphOutput("evs_soc", height = dy_height),
+                  inputDiv(
+                    column(6, sliderInput("cap_evs_pwr", "Grid capacity", min = 10, max = 100,
+                                          value = 40, step = 5, ticks = FALSE, post = " kW")), 
+                    column(6, switchInput("cap_rand", label = "Random capacity profile", labelWidth = 300))
+                  ),
+                  box(width = 12, title = "EVs State Of Charge", 
+                      dygraphOutput("evs_soc", height = dy_height)
+                     ),
+                  box(width = 12, title = "Energy flow into EVs",
                       dygraphOutput("evs_flow", height = dy_height)
-                     )
+                  )
                   
           ))
 
@@ -204,7 +210,7 @@ tab_principles <-
           ))
 
 
-# backshift --------------------------------------------------------------
+# distribute --------------------------------------------------------------
 
 tab_distribute <- 
   tabItem("distribute", 
