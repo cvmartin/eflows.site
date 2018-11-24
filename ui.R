@@ -9,6 +9,8 @@ source("functions/utils_ui.R", local = TRUE)
 # Header elements for the visualization
 header <- dashboardHeader(title = "eflows", disable = FALSE)
 
+dy_height <- 230
+
 
 # SIDEBAR -----------------------------------------------------------------
 
@@ -119,14 +121,14 @@ tab_fitting <-
                   ),
                   box(width = 12, title = "Factors that influence the fitting curve", collapsible = TRUE,
                       radioGroupButtons("fit.rbutton_vars", NULL, c("demand", "production", "price"), justified = TRUE),
-                      dygraphOutput("fit_graphvars", height = 230
+                      dygraphOutput("fit_graphvars", height = dy_height
                       )),
                   box(width = 12, title = "Fitting curves", collapsible = TRUE,
-                      dygraphOutput("fit_fitcurve", height = 230)
+                      dygraphOutput("fit_fitcurve", height = dy_height)
                   ), 
                   box(width = 12,
                       radioGroupButtons("fit.rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
-                      dygraphOutput("fit_graph", height = 230),
+                      dygraphOutput("fit_graph", height = dy_height),
                       div(style = "float:right;margin-top:5px;margin-bottom:-10px;", 
                           prettySwitch ("random_on2", label = "Random profile", value = FALSE, inline = TRUE, fill = TRUE, status = "primary"),
                           actionBttn(
@@ -155,7 +157,7 @@ tab_ev <-
                   box(width = 12, 
                       radioGroupButtons("p_1ev_rbutton", NULL, 
                                         c("original", "foreshifted", "comparison"), justified = TRUE), 
-                      dygraphOutput("p_1ev_graph", height = 230))
+                      dygraphOutput("p_1ev_graph", height = dy_height))
                   
           ), 
           wideDiv(title = "Multiple Electric Vehicles", 
@@ -170,7 +172,23 @@ tab_ev <-
                   box(width = 12, 
                       radioGroupButtons("evs.rbutton", NULL, 
                                         c("original", "foreshifted","aggregated by ev", "aggregated by flex", "comparison", "unstacked"), justified = TRUE), 
-                      dygraphOutput("evs_graph", height = 230))
+                      dygraphOutput("evs_graph", height = dy_height))
+                  
+          ), 
+          wideDiv(title = "Power distribution", 
+                  tabBox(title = "Electric Vehicles", width = 12,
+                         id = "tab_pwr_evs",
+                         tabPanelPwrEV("1"), 
+                         tabPanelPwrEV("2"), 
+                         tabPanelPwrEV("3"),
+                         tabPanelPwrEV("4"), 
+                         tabPanelPwrEV("5")
+                  ),
+                  
+                  box(width = 12, 
+                      dygraphOutput("evs_soc", height = dy_height),
+                      dygraphOutput("evs_flow", height = dy_height)
+                     )
                   
           ))
 
@@ -224,13 +242,13 @@ tabItem("foreshift",
                 ),
                 box(width = 12,
                     radioGroupButtons("test_rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
-                    dygraphOutput("test_graph", height = 230))
+                    dygraphOutput("test_graph", height = dy_height))
                 
         ),
         wideDiv(title = "Layers of flexibility",
                 box(width = 12,
                     radioGroupButtons("random_rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
-                    dygraphOutput("random_graph", height = 230), 
+                    dygraphOutput("random_graph", height = dy_height), 
                     div(style = "float:right;margin-top:5px;margin-bottom:-10px;", 
                         prettySwitch ("random_on", label = "Random profile", value = FALSE, inline = TRUE, fill = TRUE, status = "primary"),
                         actionBttn(

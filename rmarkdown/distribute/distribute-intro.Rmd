@@ -1,7 +1,7 @@
 
 # Distribute
 
-`distribute()` shares according with a number of parameters a given amount of energy or power among consumers.
+`distribute()` shares according with a number of parameters a given amount of energy or power among consumers. It is a relatively lower-level function, and unlike `foreshift()` or `backshift()`, it is not designed to be used in conjunction with an `e_frame` object.
 
 
 Basic parameters: 
@@ -39,7 +39,7 @@ distribute(flow = 100, soc = 40, vol = 80, eff = 0.85, cap = 30)
 `flow` is limited, and `eff` causes than only part of it ends up in the `soc` of the storage.
 
 
-###`distribute()` is vectorized
+### `distribute()` is vectorized
 
 This means that the function can process `n` storages simultaneously, making the arguments (except `flow`) vectors of length `n`.
 
@@ -47,6 +47,9 @@ This means that the function can process `n` storages simultaneously, making the
 distribute(flow = 90, 
          soc = c(40, 50, 30), 
          vol = c(80, 90, 70))
+
+## This is a test
+## How does the result looks like?
 ```
 
 The argument `share` indicates how much of the proportion of the flow shall go to each storage. It serves to indicate that some storage shall be charged faster than other.

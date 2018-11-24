@@ -12,7 +12,6 @@ tabPanelEV <- function(int){
                                   min = 0, max = 40, value = 10, step = 1, ticks = FALSE, post = " kWh flex12"),
                       sliderInput(sprintf("ev%scap", int), label = "Max charge power", min = 4,
                                   max = 40, value = 20, step = 1, ticks = FALSE, post = " kW")), 
-           setSliderColor("#FF4500", 2),
            tags$strong("Charging start time"),
            sliderInput(sprintf("ev%spos", int), label = NULL, min = 1, max = 168, value = sample(seq(1,168),1), 
                        ticks = FALSE, post = " hours from start"
@@ -21,6 +20,27 @@ tabPanelEV <- function(int){
            )
   )
 }
+
+tabPanelPwrEV <- function(int){
+  tabPanel(sprintf("EV %s", int), 
+           flowLayout(sliderInput(sprintf("ev%ssoc", int),
+                                  label = "Initial SOC", 
+                                  min = 0,max = 100, value = 40, step = 1, ticks = FALSE, post = " kWh"),
+                      sliderInput(sprintf("ev%svol", int), 
+                                  label = "Battery volume", 
+                                  min = 0, max = 100, value = 80, step = 1, ticks = FALSE, post = " kWh"),
+                      sliderInput(sprintf("ev%scap", int),
+                                  label = "Maximum charge rate", 
+                                  min = 0, max = 40, value = 15, step = 1, ticks = FALSE, post = " kW"),
+                      sliderInput(sprintf("ev%slevel", int), 
+                                  label = "Level (charge preference)",
+                                  min = 1, max = 5, value = 2, step = 1, ticks = FALSE, post = " level")
+                      )
+  )
+}
+
+
+
 
 list_formulas <- list(`Peak shaving` = "1* .demand", 
                       `To the lowest demand` = "1*.demand_fixed",

@@ -90,3 +90,11 @@ vec_peak <- function(l, v = 1, loc) {
 
 
 
+
+# aesthetics --------------------------------------------------------------
+
+gg_palette <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
+}
+

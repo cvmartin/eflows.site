@@ -124,14 +124,95 @@ shinyServer(function(input, output, session) {
                          "aggregated by flex", "comparison", "unstacked"))
 
   })
-
-
-  
   
   output$evs_graph <- renderDygraph({
     evs_bundle()[[input$evs.rbutton]]
   })
 
+
+# EVs power ---------------------------------------------------------------
+
+  palette_pwr <- gg_palette(5)
+  
+  # define list for SOC and flow
+  
+  s <- list(0)
+  f <- list(0)
+  
+  # initial 
+  
+  s[[1]] <- c(40, 40, 15, 5, 30)
+  
+  i <- 1
+  while (TRUE) {
+    i <- i+1
+    temp <- eflows::distribute(flow = (50/60), 
+                               soc = s[[i-1]], 
+                               vol = c(75, 50, 30, 50, 40), 
+                               cap = c(20, 12, 10,12, 20), 
+                               eff = 0.9,
+                               level = c(1, 3, 0, 2, 2))
+    
+    s[[i]] <- temp[[1]]
+    f[[i]] <- temp[[2]]
+    
+    # if the last result is the same, aus
+    if (identical(s[[i]], s[[i-1]])) break
+  }
+  
+  soc <- do.call(rbind, s)
+  
+  completed <- apply(soc, 2, function(x){match(max(x), x)})
+  for (i in 1:ncol(soc)) {
+    soc[(completed[i]+1):nrow(soc),i] <- NA
+  }
+  
+  
+  # state of charge
+  
+  s2 <- soc %>% 
+    as.data.frame() %>% 
+    mutate(minutes = seq(1:nrow(.))) %>% 
+    select(minutes, everything())
+  
+  s2graph <- dygraph(s2) %>% 
+    dyHighlight() %>% 
+    dyOptions(fillGraph = TRUE, colors = palette_pwr) 
+  for (i in 1:length(completed)) {
+    s2graph <-  dyEvent(s2graph,
+                        x = completed[i], 
+                        label = paste0("EV", i, ": ", completed[i], " minutes"),
+                        color = palette_pwr[i])
+  }
+  
+  output$evs_soc <- renderDygraph({
+    s2graph %>% 
+      dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz"))
+  })
+  
+  
+  s2graph
+  
+  
+  # flow
+  
+  
+  flow <- do.call(rbind, f) 
+  
+  f2 <- flow %>% 
+    as.data.frame() %>% 
+    mutate(minutes = seq(1:nrow(.))) %>% 
+    select(minutes, everything())
+  
+  output$evs_flow <- renderDygraph({
+    dygraph(f2) %>% 
+      dyHighlight() %>% 
+      dyOptions(stackedGraph = TRUE, colors = palette_pwr)%>% 
+      dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz"))
+  })
+  
+
+  
 
 # variable fit curve ------------------------------------------------------
   

@@ -23,7 +23,7 @@
   min-width: 150px;
 }
 
-#tab_evs {
+#tab_evs, #tab_pwr_evs {
   background-color: #f5f5f5;
   border: 1px solid #e3e3e3;
   border-radius: 2px;
