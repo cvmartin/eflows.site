@@ -178,21 +178,24 @@ tab_ev <-
           wideDiv(title = "Power distribution", 
                   tabBox(title = "Electric Vehicles", width = 12,
                          id = "tab_pwr_evs",
-                         tabPanelPwrEV("1"), 
-                         tabPanelPwrEV("2"), 
-                         tabPanelPwrEV("3"),
-                         tabPanelPwrEV("4"), 
-                         tabPanelPwrEV("5")
+                         tabPanelPwrEV("1", 40, 75, 20, 2), 
+                         tabPanelPwrEV("2", 40, 50, 12, 4), 
+                         tabPanelPwrEV("3", 15, 30, 10, 1),
+                         tabPanelPwrEV("4", 5, 50, 12, 3), 
+                         tabPanelPwrEV("5", 30, 40, 20, 3)
                   ),
                   inputDiv(
-                    column(6, sliderInput("cap_evs_pwr", "Grid capacity", min = 10, max = 100,
+                    column(4, sliderInput("cap_evs_pwr", "Grid capacity", min = 10, max = 100,
                                           value = 40, step = 5, ticks = FALSE, post = " kW")), 
-                    column(6, switchInput("cap_rand", label = "Random capacity profile", labelWidth = 300))
+                    column(4, prettySwitch("cap_rand", label = "Random capacity", value = FALSE,
+                                           inline = TRUE, fill = TRUE, status = "primary")), 
+                    column(4, sliderInput("eff_evs_pwr", "Battery charging efficiency", min = 0.75, max = 1, 
+                                          value = 0.9,ticks = FALSE, post = " %"))
                   ),
                   box(width = 12, title = "EVs State Of Charge", 
                       dygraphOutput("evs_soc", height = dy_height)
                      ),
-                  box(width = 12, title = "Energy flow into EVs",
+                  box(width = 12, title = "Power flow into EVs",
                       dygraphOutput("evs_flow", height = dy_height)
                   )
                   

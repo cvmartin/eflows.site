@@ -131,99 +131,116 @@ shinyServer(function(input, output, session) {
 
 
 # EVs power ---------------------------------------------------------------
-
   palette_pwr <- gg_palette(5)
+  
+  # reactive inputs
+  input_evsoc <- reactive({
+    c(input$ev1soc, input$ev2soc, input$ev3soc, input$ev4soc, input$ev5soc)
+  })
+  input_evvol <- reactive({
+    c(input$ev1vol, input$ev2vol, input$ev3vol, input$ev4vol, input$ev5vol)
+  })
+  input_evcap <- reactive({
+    c(input$ev1cap2, input$ev2cap2, input$ev3cap2, input$ev4cap2, input$ev5cap2)/60
+  })
+  input_evlevel <- reactive({
+    c(input$ev1level, input$ev2level, input$ev3level, input$ev4level, input$ev5level)
+  })
+  
   
   # define list for SOC and flow
   
-  s <- list(0)
-  f <- list(0)
-  
-  # initial 
-  
-  s[[1]] <- c(40, 40, 15, 5, 30)
-  
-  i <- 1
-  while (TRUE) {
-    i <- i+1
-    temp <- eflows::distribute(flow = (50/60), 
-                               soc = s[[i-1]], 
-                               vol = c(75, 50, 30, 50, 40), 
-                               cap = c(20, 12, 10,12, 20), 
-                               eff = 0.9,
-                               level = c(1, 3, 0, 2, 2))
+  socflow <- reactive({
     
-    s[[i]] <- temp[[1]]
-    f[[i]] <- temp[[2]]
+    set.seed(42)
+    s <- list(0)
+    f <- list(0)
+    l <- c()
+    c <- c()
     
-    # if the last result is the same, aus
-    if (identical(s[[i]], s[[i-1]])) break
-  }
-  
-  soc <- do.call(rbind, s)
-  
-  completed <- apply(soc, 2, function(x){match(max(x), x)})
-  for (i in 1:ncol(soc)) {
-    soc[(completed[i]+1):nrow(soc),i] <- NA
-  }
-  
-  
-  # state of charge
-  
-  s2 <- soc %>% 
-    as.data.frame() %>% 
-    mutate(minutes = seq(1:nrow(.))) %>% 
-    select(minutes, everything()) 
-  colnames(s2) <- c("minutes", "EV 1", "EV 2", "EV 3", "EV 4", "EV 5")
-  
-  s2graph <- dygraph(s2) %>% 
-    dyHighlight(highlightSeriesBackgroundAlpha = 0.6,
-                highlightSeriesOpts = list(strokeWidth = 2)) %>% 
-    dyLegend(show = "onmouseover", width = 50) %>% 
-    dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz")) %>% 
-    dyOptions(fillGraph = TRUE, 
-              colors = palette_pwr, 
-              mobileDisableYTouch = TRUE,
-              retainDateWindow = TRUE) %>% 
-    dyAxis("x", label = "minutes") %>% 
-    dyAxis("y", "kWh")
-  for (i in 1:length(completed)) {
-    s2graph <-  dyEvent(s2graph,
-                        x = completed[i], 
-                        label = paste0("EV", i, ": ", completed[i], " minutes"),
-                        color = palette_pwr[i])
-  }
+    s[[1]] <- input_evsoc()
+    i <- 1
+    c[i] <- 1
+    while (TRUE) {
+      i <- i+1
+      c[i] <- c[i-1] + runif(1, -0.1, 0.1)
+      temp <- eflows::distribute(flow = (input$cap_evs_pwr/60)* c[i], 
+                                 soc = s[[i-1]], 
+                                 vol = input_evvol(), 
+                                 cap = input_evcap(), 
+                                 eff = input$eff_evs_pwr,
+                                 level = input_evlevel()
+      )
+      s[[i]] <- temp[[1]]
+      f[[i]] <- temp[[2]]*60
+      l[i] <- temp[[3]]*60
+      # if the last result is the same, aus
+      if (identical(s[[i]], s[[i-1]])) break
+    }
+    
+    # state of charge
+    soc <- do.call(rbind, s)
+    completed <- apply(soc, 2, function(x){match(max(x), x)})
+    for (i in 1:ncol(soc)) {
+      soc[(completed[i]+1):nrow(soc),i] <- NA
+    }
+    s2 <- soc %>% 
+      as.data.frame() %>% 
+      mutate(minutes = seq(1:nrow(.))) %>% 
+      select(minutes, everything()) 
+    colnames(s2) <- c("minutes", "EV 1", "EV 2", "EV 3", "EV 4", "EV 5")
+
+    # flow
+    flow <- do.call(rbind, f) 
+    f2 <- flow %>% 
+      as.data.frame() %>% 
+      mutate(minutes = seq(1:nrow(.))) %>% 
+      select(minutes, everything())
+    colnames(f2) <- c("minutes", "EV 1", "EV 2", "EV 3", 
+                      "EV 4", "EV 5")
+    
+   
+    list(s2, f2, completed, l)
+  })
   
   output$evs_soc <- renderDygraph({
+    s2graph <- dygraph(socflow()[[1]]) %>% 
+      dyHighlight(highlightSeriesBackgroundAlpha = 0.6,
+                  highlightSeriesOpts = list(strokeWidth = 2)) %>% 
+      dyLegend(show = "onmouseover", width = 50) %>% 
+      dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz")) %>% 
+      dyOptions(fillGraph = TRUE, 
+                colors = palette_pwr, 
+                mobileDisableYTouch = TRUE,
+                retainDateWindow = TRUE) %>% 
+      dyAxis("x", label = "minutes of charge") %>% 
+      dyAxis("y", "kWh")
+    for (i in 1:length(socflow()[[3]])) {
+      s2graph <-  dyEvent(s2graph,
+                          x = socflow()[[3]][i], 
+                          label = paste0("EV", i, ": ", socflow()[[3]][i], " min."),
+                          color = palette_pwr[i])
+    }
     s2graph 
   })
   
-  # flow
-  flow <- do.call(rbind, f) 
-  
-  f2 <- flow %>% 
-    as.data.frame() %>% 
-    mutate(minutes = seq(1:nrow(.))) %>% 
-    select(minutes, everything())
-  colnames(f2) <- c("minutes", "EV 1", "EV 2", "EV 3", "EV 4", "EV 5")
-  
-  
   output$evs_flow <- renderDygraph({
-    dygraph(f2) %>% 
+    dygraph(socflow()[[2]]) %>% 
+      # dySeriesData("grid_capacity", socflow()[[4]]) %>%
       dyHighlight(highlightSeriesBackgroundAlpha = 0.6,
-                  highlightSeriesOpts = list(strokeWidth = 2)) %>% 
-      dyOptions(stackedGraph = TRUE, 
+      highlightSeriesOpts = list(strokeWidth = 2)) %>%
+      # dyShadow(c("EV 1", "EV 2", "EV 3", "EV 4", "EV 5")) %>% 
+      # dySeries("grid_capacity", axis = "y2") %>%
+      dyOptions(
+        stackedGraph = TRUE,
                 colors = palette_pwr, 
                 mobileDisableYTouch = TRUE,
                 retainDateWindow = TRUE)%>% 
-      dyAxis("x", label = "minutes") %>% 
-      dyAxis("y", "kWh") %>% 
-      dyLegend(show = "onmouseover", width = 50) %>% 
+      dyAxis("x", label = "minutes of charge") %>% 
+      dyAxis("y", "kW") %>% 
+      dyLegend(show = "onmouseover") %>% 
       dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz")) 
   })
-  
-
-  
 
 # variable fit curve ------------------------------------------------------
   

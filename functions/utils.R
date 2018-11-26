@@ -86,6 +86,14 @@ vec_peak <- function(l, v = 1, loc) {
   x
 }
 
+# for the random cap
+ondulation <- function(l, v = 1, k = round(l/10)) {
+  x <- cumsum(sample(c(-1, 1), l, TRUE))
+  y <- caTools::runquantile(x, k, probs = 0.3)
+  (scale(y)/10)+1
+}
+
+
 # generators --------------------------------------------------------------
 
 
