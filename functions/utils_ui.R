@@ -21,20 +21,20 @@ tabPanelEV <- function(int){
   )
 }
 
-tabPanelPwrEV <- function(int){
+tabPanelPwrEV <- function(int, isoc, ivol, icap, ilevel){
   tabPanel(sprintf("EV %s", int), 
            flowLayout(sliderInput(sprintf("ev%ssoc", int),
                                   label = "Initial SOC", 
-                                  min = 0,max = 100, value = 40, step = 1, ticks = FALSE, post = " kWh"),
+                                  min = 0,max = 100, value = isoc, step = 1, ticks = FALSE, post = " kWh"),
                       sliderInput(sprintf("ev%svol", int), 
                                   label = "Battery volume", 
-                                  min = 0, max = 100, value = 80, step = 1, ticks = FALSE, post = " kWh"),
-                      sliderInput(sprintf("ev%scap", int),
+                                  min = 0, max = 100, value = ivol, step = 1, ticks = FALSE, post = " kWh"),
+                      sliderInput(sprintf("ev%scap2", int),
                                   label = "Maximum charge rate", 
-                                  min = 0, max = 40, value = 15, step = 1, ticks = FALSE, post = " kW"),
+                                  min = 0, max = 40, value = icap, step = 1, ticks = FALSE, post = " kW"),
                       sliderInput(sprintf("ev%slevel", int), 
                                   label = "Level (charge preference)",
-                                  min = 1, max = 5, value = 2, step = 1, ticks = FALSE, post = " level")
+                                  min = 1, max = 5, value = ilevel, step = 1, ticks = FALSE, post = " level")
                       )
   )
 }
