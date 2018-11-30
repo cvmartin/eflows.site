@@ -1,15 +1,8 @@
-library(shiny)
-library(shinydashboard)
-library(shinyWidgets)
-library(dygraphs)
-library(shinyjs)
-
-source("functions/utils_ui.R", local = TRUE)
 
 # Header elements for the visualization
 header <- dashboardHeader(title = "eflows", disable = FALSE)
 
-dy_height <- 230
+dy_height <- 210
 
 
 # SIDEBAR -----------------------------------------------------------------
@@ -53,6 +46,8 @@ sidebar <- dashboardSidebar(
 tab_home <- 
   tabItem("home", 
           div(br(),br(), br()),
+        
+          
           # div(style = "text-align: center; font-size: 600%",
           #     p("eflows")), 
           # div(style = "text-align: center;font-size: 200%;",
@@ -74,7 +69,7 @@ tab_home <-
                    ),
                    fluidRow(
                      column(width = 6, style = "text-align: right;", 
-                            tags$a(href="https://github.com/cvmartin/eflows", target="_blank",
+                            tags$a(href = "https://github.com/cvmartin/eflows", target = "_blank",
                                    actionBttn(
                                      inputId = "git_eflows",
                                      label = "eflows",
@@ -83,7 +78,7 @@ tab_home <-
                                      icon = icon("github")
                                    ))),
                      column(width = 6, style = "text-align: left;",
-                            tags$a(href="https://github.com/cvmartin/eflows.viz", target="_blank",
+                            tags$a(href = "https://github.com/cvmartin/eflows.viz", target = "_blank",
                                    actionBttn(
                                      inputId = "git_eflows_viz",
                                      label = "eflows.viz",
@@ -129,16 +124,8 @@ tab_fitting <-
                   box(width = 12,
                       radioGroupButtons("fit.rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
                       dygraphOutput("fit_graph", height = dy_height),
-                      div(style = "float:right;margin-top:5px;margin-bottom:-10px;", 
-                          prettySwitch ("random_on2", label = "Random profile", value = FALSE, inline = TRUE, fill = TRUE, status = "primary"),
-                          actionBttn(
-                            inputId = "randomize2",
-                            label = "Randomize",
-                            icon = icon("random"),
-                            color = "primary",
-                            size = "xs",
-                            style = "bordered"
-                          )
+                      div(style = "float:right;margin-top:5px;margin-bottom:-5px;margin-right:-5px", 
+                          randomizeInput("fit_random_in", label = "Random profile")
                       )
                   )
                   
@@ -153,7 +140,7 @@ tab_ev <-
             includeMarkdown("./rmarkdown/ev/ev-intro.Rmd")
           ),
           wideDiv(title = "Electric Vehicle", 
-                  inputDiv(tabPanelEV("0")),
+                  inputDiv(div(style = "padding: 10px", tabPanelEV("0"))),
                   box(width = 12, 
                       radioGroupButtons("p_1ev_rbutton", NULL, 
                                         c("original", "foreshifted", "comparison"), justified = TRUE), 
@@ -187,8 +174,11 @@ tab_ev <-
                   inputDiv(
                     column(4, sliderInput("cap_evs_pwr", "Grid capacity", min = 10, max = 100,
                                           value = 40, step = 5, ticks = FALSE, post = " kW")), 
-                    column(4, prettySwitch("cap_rand", label = "Random capacity", value = FALSE,
-                                           inline = TRUE, fill = TRUE, status = "primary")), 
+                    column(4, 
+                           div(style = "text-align:center; padding-top:22px;",
+                               randomizeInput("cap_random_in", label = "Random capacity")
+                           )
+                    ),
                     column(4, sliderInput("eff_evs_pwr", "Battery charging efficiency", min = 0.75, max = 1, 
                                           value = 0.9,ticks = FALSE, post = " %"))
                   ),
@@ -258,17 +248,10 @@ tabItem("foreshift",
                 box(width = 12,
                     radioGroupButtons("random_rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
                     dygraphOutput("random_graph", height = dy_height), 
-                    div(style = "float:right;margin-top:5px;margin-bottom:-10px;", 
-                        prettySwitch ("random_on", label = "Random profile", value = FALSE, inline = TRUE, fill = TRUE, status = "primary"),
-                        actionBttn(
-                          inputId = "randomize",
-                          label = "Randomize",
-                          icon = icon("random"),
-                          color = "primary",
-                          size = "xs",
-                          style = "bordered"
+                    div(style = "float:right;margin-top:5px;margin-bottom:-5px;margin-right:-5px", 
+                        randomizeInput("fore_random_in", label = "Random profile")
                         )
-                        ))
+                    )
                 ) 
         
 ) 
