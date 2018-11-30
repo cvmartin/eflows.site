@@ -24,7 +24,7 @@ test_demand <- e_demand$new(fixed = as.vector(sept$d_house_smooth[1:168]*8),
 # displaced to the future to shave peaks of consumption (foreshift)
 test_object <- e_frame$new(sept$datetime[1:168])$
   set_demand(test_demand)$
-  set_cap((sin(seq.int(1,168)/10*3)+33))$
+  set_cap((sin(seq.int(1,168)/10*3)/8+3))$
   do_foreshift()
 
 # visualization (eflows.viz) ----------------------------------------------
