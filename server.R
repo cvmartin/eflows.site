@@ -1,13 +1,20 @@
-library(eflows)
-library(eflows.viz)
-library(dplyr)
-library(R6)
+# library(eflows)
+# library(eflows.viz)
+# library(dplyr)
+# library(R6)
+# 
+# source("functions/data_preprocessing.R", local = TRUE)
+# source("functions/utils.R", local = TRUE)
 
-source("functions/data_preprocessing.R", local = TRUE)
-source("functions/utils.R", local = TRUE)
 
+shinyServer(function(input, output, session) { 
+  
+  
 
-shinyServer(function(input, output, session) {  
+# reactive variables ------------------------------------------------------
+
+  master_seed <- reactiveVal(sample(1:100,1))  
+  
  
 
 # test --------------------------------------------------------------------
@@ -151,21 +158,35 @@ shinyServer(function(input, output, session) {
   # define list for SOC and flow
   
   socflow <- reactive({
-    
-    set.seed(42)
+    set.seed(master_seed() + cap_random_out()$button)
     s <- list(0)
     f <- list(0)
-    l <- c()
-    c <- c()
+    # l <- c()
+    
     
     s[[1]] <- input_evsoc()
     i <- 1
-    c[i] <- 1
+    
+    defcap <- c()
+    if (cap_random_out()$switch == TRUE) {
+      defcap[i] <- 1 + runif(1, -0.1, 0.1)
+    } else {
+      defcap[i] <- input$cap_evs_pwr/60
+    }
+    
+    
     while (TRUE) {
-      i <- i+1
-      c[i] <- c[i-1] + runif(1, -0.1, 0.1)
-      temp <- eflows::distribute(flow = (input$cap_evs_pwr/60)* c[i], 
-                                 soc = s[[i-1]], 
+      i <- i + 1
+      
+      if (cap_random_out()$switch == TRUE) {
+        defcap[i] <- defcap[i - 1] + runif(1, -0.1, 0.1)
+      } else {
+        defcap[i] <- defcap[i - 1]
+      }
+      
+      
+      temp <- eflows::distribute(flow = (input$cap_evs_pwr/60) * defcap[i], 
+                                 soc = s[[i - 1]], 
                                  vol = input_evvol(), 
                                  cap = input_evcap(), 
                                  eff = input$eff_evs_pwr,
@@ -173,16 +194,17 @@ shinyServer(function(input, output, session) {
       )
       s[[i]] <- temp[[1]]
       f[[i]] <- temp[[2]]*60
-      l[i] <- temp[[3]]*60
+      # l[i] <- temp[[3]]*60
+      
       # if the last result is the same, aus
-      if (identical(s[[i]], s[[i-1]])) break
+      if (identical(s[[i]], s[[i - 1]])) break
     }
     
     # state of charge
     soc <- do.call(rbind, s)
     completed <- apply(soc, 2, function(x){match(max(x), x)})
     for (i in 1:ncol(soc)) {
-      soc[(completed[i]+1):nrow(soc),i] <- NA
+      soc[(completed[i] + 1):nrow(soc),i] <- NA
     }
     s2 <- soc %>% 
       as.data.frame() %>% 
@@ -200,7 +222,7 @@ shinyServer(function(input, output, session) {
                       "EV 4", "EV 5")
     
    
-    list(s2, f2, completed, l)
+    list(s2, f2, completed) #l
   })
   
   output$evs_soc <- renderDygraph({
@@ -266,7 +288,7 @@ shinyServer(function(input, output, session) {
   })
   
   output$fit_graph <- renderDygraph({
-    if (input$random_on2 == TRUE){
+    if (fit_random_out()$switch == TRUE) {
       random_bundle2()[[input$fit.rbutton]]
     } else {
       fit_bundle()[[input$fit.rbutton]]
@@ -285,7 +307,7 @@ shinyServer(function(input, output, session) {
   # with randomness
   
   therandom2 <- reactive({
-    input$randomize2
+    fit_random_out()$button
     
     o_random$set_demand(e_demand$new(fixed = base_demand,
                                      flex = list(flex_mtx$new(data = cbind(vec_spiked(168, 2),
@@ -317,7 +339,7 @@ shinyServer(function(input, output, session) {
 
 # random profile ----------------------------------------------------------
 
-  o_layered <- o_Xdemand$clone(deep = TRUE)$
+  o_layered <- o_Xdemand$clone(deep = TRUE)$ 
     do_foreshift()
   
   layered_bundle <- reactive({
@@ -333,7 +355,7 @@ shinyServer(function(input, output, session) {
   o_random <- o_Xdemand$clone(deep = TRUE)
  
   random_bundle <- reactive({
-    input$randomize
+    fore_random_out()$button
     
     o_random$set_demand(e_demand$new(fixed = base_demand,
                                      flex = list(flex_mtx$new(data = cbind(vec_spiked(168, 2),
@@ -357,15 +379,28 @@ shinyServer(function(input, output, session) {
   
 
   output$random_graph <- renderDygraph({
-    if (input$random_on == TRUE){
+    if (fore_random_out()$switch == TRUE) {
       random_bundle()[[input$random_rbutton]]
     } else {
       layered_bundle()[[input$random_rbutton]]
     }
   })
   
-  observeEvent(input$random_on, {
-    toggleState("randomize")
+
+
+# OBSERVERS ---------------------------------------------------------------
+  
+
+# MODULES -----------------------------------------------------------------
+
+  cap_random_out <- callModule(randomize, "cap_random_in") 
+  fit_random_out <- callModule(randomize, "fit_random_in")
+  fore_random_out <- callModule(randomize, "fore_random_in")
+  
+  output$testext <- renderText({
+    
+    jsonlite::toJSON(master_seed())
+    
   })
 
 })

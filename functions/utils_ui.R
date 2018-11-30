@@ -12,12 +12,19 @@ tabPanelEV <- function(int){
                                   min = 0, max = 40, value = 10, step = 1, ticks = FALSE, post = " kWh flex12"),
                       sliderInput(sprintf("ev%scap", int), label = "Max charge power", min = 4,
                                   max = 40, value = 20, step = 1, ticks = FALSE, post = " kW")), 
-           tags$strong("Charging start time"),
-           sliderInput(sprintf("ev%spos", int), label = NULL, min = 1, max = 168, value = sample(seq(1,168),1), 
-                       ticks = FALSE, post = " hours from start"
-                       
-                       
+           
+           # div(
+           # div(style = "display:inline; width = 60px", 
+           #     icon("clock")), 
+           div(
+             # style = "display:inline;width = 500px",
+             style = "padding-left: 60px",
+             tags$strong("Charging start time"),
+             
+               sliderInput(sprintf("ev%spos", int), label = NULL, min = 1, max = 168, value = sample(seq(1,168),1), 
+                           ticks = FALSE, post = " hours from start") 
            )
+           # )
   )
 }
 

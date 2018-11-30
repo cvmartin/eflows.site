@@ -3,7 +3,7 @@ library(eflows.viz)
 
 source("functions/utils.R", local = TRUE)
 
-base_demand <- sept$d_house_smooth[1:168]*120
+base_demand <- (sept$d_house_smooth[1:168]*120) - 5 # a bit shorter seems to be better
 
 o_bare <- e_frame$new(sept$datetime[1:168])
 
