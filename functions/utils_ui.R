@@ -30,19 +30,33 @@ tabPanelEV <- function(int){
 
 tabPanelPwrEV <- function(int, isoc, ivol, icap, ilevel){
   tabPanel(sprintf("EV %s", int), 
-           flowLayout(sliderInput(sprintf("ev%ssoc", int),
-                                  label = "Initial SOC", 
-                                  min = 0,max = 100, value = isoc, step = 1, ticks = FALSE, post = " kWh"),
-                      sliderInput(sprintf("ev%svol", int), 
-                                  label = "Battery volume", 
-                                  min = 0, max = 100, value = ivol, step = 1, ticks = FALSE, post = " kWh"),
-                      sliderInput(sprintf("ev%scap2", int),
-                                  label = "Maximum charge rate", 
-                                  min = 0, max = 40, value = icap, step = 1, ticks = FALSE, post = " kW"),
-                      sliderInput(sprintf("ev%slevel", int), 
-                                  label = "Level (charge preference)",
-                                  min = 1, max = 5, value = ilevel, step = 1, ticks = FALSE, post = " level")
-                      )
+           fluidRow(
+             # column(3, 
+             #        sliderInput(sprintf("ev%ssoc", int),
+             #                    label = "Initial SOC", 
+             #                    min = 0,max = 100, value = isoc, step = 1, ticks = FALSE, post = " kWh")
+             #        ),
+             # column(3, 
+             #        sliderInput(sprintf("ev%svol", int), 
+             #                    label = "Battery volume", 
+             #                    min = 0, max = 100, value = ivol, step = 1, ticks = FALSE, post = " kWh")
+             # ),
+             column(6, 
+                    sliderInput(sprintf("ev%ssocvol", int), 
+                                label = "Initial State Of Charge - Final State of Charge (battery size)", 
+                                min = 0, max = 100, value = c(isoc, ivol), step = 1, ticks = FALSE, post = " kWh")
+             ),
+             column(3, 
+                    sliderInput(sprintf("ev%scap2", int),
+                                label = "Maximum charge rate", 
+                                min = 0, max = 40, value = icap, step = 1, ticks = FALSE, post = " kW")
+             ),
+             column(3, 
+                    sliderInput(sprintf("ev%slevel", int), 
+                                label = "Level (higher charges first)",
+                                min = 1, max = 5, value = ilevel, step = 1, ticks = FALSE, post = " level")
+             )
+           )
   )
 }
 

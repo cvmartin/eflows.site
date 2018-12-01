@@ -139,13 +139,12 @@ shinyServer(function(input, output, session) {
 
 # EVs power ---------------------------------------------------------------
   palette_pwr <- gg_palette(5)
-  
-  # reactive inputs
+ 
   input_evsoc <- reactive({
-    c(input$ev1soc, input$ev2soc, input$ev3soc, input$ev4soc, input$ev5soc)
+    c(input$ev1socvol[1], input$ev2socvol[1], input$ev3socvol[1], input$ev4socvol[1], input$ev5socvol[1])
   })
   input_evvol <- reactive({
-    c(input$ev1vol, input$ev2vol, input$ev3vol, input$ev4vol, input$ev5vol)
+    c(input$ev1socvol[2], input$ev2socvol[2], input$ev3socvol[2], input$ev4socvol[2], input$ev5socvol[2])
   })
   input_evcap <- reactive({
     c(input$ev1cap2, input$ev2cap2, input$ev3cap2, input$ev4cap2, input$ev5cap2)/60
@@ -163,7 +162,6 @@ shinyServer(function(input, output, session) {
     f <- list(0)
     # l <- c()
     
-    
     s[[1]] <- input_evsoc()
     i <- 1
     
@@ -171,7 +169,7 @@ shinyServer(function(input, output, session) {
     if (cap_random_out()$switch == TRUE) {
       defcap[i] <- 1 + runif(1, -0.1, 0.1)
     } else {
-      defcap[i] <- input$cap_evs_pwr/60
+      defcap[i] <- 1
     }
     
     
@@ -184,8 +182,14 @@ shinyServer(function(input, output, session) {
         defcap[i] <- defcap[i - 1]
       }
       
+      current_flow <- (input$cap_evs_pwr/60) * defcap[i]
+      if (current_flow < 5/60) {
+        defcap[i] <- defcap[i] + 0.2
+        current_flow <- (input$cap_evs_pwr/60) * defcap[i]
+      }
       
-      temp <- eflows::distribute(flow = (input$cap_evs_pwr/60) * defcap[i], 
+      temp <- eflows::distribute(flow = current_flow,
+                                   # (input$cap_evs_pwr/60) * defcap[i], 
                                  soc = s[[i - 1]], 
                                  vol = input_evvol(), 
                                  cap = input_evcap(), 
@@ -222,7 +226,7 @@ shinyServer(function(input, output, session) {
                       "EV 4", "EV 5")
     
    
-    list(s2, f2, completed) #l
+    list(s2, f2, completed, defcap) #l
   })
   
   output$evs_soc <- renderDygraph({
@@ -248,11 +252,8 @@ shinyServer(function(input, output, session) {
   
   output$evs_flow <- renderDygraph({
     dygraph(socflow()[[2]]) %>% 
-      # dySeriesData("grid_capacity", socflow()[[4]]) %>%
       dyHighlight(highlightSeriesBackgroundAlpha = 0.6,
       highlightSeriesOpts = list(strokeWidth = 2)) %>%
-      # dyShadow(c("EV 1", "EV 2", "EV 3", "EV 4", "EV 5")) %>% 
-      # dySeries("grid_capacity", axis = "y2") %>%
       dyOptions(
         stackedGraph = TRUE,
                 colors = palette_pwr, 
@@ -261,7 +262,8 @@ shinyServer(function(input, output, session) {
       dyAxis("x", label = "minutes of charge") %>% 
       dyAxis("y", "kW") %>% 
       dyLegend(show = "onmouseover") %>% 
-      dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz")) 
+      dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz")) %>% 
+      eflows.viz:::add_cap(socflow()[[4]]*input$cap_evs_pwr)
   })
 
 # variable fit curve ------------------------------------------------------

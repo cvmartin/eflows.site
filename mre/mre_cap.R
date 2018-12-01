@@ -36,7 +36,7 @@ comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
 
 # ... and bundle them. Now it is a list of dygraphs
 test_bundled <- viz_bundle(pre, post, comp,
-                      ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
+                      ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp), ignore_stacked = c("grid capacity"), ignore_unstacked = c()),
                       names = c("original", "foreshifted", "comparison"))
 
 # Than, even easier, can be visualized with a shiny gadget
