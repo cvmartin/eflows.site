@@ -89,3 +89,11 @@ wideDiv <- function(..., title = NULL){
                box(width = 12, title = title, class = "wideDivBox", ...)
   ))
 }
+
+dyCornerDiv <- function(...){
+  tags$div(style = "float:right;margin-top:5px;margin-bottom:-5px;margin-right:-10px", 
+           ...
+           )
+  
+}   
+

@@ -106,7 +106,6 @@ tab_fitting <-
                   
                   fitSelectorInput("formula_fit"),
                   
-                  
                   # inputDiv(
                   #   
                   #   column(width = 9, 
@@ -127,9 +126,9 @@ tab_fitting <-
                   box(width = 12,
                       radioGroupButtons("fit.rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
                       dygraphOutput("fit_graph", height = dy_height),
-                      div(style = "float:right;margin-top:5px;margin-bottom:-5px;margin-right:-5px", 
-                          randomizeInput("fit_random_in", label = "Random profile")
-                      )
+                      dyCornerDiv(randomizeInput("fit_random_in", label = "Random profile"))
+                          
+                      
                   )
                   
           )
@@ -253,12 +252,9 @@ tabItem("foreshift",
                 box(width = 12,
                     radioGroupButtons("random_rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
                     dygraphOutput("random_graph", height = dy_height), 
-                    div(style = "float:right;margin-top:5px;margin-bottom:-5px;margin-right:-5px", 
-                        randomizeInput("fore_random_in", label = "Random profile")
-                        )
+                    dyCornerDiv(randomizeInput("fore_random_in", label = "Random profile"))
                     )
                 ) 
-        
 ) 
 
 # BUILD IT ALL

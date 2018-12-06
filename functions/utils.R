@@ -55,7 +55,6 @@ peak_in_zeroes <- function(l, pos, vol, cap = 0){
   if (length(v) > l) v <- v[1:l]
   v
 }
-peak_in_zeroes(25, 23, 10, 3)
 
 do_ev_prof <- function(matrix, inputs = c(), pos, cap) {
   l <- nrow(matrix)
