@@ -70,7 +70,7 @@ shinyServer(function(input, output, session) {
   
 # multiple electric vehicles -------------------------------------------------------
   
-  evs <- o_Xev$clone()
+  evs <- o_Xev$clone(deep = TRUE)
 
   evs_bundle <- reactive({
     
@@ -117,8 +117,9 @@ shinyServer(function(input, output, session) {
                            pos = input$ev4pos,
                            cap = 0)
     
-    evs$do_foreshift()
+    evs$do_foreshift(fit = formula_ev())
     
+
     post <- viz_fore_output(evs)
     post_ev <- viz_fore_output(evs, aggregate = "object")
     post_flex <- viz_fore_output(evs, aggregate = "flex")
@@ -256,9 +257,9 @@ shinyServer(function(input, output, session) {
       highlightSeriesOpts = list(strokeWidth = 2)) %>%
       dyOptions(
         stackedGraph = TRUE,
-                colors = palette_pwr, 
-                mobileDisableYTouch = TRUE,
-                retainDateWindow = TRUE)%>% 
+        colors = palette_pwr, 
+        mobileDisableYTouch = TRUE,
+        retainDateWindow = TRUE)%>% 
       dyAxis("x", label = "minutes of charge") %>% 
       dyAxis("y", "kW") %>% 
       dyLegend(show = "onmouseover") %>% 
@@ -270,9 +271,9 @@ shinyServer(function(input, output, session) {
   
   customfit <- o_Xdemand$clone(deep = TRUE)
 
-  fit_fshifted <- eventReactive(c(input$fit_formula),{
-    theformula <- as.formula(c("~", input$fit_formula))
-    customfit$do_foreshift(fit = theformula)
+  fit_fshifted <- reactive({
+    # theformula <- as.formula(c("~", input$fit_formula))
+    customfit$do_foreshift(fit = formula_fit())
   })
 
   fit_bundle <- reactive({
@@ -301,9 +302,9 @@ shinyServer(function(input, output, session) {
     fitvars[[input$fit.rbutton_vars]]
   })
 
-  observeEvent(input$fit_types, {
-    updateSearchInput(session = session, "fit_formula", value = input$fit_types, trigger = TRUE)
-  })
+  # observeEvent(input$fit_types, {
+  #   updateSearchInput(session = session, "fit_formula", value = input$fit_types, trigger = TRUE)
+  # })
   
   
   # with randomness
@@ -325,8 +326,13 @@ shinyServer(function(input, output, session) {
   
   random_bundle2 <- reactive({
     
-    theformula <- as.formula(c("~", input$fit_formula))
-    therandom2()$do_foreshift(fit = theformula)
+    # theformula <- as.formula(c("~", input$fit_formula))
+    # therandom2()$do_foreshift(fit = theformula)
+    
+    
+    
+    therandom2()$do_foreshift(fit = formula_fit())
+    
     
     pre <- viz_fore_input(o_random)
     post <- viz_fore_output(o_random)
@@ -398,6 +404,10 @@ shinyServer(function(input, output, session) {
   cap_random_out <- callModule(randomize, "cap_random_in") 
   fit_random_out <- callModule(randomize, "fit_random_in")
   fore_random_out <- callModule(randomize, "fore_random_in")
+  
+  formula_fit <- callModule(fitSelector, "formula_fit")
+  formula_ev <- callModule(fitSelector, "formula_ev")
+  
   
   output$testext <- renderText({
     

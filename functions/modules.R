@@ -53,3 +53,68 @@ randomize <- function(input, output, session) {
   )
   
 }
+
+
+# fitSelector (associate input bar with predefined formulas) --------------
+
+list_formulas <- list(`Peak shaving` = "1* .demand", 
+                      `To the lowest demand` = "1*.demand_fixed",
+                      `To the minimum price` = "1* .price",
+                      `To the renewable energy` = "- 1*.production_fixed",
+                      `Profit within a limit` = "ifelse(.demand < 60, .price, .demand)", 
+                      `Net balance` = ".demand - .production_fixed",
+                      `Market price` = "(0.5 * .price) + (0.5 * .demand)",
+                      `The middle point` = "(0.3 * .price) + (0.4 * .demand) + (-0.3 * .production_fixed)",
+                      `Conditional day and night` = "ifelse(.production_fixed > 0, .demand - .production_fixed, (0.5 * .price) + (0.5 * .demand))",
+                      `Indifferent to other factors` = ".demand - .demand_fixed"
+)
+
+fitSelectorInput <- function(id) {
+  # Create a namespace function using the provided id
+  ns <- NS(id)
+  
+  tagList(
+    singleton(tags$style('
+                         .fitSelectorDiv {  padding:0;
+                         padding-top:5px;
+                         background-color: #f5f5f5;
+                         border: 1px solid #e3e3e3;
+                         border-radius: 2px;
+                         }
+                         ')),
+    box(width = 12, class = "fitSelectorDiv", 
+        column(width = 9, style = "margin: 0px -5px -8px -5px;",
+               searchInput(ns("formula"), tagList("Fit formula:", tags$code("fit = ~")),
+                           value = "1*.demand", btnSearch = icon("level-down"), width = "100%")
+        ), 
+        column(width = 3, style = "margin: 0px -5px -8px -5px; padding-right:0;",
+               selectInput(ns("predefined_formulas"), "Predefined formulas", choices = list_formulas))
+    )
+    )
+  }
+
+
+
+fitSelector <- function(input, output, session) {
+  
+  # click("formula_search")
+  
+  observeEvent(c(input$predefined_formulas), {
+    updateSearchInput(session = session, 
+                      inputId = "formula", 
+                      value = input$predefined_formulas)
+    
+  })
+  
+  # observeEvent(input$formula, {click("formula_search")})
+
+  
+  current_formula <- reactive({ 
+    input$predefined_formulas
+    click("formula_search")
+    as.formula(c("~", input$formula))
+    })
+  
+  return(current_formula)
+}
+

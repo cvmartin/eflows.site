@@ -61,21 +61,6 @@ tabPanelPwrEV <- function(int, isoc, ivol, icap, ilevel){
 }
 
 
-
-
-list_formulas <- list(`Peak shaving` = "1* .demand", 
-                      `To the lowest demand` = "1*.demand_fixed",
-                      `To the minimum price` = "1* .price",
-                      `To the renewable energy` = "- 1*.production_fixed",
-                      `Renewable within a limit` = "ifelse(.demand < 60, (-.production_fixed), .demand)", 
-                      `Net balance` = ".demand - .production_fixed",
-                      `Market price` = "(0.5 * .price) + (0.5 * .demand)",
-                      `The middle point` = "(0.3 * .price) + (0.4 * .demand) + (-0.3 * .production_fixed)",
-                      `Conditional day and night` = "ifelse(.production_fixed > 0, .demand - .production_fixed, (0.5 * .price) + (0.5 * .demand))",
-                      `Indifferent to other factors` = ".demand - .demand_fixed"
-)
-
-
 inputDiv <- function(...){
   box(width = 12, class = "inputDiv", ...)
 }

@@ -104,16 +104,19 @@ tab_fitting <-
           ),
           wideDiv(title = "Custom fit curve",
                   
-                  inputDiv(
-                    
-                    column(width = 9, 
-                           searchInput("fit_formula", tagList("Fit formula:", tags$code("fit = ~")),
-                                       value = "1*.demand", btnSearch = icon("level-down"), width = "100%")
-                    ), 
-                    column(width = 3, 
-                           selectInput("fit_types", "Predefined formulas", choices = list_formulas))
-                    
-                  ),
+                  fitSelectorInput("formula_fit"),
+                  
+                  
+                  # inputDiv(
+                  #   
+                  #   column(width = 9, 
+                  #          searchInput("fit_formula", tagList("Fit formula:", tags$code("fit = ~")),
+                  #                      value = "1*.demand", btnSearch = icon("level-down"), width = "100%")
+                  #   ), 
+                  #   column(width = 3, 
+                  #          selectInput("fit_types", "Predefined formulas", choices = list_formulas))
+                  #   
+                  # ),
                   box(width = 12, title = "Factors that influence the fitting curve", collapsible = TRUE,
                       radioGroupButtons("fit.rbutton_vars", NULL, c("demand", "production", "price"), justified = TRUE),
                       dygraphOutput("fit_graphvars", height = dy_height
@@ -155,6 +158,8 @@ tab_ev <-
                          tabPanelEV("3"),
                          tabPanelEV("4") 
                   ),
+                  
+                  fitSelectorInput("formula_ev"),
                   
                   box(width = 12, 
                       radioGroupButtons("evs.rbutton", NULL, 
