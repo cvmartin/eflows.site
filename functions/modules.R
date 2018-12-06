@@ -112,3 +112,29 @@ fitSelector <- function(input, output, session) {
 }
 
 
+# dyRadioSelector -----------------------------------------------------------
+
+dyRadioSelectorInput <- function(id, tabs) {
+  ns <- NS(id)
+  tags$div(
+    radioGroupButtons(ns("dy_radio_buttons"), NULL, tabs, justified = TRUE),
+    dygraphOutput(ns("dy_radio_graph"), height = dy_height)
+  )
+}
+
+dyRadioSelector <- function(input, output, session, 
+                            iftrue, iffalse = reactive(NULL), condition = reactive(FALSE)) {
+  
+  choice <- reactive({
+    if (is.null(iffalse()) | condition() == TRUE) {
+      iftrue()
+    } else {
+      iffalse()
+    }
+  })
+  
+ output$dy_radio_graph <-  
+   renderDygraph({
+     choice()[[input$dy_radio_buttons]]
+   })
+}

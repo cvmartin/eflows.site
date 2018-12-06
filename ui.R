@@ -2,7 +2,7 @@
 # Header elements for the visualization
 header <- dashboardHeader(title = "eflows", disable = FALSE)
 
-dy_height <- 210
+
 
 
 # SIDEBAR -----------------------------------------------------------------
@@ -46,12 +46,6 @@ sidebar <- dashboardSidebar(
 tab_home <- 
   tabItem("home", 
           div(br(),br(), br()),
-        
-          
-          # div(style = "text-align: center; font-size: 600%",
-          #     p("eflows")), 
-          # div(style = "text-align: center;font-size: 200%;",
-          #     p("Data-driven energy transition")), 
           narrowDiv(
             includeMarkdown("./rmarkdown/home/header.Rmd")
           ),
@@ -103,32 +97,17 @@ tab_fitting <-
             includeMarkdown("./rmarkdown/fitting/fitting_curve.Rmd")
           ),
           wideDiv(title = "Custom fit curve",
-                  
                   fitSelectorInput("formula_fit"),
-                  
-                  # inputDiv(
-                  #   
-                  #   column(width = 9, 
-                  #          searchInput("fit_formula", tagList("Fit formula:", tags$code("fit = ~")),
-                  #                      value = "1*.demand", btnSearch = icon("level-down"), width = "100%")
-                  #   ), 
-                  #   column(width = 3, 
-                  #          selectInput("fit_types", "Predefined formulas", choices = list_formulas))
-                  #   
-                  # ),
+                
                   box(width = 12, title = "Factors that influence the fitting curve", collapsible = TRUE,
-                      radioGroupButtons("fit.rbutton_vars", NULL, c("demand", "production", "price"), justified = TRUE),
-                      dygraphOutput("fit_graphvars", height = dy_height
-                      )),
+                      dyRadioSelectorInput("factors_fit", c("demand", "production", "price"))
+                      ),
                   box(width = 12, title = "Fitting curves", collapsible = TRUE,
                       dygraphOutput("fit_fitcurve", height = dy_height)
                   ), 
                   box(width = 12,
-                      radioGroupButtons("fit.rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
-                      dygraphOutput("fit_graph", height = dy_height),
+                      dyRadioSelectorInput("graph_fit", c("original", "foreshifted", "comparison")),
                       dyCornerDiv(randomizeInput("fit_random_in", label = "Random profile"))
-                          
-                      
                   )
                   
           )
@@ -160,12 +139,14 @@ tab_ev <-
                   
                   fitSelectorInput("formula_ev"),
                   
+                  box(width = 12, title = "Factors that influence the fitting curve", 
+                      collapsible = TRUE, collapsed = TRUE,
+                      dyRadioSelectorInput("factors_ev", c("demand", "production", "price"))
+                  ),
                   box(width = 12, 
-                      radioGroupButtons("evs.rbutton", NULL, 
-                                        c("original", "foreshifted","aggregated by ev", "aggregated by flex", "comparison", "unstacked"), justified = TRUE), 
-                      dygraphOutput("evs_graph", height = dy_height))
-                  
-          ), 
+                      dyRadioSelectorInput("graph_evs",
+                                           c("original", "foreshifted","aggregated by ev", "aggregated by flex", "comparison", "unstacked"))
+          )), 
           wideDiv(title = "Power distribution", 
                   tabBox(title = "Electric Vehicles", width = 12,
                          id = "tab_pwr_evs",

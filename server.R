@@ -1,11 +1,3 @@
-# library(eflows)
-# library(eflows.viz)
-# library(dplyr)
-# library(R6)
-# 
-# source("functions/data_preprocessing.R", local = TRUE)
-# source("functions/utils.R", local = TRUE)
-
 
 shinyServer(function(input, output, session) { 
   
@@ -133,9 +125,10 @@ shinyServer(function(input, output, session) {
 
   })
   
-  output$evs_graph <- renderDygraph({
-    evs_bundle()[[input$evs.rbutton]]
-  })
+  callModule(dyRadioSelector, "factors_ev", reactive(fitvars))
+  
+  callModule(dyRadioSelector, "graph_evs", reactive(evs_bundle()))
+
 
 
 # EVs power ---------------------------------------------------------------
@@ -190,7 +183,6 @@ shinyServer(function(input, output, session) {
       }
       
       temp <- eflows::distribute(flow = current_flow,
-                                   # (input$cap_evs_pwr/60) * defcap[i], 
                                  soc = s[[i - 1]], 
                                  vol = input_evvol(), 
                                  cap = input_evcap(), 
@@ -199,9 +191,8 @@ shinyServer(function(input, output, session) {
       )
       s[[i]] <- temp[[1]]
       f[[i]] <- temp[[2]]*60
-      # l[i] <- temp[[3]]*60
-      
-      # if the last result is the same, aus
+     
+      # if the last result is the same, terminate
       if (identical(s[[i]], s[[i - 1]])) break
     }
     
@@ -225,9 +216,8 @@ shinyServer(function(input, output, session) {
       select(minutes, everything())
     colnames(f2) <- c("minutes", "EV 1", "EV 2", "EV 3", 
                       "EV 4", "EV 5")
-    
    
-    list(s2, f2, completed, defcap) #l
+    list(s2, f2, completed, defcap)
   })
   
   output$evs_soc <- renderDygraph({
@@ -272,7 +262,6 @@ shinyServer(function(input, output, session) {
   customfit <- o_Xdemand$clone(deep = TRUE)
 
   fit_fshifted <- reactive({
-    # theformula <- as.formula(c("~", input$fit_formula))
     customfit$do_foreshift(fit = formula_fit())
   })
 
@@ -285,27 +274,20 @@ shinyServer(function(input, output, session) {
                ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
                names = c("original", "foreshifted", "comparison"))
   })
+  
+  callModule(dyRadioSelector, "factors_fit", reactive(fitvars))
 
   output$fit_fitcurve <- renderDygraph({
     viz_fit(fit_fshifted())
   })
   
-  output$fit_graph <- renderDygraph({
-    if (fit_random_out()$switch == TRUE) {
-      random_bundle2()[[input$fit.rbutton]]
-    } else {
-      fit_bundle()[[input$fit.rbutton]]
-    }
-  })
+  fit_random_out <- callModule(randomize, "fit_random_in")
+  callModule(dyRadioSelector, "graph_fit",
+             iftrue = reactive(random_bundle2()), 
+             iffalse = reactive(fit_bundle()),
+             condition = reactive(fit_random_out()$switch))
 
-  output$fit_graphvars <- renderDygraph({
-    fitvars[[input$fit.rbutton_vars]]
-  })
-
-  # observeEvent(input$fit_types, {
-  #   updateSearchInput(session = session, "fit_formula", value = input$fit_types, trigger = TRUE)
-  # })
-  
+ 
   
   # with randomness
   
@@ -325,14 +307,8 @@ shinyServer(function(input, output, session) {
   })
   
   random_bundle2 <- reactive({
-    
-    # theformula <- as.formula(c("~", input$fit_formula))
-    # therandom2()$do_foreshift(fit = theformula)
-    
-    
-    
+   
     therandom2()$do_foreshift(fit = formula_fit())
-    
     
     pre <- viz_fore_input(o_random)
     post <- viz_fore_output(o_random)
@@ -402,7 +378,7 @@ shinyServer(function(input, output, session) {
 # MODULES -----------------------------------------------------------------
 
   cap_random_out <- callModule(randomize, "cap_random_in") 
-  fit_random_out <- callModule(randomize, "fit_random_in")
+  
   fore_random_out <- callModule(randomize, "fore_random_in")
   
   formula_fit <- callModule(fitSelector, "formula_fit")
