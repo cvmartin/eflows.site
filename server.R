@@ -3,28 +3,144 @@ shinyServer(function(input, output, session) {
   
   
 
-# reactive variables ------------------------------------------------------
-
+# reactive variables 
   master_seed <- reactiveVal(sample(1:100,1))  
   
- 
-
-# test --------------------------------------------------------------------
-
+  
+# fitting (fit) plus ------------------------------------------------------
+  
+  # data
+  fit_raw <- o_Xdemand$clone(deep = TRUE)
+  
+  fit_fshifted <- reactive({
+    fit_raw$do_foreshift(fit = formula_fit())
+  })
+  
+  fit_bundle <- reactive({
+    pre <- viz_fore_input(fit_fshifted())
+    post <- viz_fore_output(fit_fshifted())
+    comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
+    
+    viz_bundle(pre, post, comp,
+               ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
+               names = c("original", "foreshifted", "comparison"))
+  })
+  
+  fit_random_profile <- reactive({
+    fit_random_out()$button
+    
+    o_random$set_demand(e_demand$new(fixed = base_demand,
+                                     flex = list(flex_mtx$new(data = cbind(vec_spiked(168, 2),
+                                                                           vec_spiked(168, 2),
+                                                                           vec_spiked(168, 2),
+                                                                           vec_spiked(168, 2),
+                                                                           vec_spiked(168, 2),
+                                                                           vec_spiked(168, 2)),
+                                                              steps = c(2,4,6,8,10,12),
+                                                              name = "obj"))))
+    
+  })
+  
+  fit_random_bundle <- reactive({
+    
+    fit_random_profile()$do_foreshift(fit = formula_fit())
+    
+    pre <- viz_fore_input(o_random)
+    post <- viz_fore_output(o_random)
+    comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
+    
+    viz_bundle(pre, post, comp,
+               ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
+               names = c("original", "foreshifted", "comparison"))
+  })
+  
+  # build
+  formula_fit <- callModule(fitSelector, "formula_fit")
+  
+  callModule(dyRadioSelector, "factors_fit", reactive(fitvars))
+  
+  output$fit_fitcurve <- renderDygraph({
+    viz_fit(fit_fshifted())
+  })
+  
+  callModule(dyRadioSelector, "graph_fit_plus",
+             iftrue = reactive(fit_random_bundle()), 
+             iffalse = reactive(fit_bundle()),
+             condition = reactive(fit_random_out()$switch))
+  fit_random_out <- callModule(randomize, "fit_random_in")
+  
+  
+# foreshift (fsh) basic -------------------------------------------------------
+  # data
   p_basic <- o_1demand$clone(deep = TRUE)
   
-  
-  test_bundle <- reactive({
+  fsh_bundle <- reactive({
     p_basic$demand$input$flex[[1]]$data <- as.matrix((rep(input$vol,168)))
     p_basic$demand$input$flex[[1]]$steps <- input$hflex
     
     do_fore_bundle(p_basic)
   })
   
+  # build
+  callModule(dyRadioSelector, "graph_fsh_basic", reactive(fsh_bundle()))
   
-  output$test_graph <- renderDygraph({
-    test_bundle()[[input$test_rbutton]]
-  })  
+# foreshift (fsh) plus -------------------------------------------------------
+  # data (layered)
+  o_layered <- o_Xdemand$clone(deep = TRUE)$do_foreshift()
+  
+  fsh_plus_bundle <- reactive({
+    pre <- viz_fore_input(o_layered)
+    post <- viz_fore_output(o_layered)
+    comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
+    
+    viz_bundle(pre, post, comp,
+               ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
+               names = c("original", "foreshifted", "comparison"))
+  })
+  
+  # data (random)
+  o_random <- o_Xdemand$clone(deep = TRUE)
+  
+  fsh_random_bundle <- reactive({
+    fsh_random_out()$button
+    
+    o_random$set_demand(e_demand$new(fixed = base_demand,
+                                     flex = list(flex_mtx$new(data = cbind(vec_spiked(168, 2),
+                                                                           vec_spiked(168, 2),
+                                                                           vec_spiked(168, 2),
+                                                                           vec_spiked(168, 2),
+                                                                           vec_spiked(168, 2),
+                                                                           vec_spiked(168, 2)),
+                                                              steps = c(2,4,6,8,10,12),
+                                                              name = "obj"))))
+    o_random$do_foreshift()
+    
+    pre <- viz_fore_input(o_random)
+    post <- viz_fore_output(o_random)
+    comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
+    
+    viz_bundle(pre, post, comp,
+               ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
+               names = c("original", "foreshifted", "comparison"))
+  })
+  
+  # build
+  callModule(dyRadioSelector, "graph_fsh_plus",
+             iftrue = reactive(fsh_random_bundle()), 
+             iffalse = reactive(fsh_plus_bundle()),
+             condition = reactive(fsh_random_out()$switch))
+  fsh_random_out <- callModule(randomize, "fsh_random_in")
+  
+
+# ev (ev) one -------------------------------------------------------------
+
+
+# ev (ev) multi -----------------------------------------------------------
+
+
+# ev (ev) pwr -------------------------------------------------------------
+
+
   
 
 # single electric vehicle -------------------------------------------------
@@ -257,138 +373,12 @@ shinyServer(function(input, output, session) {
       eflows.viz:::add_cap(socflow()[[4]]*input$cap_evs_pwr)
   })
 
-# variable fit curve ------------------------------------------------------
-  
-  customfit <- o_Xdemand$clone(deep = TRUE)
 
-  fit_fshifted <- reactive({
-    customfit$do_foreshift(fit = formula_fit())
-  })
-
-  fit_bundle <- reactive({
-    pre <- viz_fore_input(fit_fshifted())
-    post <- viz_fore_output(fit_fshifted())
-    comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
-
-    viz_bundle(pre, post, comp,
-               ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
-               names = c("original", "foreshifted", "comparison"))
-  })
-  
-  callModule(dyRadioSelector, "factors_fit", reactive(fitvars))
-
-  output$fit_fitcurve <- renderDygraph({
-    viz_fit(fit_fshifted())
-  })
-  
-  fit_random_out <- callModule(randomize, "fit_random_in")
-  callModule(dyRadioSelector, "graph_fit",
-             iftrue = reactive(random_bundle2()), 
-             iffalse = reactive(fit_bundle()),
-             condition = reactive(fit_random_out()$switch))
-
- 
-  
-  # with randomness
-  
-  therandom2 <- reactive({
-    fit_random_out()$button
-    
-    o_random$set_demand(e_demand$new(fixed = base_demand,
-                                     flex = list(flex_mtx$new(data = cbind(vec_spiked(168, 2),
-                                                                           vec_spiked(168, 2),
-                                                                           vec_spiked(168, 2),
-                                                                           vec_spiked(168, 2),
-                                                                           vec_spiked(168, 2),
-                                                                           vec_spiked(168, 2)),
-                                                              steps = c(2,4,6,8,10,12),
-                                                              name = "obj"))))
-    
-  })
-  
-  random_bundle2 <- reactive({
-   
-    therandom2()$do_foreshift(fit = formula_fit())
-    
-    pre <- viz_fore_input(o_random)
-    post <- viz_fore_output(o_random)
-    comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
-    
-    viz_bundle(pre, post, comp,
-               ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
-               names = c("original", "foreshifted", "comparison"))
-  })
-  
-  
-
-# random profile ----------------------------------------------------------
-
-  o_layered <- o_Xdemand$clone(deep = TRUE)$ 
-    do_foreshift()
-  
-  layered_bundle <- reactive({
-    pre <- viz_fore_input(o_layered)
-    post <- viz_fore_output(o_layered)
-    comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
-    
-    viz_bundle(pre, post, comp,
-               ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
-               names = c("original", "foreshifted", "comparison"))
-  })
-
-  o_random <- o_Xdemand$clone(deep = TRUE)
- 
-  random_bundle <- reactive({
-    fore_random_out()$button
-    
-    o_random$set_demand(e_demand$new(fixed = base_demand,
-                                     flex = list(flex_mtx$new(data = cbind(vec_spiked(168, 2),
-                                                                           vec_spiked(168, 2),
-                                                                           vec_spiked(168, 2),
-                                                                           vec_spiked(168, 2),
-                                                                           vec_spiked(168, 2),
-                                                                           vec_spiked(168, 2)),
-                                                              steps = c(2,4,6,8,10,12),
-                                                              name = "obj"))))
-    o_random$do_foreshift()
-    
-    pre <- viz_fore_input(o_random)
-    post <- viz_fore_output(o_random)
-    comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
-    
-    viz_bundle(pre, post, comp,
-               ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
-               names = c("original", "foreshifted", "comparison"))
-  })
-  
-
-  output$random_graph <- renderDygraph({
-    if (fore_random_out()$switch == TRUE) {
-      random_bundle()[[input$random_rbutton]]
-    } else {
-      layered_bundle()[[input$random_rbutton]]
-    }
-  })
-  
-
-
-# OBSERVERS ---------------------------------------------------------------
-  
 
 # MODULES -----------------------------------------------------------------
 
   cap_random_out <- callModule(randomize, "cap_random_in") 
   
-  fore_random_out <- callModule(randomize, "fore_random_in")
-  
-  formula_fit <- callModule(fitSelector, "formula_fit")
   formula_ev <- callModule(fitSelector, "formula_ev")
-  
-  
-  output$testext <- renderText({
-    
-    jsonlite::toJSON(master_seed())
-    
-  })
 
 })

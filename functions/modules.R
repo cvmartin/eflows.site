@@ -123,7 +123,9 @@ dyRadioSelectorInput <- function(id, tabs) {
 }
 
 dyRadioSelector <- function(input, output, session, 
-                            iftrue, iffalse = reactive(NULL), condition = reactive(FALSE)) {
+                            iftrue, 
+                            iffalse = reactive(NULL), 
+                            condition = reactive(FALSE)) {
   
   choice <- reactive({
     if (is.null(iffalse()) | condition() == TRUE) {

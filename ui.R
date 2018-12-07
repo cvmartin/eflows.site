@@ -88,8 +88,17 @@ tab_home <-
           )
   )
 
+# principles (princ) ----------------------------------------------------------
 
-# fitting -----------------------------------------------------------------
+tab_principles <- 
+  tabItem("principles", 
+          narrowDiv(
+            includeMarkdown("./rmarkdown/principles/principles.Rmd")
+          ), 
+          wideDiv(
+          ))
+
+# fitting (fit) ---------------------------------------------------------------
 
 tab_fitting <- 
   tabItem("fitting", 
@@ -106,14 +115,62 @@ tab_fitting <-
                       dygraphOutput("fit_fitcurve", height = dy_height)
                   ), 
                   box(width = 12,
-                      dyRadioSelectorInput("graph_fit", c("original", "foreshifted", "comparison")),
+                      dyRadioSelectorInput("graph_fit_plus", c("original", "foreshifted", "comparison")),
                       dyCornerDiv(randomizeInput("fit_random_in", label = "Random profile"))
                   )
                   
           )
   )
 
-# ev ----------------------------------------------------------------------
+# foreshift (fsh) -------------------------------------------------------------
+tab_foreshift <- 
+  tabItem("foreshift", 
+          narrowDiv(
+            includeMarkdown("./rmarkdown/foreshift/foreshift.Rmd")
+          ),
+          wideDiv(title = "Basic example",
+                  inputDiv(
+                    column(width = 6, 
+                           sliderInput("hflex", label = "Hours of flexibility", min = 1,
+                                       max = 12, value = 4, step = 1, ticks = FALSE)),
+                    column(width = 6,
+                           sliderInput("vol", label = "Flexible demand volume", min = 0,
+                                       max = 30, value = 10, step = 0.1, ticks = FALSE))
+                  ),
+                  box(width = 12,
+                      dyRadioSelectorInput("graph_fsh_basic", c("original", "foreshifted", "comparison"))
+                  
+          )),
+          wideDiv(title = "Layers of flexibility",
+                  box(width = 12,
+                      dyRadioSelectorInput("graph_fsh_plus", c("original", "foreshifted", "comparison")),
+                      dyCornerDiv(randomizeInput("fsh_random_in", label = "Random profile"))
+                  )
+          ) 
+  ) 
+
+# backshift (bsh) ------------------------------------------------------------
+
+tab_backshift <- 
+  tabItem("backshift", 
+          narrowDiv(
+            includeMarkdown("./rmarkdown/backshift/backshift-intro.Rmd")
+          ), 
+          wideDiv(
+          ))
+
+
+# distribute (dis) ------------------------------------------------------------
+
+tab_distribute <- 
+  tabItem("distribute", 
+          narrowDiv(
+            includeMarkdown("./rmarkdown/distribute/distribute-intro.Rmd")
+          ), 
+          wideDiv(
+          ))
+
+# ev (ev) ------------------------------------------------------------------
 
 tab_ev <- 
   tabItem("ev", 
@@ -177,66 +234,12 @@ tab_ev <-
           ))
 
 
-# principles --------------------------------------------------------------
-
-tab_principles <- 
-  tabItem("principles", 
-          narrowDiv(
-            includeMarkdown("./rmarkdown/principles/principles.Rmd")
-          ), 
-          wideDiv(
-          ))
 
 
-# distribute --------------------------------------------------------------
-
-tab_distribute <- 
-  tabItem("distribute", 
-          narrowDiv(
-            includeMarkdown("./rmarkdown/distribute/distribute-intro.Rmd")
-          ), 
-          wideDiv(
-          ))
-
-# backshift --------------------------------------------------------------
-
-tab_backshift <- 
-  tabItem("backshift", 
-          narrowDiv(
-            includeMarkdown("./rmarkdown/backshift/backshift-intro.Rmd")
-          ), 
-          wideDiv(
-          ))
 
 
-# foreshift ---------------------------------------------------------------
-tab_foreshift <- 
-tabItem("foreshift", 
-        narrowDiv(
-          includeMarkdown("./rmarkdown/foreshift/foreshift.Rmd")
-        ),
-        wideDiv(title = "Basic example",
-                inputDiv(
-                  column(width = 6, 
-                         sliderInput("hflex", label = "Hours of flexibility", min = 1,
-                                     max = 12, value = 4, step = 1, ticks = FALSE)),
-                  column(width = 6,
-                         sliderInput("vol", label = "Flexible demand volume", min = 0,
-                                     max = 30, value = 10, step = 0.1, ticks = FALSE))
-                ),
-                box(width = 12,
-                    radioGroupButtons("test_rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
-                    dygraphOutput("test_graph", height = dy_height))
-                
-        ),
-        wideDiv(title = "Layers of flexibility",
-                box(width = 12,
-                    radioGroupButtons("random_rbutton", NULL, c("original", "foreshifted", "comparison"), justified = TRUE),
-                    dygraphOutput("random_graph", height = dy_height), 
-                    dyCornerDiv(randomizeInput("fore_random_in", label = "Random profile"))
-                    )
-                ) 
-) 
+
+
 
 # BUILD IT ALL
 
