@@ -1,29 +1,32 @@
 
 shinyServer(function(input, output, session) { 
-  
-  
 
 # reactive variables 
   master_seed <- reactiveVal(sample(1:100,1))  
   
+
+# fitting (fit) basic -----------------------------------------------------
+
+
   
 # fitting (fit) plus ------------------------------------------------------
   
   # data
   fit_raw <- o_Xdemand$clone(deep = TRUE)
   
-  fit_fshifted <- reactive({
-    fit_raw$do_foreshift(fit = formula_fit())
-  })
-  
   fit_bundle <- reactive({
-    pre <- viz_fore_input(fit_fshifted())
-    post <- viz_fore_output(fit_fshifted())
-    comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
+    fshifted <- fit_raw$do_foreshift(fit = formula_fit())
     
-    viz_bundle(pre, post, comp,
+    pre <- viz_fore_input(fshifted)
+    post <- viz_fore_output(fshifted)
+    comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
+    fitcurve <- viz_fit(fshifted)
+    
+    bundle <- viz_bundle(pre, post, comp,
                ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
                names = c("original", "foreshifted", "comparison"))
+    bundle[["fitcurve"]] <- fitcurve
+    bundle
   })
   
   fit_random_profile <- reactive({
@@ -60,7 +63,7 @@ shinyServer(function(input, output, session) {
   callModule(dyRadioSelector, "factors_fit", reactive(fitvars))
   
   output$fit_fitcurve <- renderDygraph({
-    viz_fit(fit_fshifted())
+    fit_bundle()[["fitcurve"]]
   })
   
   callModule(dyRadioSelector, "graph_fit_plus",
@@ -133,21 +136,10 @@ shinyServer(function(input, output, session) {
   
 
 # ev (ev) one -------------------------------------------------------------
-
-
-# ev (ev) multi -----------------------------------------------------------
-
-
-# ev (ev) pwr -------------------------------------------------------------
-
-
-  
-
-# single electric vehicle -------------------------------------------------
-
+  # data
   p_1ev <- o_1ev$clone()
   
-  p_1ev_bundle <- reactive({
+  ev_one_bundle <- reactive({
     ev0$data <- do_ev_prof(ev0$data, 
                            inputs = c(input$ev0flex2, input$ev0flex6, input$ev0flex12), 
                            pos = input$ev0pos,
@@ -171,17 +163,18 @@ shinyServer(function(input, output, session) {
     
   })
   
-  output$p_1ev_graph <- renderDygraph({
-    p_1ev_bundle()[[input$p_1ev_rbutton]]
-  })
+  # build
+  callModule(dyRadioSelector, "graph_ev_one", reactive(ev_one_bundle()))
   
-  
-# multiple electric vehicles -------------------------------------------------------
-  
-  evs <- o_Xev$clone(deep = TRUE)
+  # output$p_1ev_graph <- renderDygraph({
+  #   p_1ev_bundle()[[input$p_1ev_rbutton]]
+  # })
 
-  evs_bundle <- reactive({
-    
+# ev (ev) multi -----------------------------------------------------------
+  # data
+  evs <- o_Xev$clone(deep = TRUE)
+  
+  ev_multi_bundle <- reactive({
     ev1$data <- do_ev_prof(ev1$data, 
                            inputs = c(input$ev1flex2, input$ev1flex6, input$ev1flex12), 
                            pos = input$ev1pos,
@@ -227,27 +220,37 @@ shinyServer(function(input, output, session) {
     
     evs$do_foreshift(fit = formula_ev())
     
-
+    
     post <- viz_fore_output(evs)
     post_ev <- viz_fore_output(evs, aggregate = "object")
     post_flex <- viz_fore_output(evs, aggregate = "flex")
     comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
     unstacked <- viz_fore_output(evs, aggregate = "object", show_fixed = FALSE, stacked = FALSE)
+    fitcurve <- viz_fit(evs)
     
-    viz_bundle(pre, post, post_ev,post_flex, comp, unstacked,
+    bundle <- viz_bundle(pre, post, post_ev,post_flex, comp, unstacked,
                ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
                names = c("original", "foreshifted","aggregated by ev", 
                          "aggregated by flex", "comparison", "unstacked"))
-
+    bundle[["fitcurve"]] <- fitcurve
+    bundle
   })
+  
+  #build
+  formula_ev <- callModule(fitSelector, "formula_ev")
   
   callModule(dyRadioSelector, "factors_ev", reactive(fitvars))
   
-  callModule(dyRadioSelector, "graph_evs", reactive(evs_bundle()))
+  output$ev_multi_fitcurve <- renderDygraph({
+    ev_multi_bundle()[["fitcurve"]]
+    
+  })
+  
+  callModule(dyRadioSelector, "graph_evs", reactive(ev_multi_bundle()))
 
 
-
-# EVs power ---------------------------------------------------------------
+# ev (ev) pwr -------------------------------------------------------------
+  # data
   palette_pwr <- gg_palette(5)
  
   input_evsoc <- reactive({
@@ -263,14 +266,11 @@ shinyServer(function(input, output, session) {
     c(input$ev1level, input$ev2level, input$ev3level, input$ev4level, input$ev5level)
   })
   
-  
-  # define list for SOC and flow
-  
+  # reactive produced with long imperative code
   socflow <- reactive({
     set.seed(master_seed() + cap_random_out()$button)
     s <- list(0)
     f <- list(0)
-    # l <- c()
     
     s[[1]] <- input_evsoc()
     i <- 1
@@ -336,7 +336,11 @@ shinyServer(function(input, output, session) {
     list(s2, f2, completed, defcap)
   })
   
-  output$evs_soc <- renderDygraph({
+  # build
+  cap_random_out <- callModule(randomize, "cap_random_in") 
+  
+  # graph: SOC
+  output$ev_pwr_soc <- renderDygraph({
     s2graph <- dygraph(socflow()[[1]]) %>% 
       dyHighlight(highlightSeriesBackgroundAlpha = 0.6,
                   highlightSeriesOpts = list(strokeWidth = 2)) %>% 
@@ -357,7 +361,8 @@ shinyServer(function(input, output, session) {
     s2graph 
   })
   
-  output$evs_flow <- renderDygraph({
+  # graph: power flow
+  output$ev_pwr_flow <- renderDygraph({
     dygraph(socflow()[[2]]) %>% 
       dyHighlight(highlightSeriesBackgroundAlpha = 0.6,
       highlightSeriesOpts = list(strokeWidth = 2)) %>%
@@ -372,13 +377,5 @@ shinyServer(function(input, output, session) {
       dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz")) %>% 
       eflows.viz:::add_cap(socflow()[[4]]*input$cap_evs_pwr)
   })
-
-
-
-# MODULES -----------------------------------------------------------------
-
-  cap_random_out <- callModule(randomize, "cap_random_in") 
   
-  formula_ev <- callModule(fitSelector, "formula_ev")
-
 })

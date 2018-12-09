@@ -81,11 +81,16 @@ fitSelectorInput <- function(id) {
                          border: 1px solid #e3e3e3;
                          border-radius: 2px;
                          }
+                         .formulaInput .search-text {
+                         font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+                         } 
                          ')),
     box(width = 12, class = "fitSelectorDiv", 
         column(width = 9, style = "margin: 0px -5px -8px -5px;",
+               div(class = "formulaInput",
                searchInput(ns("formula"), tagList("Fit formula:", tags$code("fit = ~")),
                            value = "1*.demand", btnSearch = icon("level-down"), width = "100%")
+               )
         ), 
         column(width = 3, style = "margin: 0px -5px -8px -5px; padding-right:0;",
                selectInput(ns("predefined_formulas"), "Predefined formulas", choices = list_formulas))
@@ -114,7 +119,7 @@ fitSelector <- function(input, output, session) {
 
 # dyRadioSelector -----------------------------------------------------------
 
-dyRadioSelectorInput <- function(id, tabs) {
+dyRadioSelectorUI <- function(id, tabs) {
   ns <- NS(id)
   tags$div(
     radioGroupButtons(ns("dy_radio_buttons"), NULL, tabs, justified = TRUE),

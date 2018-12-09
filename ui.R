@@ -2,9 +2,6 @@
 # Header elements for the visualization
 header <- dashboardHeader(title = "eflows", disable = FALSE)
 
-
-
-
 # SIDEBAR -----------------------------------------------------------------
 
 sidebar <- dashboardSidebar(
@@ -59,7 +56,6 @@ tab_home <-
                                    includeMarkdown("./rmarkdown/home/intro_column_2.Rmd")),
                             column(width = 4, 
                                    includeMarkdown("./rmarkdown/home/intro_column_3.Rmd"))
-                            
                    ),
                    fluidRow(
                      column(width = 6, style = "text-align: right;", 
@@ -80,7 +76,6 @@ tab_home <-
                                      style = "bordered",
                                      icon = icon("github")
                                    )))
-                     
                    )
           ),
           narrowDiv(
@@ -103,22 +98,29 @@ tab_principles <-
 tab_fitting <- 
   tabItem("fitting", 
           narrowDiv(
-            includeMarkdown("./rmarkdown/fitting/fitting_curve.Rmd")
+            includeMarkdown("./rmarkdown/fitting/fit-1.Rmd")
           ),
-          wideDiv(title = "Custom fit curve",
+          wideDiv(title = "Fitting curve: combining factors"),
+          narrowDiv(
+            includeMarkdown("./rmarkdown/fitting/fit-2.Rmd")
+          ),
+          wideDiv(title = "Fitting curve: applying fitting formulas",
+                  column(12, includeMarkdown("./rmarkdown/fitting/fit-plus-pre.Rmd")),
                   fitSelectorInput("formula_fit"),
                 
                   box(width = 12, title = "Factors that influence the fitting curve", collapsible = TRUE,
-                      dyRadioSelectorInput("factors_fit", c("demand", "production", "price"))
+                      dyRadioSelectorUI("factors_fit", c("demand", "production", "price"))
                       ),
                   box(width = 12, title = "Fitting curves", collapsible = TRUE,
                       dygraphOutput("fit_fitcurve", height = dy_height)
                   ), 
                   box(width = 12,
-                      dyRadioSelectorInput("graph_fit_plus", c("original", "foreshifted", "comparison")),
+                      dyRadioSelectorUI("graph_fit_plus", c("original", "foreshifted", "comparison")),
                       dyCornerDiv(randomizeInput("fit_random_in", label = "Random profile"))
                   )
-                  
+          ),
+          narrowDiv(
+            includeMarkdown("./rmarkdown/fitting/fit-3.Rmd")
           )
   )
 
@@ -126,27 +128,34 @@ tab_fitting <-
 tab_foreshift <- 
   tabItem("foreshift", 
           narrowDiv(
-            includeMarkdown("./rmarkdown/foreshift/foreshift.Rmd")
+            includeMarkdown("./rmarkdown/foreshift/fsh-1.Rmd")
           ),
           wideDiv(title = "Basic example",
                   inputDiv(
                     column(width = 6, 
                            sliderInput("hflex", label = "Hours of flexibility", min = 1,
-                                       max = 12, value = 4, step = 1, ticks = FALSE)),
+                                       max = 12, value = 4, step = 1, ticks = FALSE)
+                           ),
                     column(width = 6,
                            sliderInput("vol", label = "Flexible demand volume", min = 0,
-                                       max = 30, value = 10, step = 0.1, ticks = FALSE))
-                  ),
+                                       max = 30, value = 10, step = 0.1, ticks = FALSE)
+                           )
+                    ),
                   box(width = 12,
-                      dyRadioSelectorInput("graph_fsh_basic", c("original", "foreshifted", "comparison"))
-                  
+                      dyRadioSelectorUI("graph_fsh_basic", c("original", "foreshifted", "comparison"))
           )),
+          narrowDiv(
+            includeMarkdown("./rmarkdown/foreshift/fsh-2.Rmd")
+          ),
           wideDiv(title = "Layers of flexibility",
                   box(width = 12,
-                      dyRadioSelectorInput("graph_fsh_plus", c("original", "foreshifted", "comparison")),
+                      dyRadioSelectorUI("graph_fsh_plus", c("original", "foreshifted", "comparison")),
                       dyCornerDiv(randomizeInput("fsh_random_in", label = "Random profile"))
                   )
-          ) 
+          ),
+          narrowDiv(
+            includeMarkdown("./rmarkdown/foreshift/fsh-3.Rmd")
+          )
   ) 
 
 # backshift (bsh) ------------------------------------------------------------
@@ -175,16 +184,18 @@ tab_distribute <-
 tab_ev <- 
   tabItem("ev", 
           narrowDiv(
-            includeMarkdown("./rmarkdown/ev/ev-intro.Rmd")
+            includeMarkdown("./rmarkdown/ev/ev-1.Rmd")
           ),
-          wideDiv(title = "Electric Vehicle", 
+          wideDiv(title = "One Electric Vehicle", 
                   inputDiv(div(style = "padding: 10px", tabPanelEV("0"))),
                   box(width = 12, 
-                      radioGroupButtons("p_1ev_rbutton", NULL, 
-                                        c("original", "foreshifted", "comparison"), justified = TRUE), 
-                      dygraphOutput("p_1ev_graph", height = dy_height))
-                  
+                      dyRadioSelectorUI("graph_ev_one",
+                                        c("original", "foreshifted","comparison"))
+                      )
           ), 
+          narrowDiv(
+            includeMarkdown("./rmarkdown/ev/ev-2.Rmd")
+          ),
           wideDiv(title = "Multiple Electric Vehicles", 
                   tabBox(title = "Electric Vehicles", width = 12,
                          id = "tab_evs",
@@ -198,13 +209,24 @@ tab_ev <-
                   
                   box(width = 12, title = "Factors that influence the fitting curve", 
                       collapsible = TRUE, collapsed = TRUE,
-                      dyRadioSelectorInput("factors_ev", c("demand", "production", "price"))
+                      dyRadioSelectorUI("factors_ev", c("demand", "production", "price"))
                   ),
+                  box(width = 12, title = "Fitting curves", collapsible = TRUE, collapsed = TRUE,
+                      dygraphOutput("ev_multi_fitcurve", height = dy_height)
+                  ), 
                   box(width = 12, 
-                      dyRadioSelectorInput("graph_evs",
+                      dyRadioSelectorUI("graph_evs",
                                            c("original", "foreshifted","aggregated by ev", "aggregated by flex", "comparison", "unstacked"))
           )), 
-          wideDiv(title = "Power distribution", 
+          narrowDiv(
+            includeMarkdown("./rmarkdown/ev/ev-3.Rmd")
+          ),
+          wideDiv(title = "Estimating flexibility with a large number of Electric Vehicles"),
+          narrowDiv(
+            includeMarkdown("./rmarkdown/ev/ev-4.Rmd")
+          ),
+          wideDiv(title = "Power distribution among multiple Electric Vehicles",
+                  column(12, includeMarkdown("./rmarkdown/ev/ev-pwr-pre.Rmd")),
                   tabBox(title = "Electric Vehicles", width = 12,
                          id = "tab_pwr_evs",
                          tabPanelPwrEV("1", 40, 75, 20, 2), 
@@ -215,33 +237,30 @@ tab_ev <-
                   ),
                   inputDiv(
                     column(4, sliderInput("cap_evs_pwr", "Grid capacity", min = 10, max = 100,
-                                          value = 40, step = 5, ticks = FALSE, post = " kW")), 
+                                          value = 40, step = 5, ticks = FALSE, post = " kW")
+                           ), 
                     column(4, 
                            div(style = "text-align:center; padding-top:22px;",
-                               randomizeInput("cap_random_in", label = "Random capacity")
-                           )
-                    ),
+                               randomizeInput("cap_random_in", label = "Random capacity"))
+                           ),
                     column(4, sliderInput("eff_evs_pwr", "Battery charging efficiency", min = 0.75, max = 1, 
-                                          value = 0.9,ticks = FALSE, post = " %"))
+                                          value = 0.9,ticks = FALSE)
+                           )
                   ),
                   box(width = 12, title = "EVs State Of Charge", 
-                      dygraphOutput("evs_soc", height = dy_height)
+                      dygraphOutput("ev_pwr_soc", height = dy_height)
                      ),
                   box(width = 12, title = "Power flow into EVs",
-                      dygraphOutput("evs_flow", height = dy_height)
+                      dygraphOutput("ev_pwr_flow", height = dy_height)
                   )
-                  
-          ))
+          ),
+          narrowDiv(
+            includeMarkdown("./rmarkdown/ev/ev-5.Rmd")
+          )
+          )
 
 
-
-
-
-
-
-
-
-# BUILD IT ALL
+# BUILD ----------------
 
 body <- dashboardBody(
   useShinyjs(),

@@ -1,0 +1,4 @@
+
+## A combined approach
+
+In a real scenario, you would expect to have a combination of both aforementioned approaches. 

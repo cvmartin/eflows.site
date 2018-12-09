@@ -1,0 +1,11 @@
+
+Several variables can be chosen to manipulate the fitting curve
+
+- `.demand` : total demand (it changes over iterations of the algorithm, and serves as feedback mechanism)
+- `.demand_fixed`: fixed demand
+- `.production_fixed`: sum of all the production that is deemed fixed (renewable energy). Confusingly, the renewable energy is fixed, because unlike fossil fuels, it cannot be produced on demand; instead, the production is *fixed* already. 
+- `.price`: energy price.
+
+`.demand` shall be normally included, because unlike any other vector, it changes as `foreshift()` runs and the flexible demand is allocated, acting as a feedback mechanism; otherwise, the demand would be allocated in the same spots
+
+This means that it is possible to customize what is considered a good allocation of the future demand. Until now we have considered only the option of peak shaving (`1* .demand`), that is very 

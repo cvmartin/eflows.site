@@ -1,0 +1,7 @@
+## Optimize distribution of power
+
+In this modality, the objective is to distribute a given amount of power among several charging EVs. In case the demand overpasses the power available, the power shall be distribute accordingly between EVS, following a preference. 
+
+This is achieved by using `distribute()`. This allows to consider the different user options. 
+
+Ideally, the algorithm use adapts the consumption within the time constrains and the power requirements:

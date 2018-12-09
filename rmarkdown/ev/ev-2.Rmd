@@ -1,0 +1,7 @@
+### Increasing complexity
+
+From the example above, there are several advancements that can be made: 
+
+First, the algorithm should be able to process the preference of more than one EV. The charging profile of each one shall not depend on its particular preferences, but also *on the preferences of the other vehicles*. `e_flows` achieves this by allowing an indeterminate number of `flex_mtx` objects to be included into the `e_frame`.
+
+Second, the algorithm shall benefit fromt the capabilities of the `fitting formula`, so the energy for the EVs charging is allocated for purposes other than peak shaving. This is achieved adjusting the `fitting formula`, as described in the article. 
