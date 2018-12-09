@@ -109,7 +109,7 @@ tab_fitting <-
                   fitSelectorInput("formula_fit"),
                 
                   box(width = 12, title = "Factors that influence the fitting curve", collapsible = TRUE,
-                      dyRadioSelectorUI("factors_fit", c("demand", "production", "price"))
+                      dyRadioSelectorUI("factors_fit", c("demand", "production", "price", "grid capacity"))
                       ),
                   box(width = 12, title = "Fitting curves", collapsible = TRUE,
                       dygraphOutput("fit_fitcurve", height = dy_height)
@@ -209,7 +209,7 @@ tab_ev <-
                   
                   box(width = 12, title = "Factors that influence the fitting curve", 
                       collapsible = TRUE, collapsed = TRUE,
-                      dyRadioSelectorUI("factors_ev", c("demand", "production", "price"))
+                      dyRadioSelectorUI("factors_ev", c("demand", "production", "price", "grid capacity"))
                   ),
                   box(width = 12, title = "Fitting curves", collapsible = TRUE, collapsed = TRUE,
                       dygraphOutput("ev_multi_fitcurve", height = dy_height)

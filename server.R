@@ -16,9 +16,10 @@ shinyServer(function(input, output, session) {
   
   fit_bundle <- reactive({
     fshifted <- fit_raw$do_foreshift(fit = formula_fit())
+    cap_used <- (".cap" %in% all.vars(formula_fit()))
     
-    pre <- viz_fore_input(fshifted)
-    post <- viz_fore_output(fshifted)
+    pre <- viz_fore_input(fshifted, show_cap = cap_used)
+    post <- viz_fore_output(fshifted, show_cap = cap_used)
     comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
     fitcurve <- viz_fit(fshifted)
     
@@ -47,9 +48,10 @@ shinyServer(function(input, output, session) {
   fit_random_bundle <- reactive({
     
     fit_random_profile()$do_foreshift(fit = formula_fit())
+    cap_used <- (".cap" %in% all.vars(formula_fit()))
     
-    pre <- viz_fore_input(o_random)
-    post <- viz_fore_output(o_random)
+    pre <- viz_fore_input(o_random, show_cap = cap_used)
+    post <- viz_fore_output(o_random, show_cap = cap_used)
     comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
     
     viz_bundle(pre, post, comp,
@@ -81,7 +83,18 @@ shinyServer(function(input, output, session) {
     p_basic$demand$input$flex[[1]]$data <- as.matrix((rep(input$vol,168)))
     p_basic$demand$input$flex[[1]]$steps <- input$hflex
     
-    do_fore_bundle(p_basic)
+    p_basic$do_foreshift()
+    
+    pre <- viz_fore_input(p_basic, show_cap = FALSE)
+    post <- viz_fore_output(p_basic, show_cap = FALSE)
+    comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
+    
+    m2 <- max_yaxis(list_stacked = list(pre), list_unstacked = list(comp))
+    
+    viz_bundle(pre, post, comp,
+               ymax = m2,
+               names = c("original", "foreshifted", "comparison"), 
+               group = "initialgroup")
   })
   
   # build
@@ -92,8 +105,8 @@ shinyServer(function(input, output, session) {
   o_layered <- o_Xdemand$clone(deep = TRUE)$do_foreshift()
   
   fsh_plus_bundle <- reactive({
-    pre <- viz_fore_input(o_layered)
-    post <- viz_fore_output(o_layered)
+    pre <- viz_fore_input(o_layered, show_cap = FALSE)
+    post <- viz_fore_output(o_layered, show_cap = FALSE)
     comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
     
     viz_bundle(pre, post, comp,
@@ -118,8 +131,8 @@ shinyServer(function(input, output, session) {
                                                               name = "obj"))))
     o_random$do_foreshift()
     
-    pre <- viz_fore_input(o_random)
-    post <- viz_fore_output(o_random)
+    pre <- viz_fore_input(o_random, show_cap = FALSE)
+    post <- viz_fore_output(o_random, show_cap = FALSE)
     comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
     
     viz_bundle(pre, post, comp,
@@ -144,7 +157,7 @@ shinyServer(function(input, output, session) {
                            inputs = c(input$ev0flex2, input$ev0flex6, input$ev0flex12), 
                            pos = input$ev0pos,
                            cap = input$ev0cap)
-    pre <- viz_fore_input(p_1ev)
+    pre <- viz_fore_input(p_1ev, show_cap = FALSE)
     
     ev0$data <- do_ev_prof(ev0$data, 
                            inputs = c(input$ev0flex2, input$ev0flex6, input$ev0flex12), 
@@ -153,7 +166,7 @@ shinyServer(function(input, output, session) {
     ev0$cap <- input$ev0cap
     
     p_1ev$do_foreshift()
-    post <- viz_fore_output(p_1ev)
+    post <- viz_fore_output(p_1ev, show_cap = FALSE)
     comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
     
     viz_bundle(pre, post, comp,
@@ -199,7 +212,8 @@ shinyServer(function(input, output, session) {
                            cap = input$ev4cap)
     ev4$cap <- input$ev4cap
     
-    pre <- viz_fore_input(evs)
+    cap_used <- (".cap" %in% all.vars(formula_ev()))
+    pre <- viz_fore_input(evs, show_cap = cap_used)
     
     ev1$data <- do_ev_prof(ev1$data, 
                            inputs = c(input$ev1flex2, input$ev1flex6, input$ev1flex12), 
@@ -220,12 +234,11 @@ shinyServer(function(input, output, session) {
     
     evs$do_foreshift(fit = formula_ev())
     
-    
-    post <- viz_fore_output(evs)
-    post_ev <- viz_fore_output(evs, aggregate = "object")
-    post_flex <- viz_fore_output(evs, aggregate = "flex")
+    post <- viz_fore_output(evs, show_cap = cap_used)
+    post_ev <- viz_fore_output(evs, aggregate = "object", show_cap = cap_used)
+    post_flex <- viz_fore_output(evs, aggregate = "flex", show_cap = cap_used)
     comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
-    unstacked <- viz_fore_output(evs, aggregate = "object", show_fixed = FALSE, stacked = FALSE)
+    unstacked <- viz_fore_output(evs, aggregate = "object", show_fixed = FALSE, stacked = FALSE, show_cap = FALSE)
     fitcurve <- viz_fit(evs)
     
     bundle <- viz_bundle(pre, post, post_ev,post_flex, comp, unstacked,

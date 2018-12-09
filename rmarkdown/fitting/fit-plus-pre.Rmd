@@ -7,7 +7,7 @@ There is a limitless combination of potential formulas to apply. Among them, the
 
 - **To the renewable energy** (`- 1*.production_fixed`): If the last example targets without restrain the points of minimum price, this formula targets the points of maximum renewable energy production. Note that `.production_fixed` is multiplied by `-1`, so the maximum assignment of energy is produced when the fitting curve is the lowest.
 
-- **Profit within a limit** (`ifelse(.demand < 60, .price, .demand)`): The grid cap can be included directly in the formula. In this case, whenever the total demand exceeds `60`, a point is disallowed to keep receiving demand.
+- **Profit within a limit** (`ifelse(.demand < .cap, .price, NA)`): The grid cap can be included directly in the formula. In this case, whenever the total demand exceeds `.cap`, a point is disallowed to keep receiving demand.
 
 - **Net balance**(`.demand - .production_fixed`): This is the scenario of "use renewable energy when possible, otherwise try to apply peak shaving". The demand is assigned either durign nights or when the sun shines, skipping the morning and evening peaks. To get a more "accentuated" result, square: `.demand^2 - .production_fixed^2`
 
