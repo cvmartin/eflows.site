@@ -14,4 +14,9 @@ three main sources (‘causes’) of the need for flexibility of the power secto
 
 1. The demand for flexibility  due to  the variability of the residual power load, in particular due to the variability of power generation from VRE sources;
 2. The demand for flexibility due to the uncertainty of the residual power load, notably due to the uncertainty (or lower predictability) of electricity output from VRE sources (‘forecast error’);
-3. The demand for flexibility due to the congestion (overloading) of the power grid, resulting from the increase and changing profiles of electricity demand due to the increase in electric vehicles, heat pumps, etc. as well as the increase and changing profiles of power supply from VRE sources.
+3. The demand for flexibility due to the congestion (overloading) of the power grid, resulting from the increase and changing profiles of electricity demand due to the increase in electric vehicles, heat pumps, etc. as well as the increase and changing profiles of power supply from VRE sources.t
+
+eflows aims to provide high-level building blocks for doing practical, applied energy management work. This includes
+- Interactive analysis
+- Dashboarding
+- Real-time steering. 
