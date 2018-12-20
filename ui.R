@@ -6,7 +6,8 @@ header <- dashboardHeader(title = "eflows", disable = FALSE)
 
 sidebar <- dashboardSidebar(
   tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
+    tags$link(rel = "stylesheet", type = "text/css", href = "style.css"),
+    tags$link(rel="icon", href="favicon/favicon.ico", type="image/x-icon")
   ),
   sidebarMenu(
     div(style = "text-align:center; font-size:300%", 
