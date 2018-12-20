@@ -101,7 +101,39 @@ tab_fitting <-
           narrowDiv(
             includeMarkdown("./rmarkdown/fitting/fit-1.Rmd")
           ),
-          wideDiv(title = "Fitting curve: combining factors"),
+          wideDiv(title = "Fitting curve: combining factors", 
+                  box(width = 12, title = "Factors that influence the fitting curve", 
+                      collapsible = TRUE, collapsed = TRUE,
+                      dyRadioSelectorUI("factors_fit_basic", c("demand", "production", "price", "grid capacity"))
+                  ),
+                  inputDiv(
+                    column(3,
+                           sliderInput("fit_basic_demand", 
+                                       "Demand: relative importance",
+                                       min = 0, max = 1, value = 0.5, step = 0.1, ticks = FALSE)
+                    ), 
+                    column(3,
+                           sliderInput("fit_basic_solar", 
+                                       "Production: relative importance",
+                                       min = 0, max = 1, value = 0.5, step = 0.1, ticks = FALSE)
+                    ), 
+                    column(3,
+                           sliderInput("fit_basic_price", 
+                                       "Price: relative importance",
+                                       min = 0, max = 1, value = 0.5, step = 0.1, ticks = FALSE)
+                    ), 
+                    column(3, 
+                           div(style = "text-align:center; padding-top:22px;",
+                               switchInput("switch_fit_basic_cap", 
+                                           label = "Use grid capacity",
+                                           labelWidth = 140, 
+                                           inline = TRUE)
+                               )
+                    )
+                  ),
+                  box(width = 12,
+                      dyRadioSelectorUI("graph_fit_basic", c("original", "foreshifted", "comparison"))
+                  )),
           narrowDiv(
             includeMarkdown("./rmarkdown/fitting/fit-2.Rmd")
           ),
@@ -110,7 +142,7 @@ tab_fitting <-
                   fitSelectorInput("formula_fit"),
                 
                   box(width = 12, title = "Factors that influence the fitting curve", collapsible = TRUE,
-                      dyRadioSelectorUI("factors_fit", c("demand", "production", "price", "grid capacity"))
+                      dyRadioSelectorUI("factors_fit_plus", c("demand", "production", "price", "grid capacity"))
                       ),
                   box(width = 12, title = "Fitting curves", collapsible = TRUE,
                       dygraphOutput("fit_fitcurve", height = dy_height)

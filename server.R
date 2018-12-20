@@ -7,15 +7,47 @@ shinyServer(function(input, output, session) {
 
 # fitting (fit) basic -----------------------------------------------------
 
-
+  callModule(dyRadioSelector, "factors_fit_basic", reactive(fitvars))
+  
+  fit_basic_formula <- reactive({
+    theformula <- sprintf("(%s * .demand) + (-%s * .production_fixed) + (%s * .price)",
+                        input$fit_basic_demand,
+                        input$fit_basic_solar,
+                        input$fit_basic_price
+                        )
+    if (input$switch_fit_basic_cap == TRUE) {
+      theformula <- sprintf("ifelse(.demand < .cap, (%s), NA)", 
+                            theformula)
+    }
+    as.formula(c("~", theformula))
+  })
+  
+  # data
+  fit_basic_raw <- o_Xdemand$clone(deep = TRUE)
+  
+  fit_basic_bundle <- reactive({
+    fshifted <- fit_basic_raw$do_foreshift(fit = fit_basic_formula())
+    cap_used <- (".cap" %in% all.vars(fit_basic_formula()))
+    
+    pre <- viz_fore_input(fshifted, show_cap = cap_used)
+    post <- viz_fore_output(fshifted, show_cap = cap_used)
+    comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
+    
+    bundle <- viz_bundle(pre, post, comp,
+                         ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
+                         names = c("original", "foreshifted", "comparison"))
+    bundle
+  })
+  
+  callModule(dyRadioSelector, "graph_fit_basic", reactive(fit_basic_bundle()))
   
 # fitting (fit) plus ------------------------------------------------------
   
   # data
-  fit_raw <- o_Xdemand$clone(deep = TRUE)
+  fit_plus_raw <- o_Xdemand$clone(deep = TRUE)
   
-  fit_bundle <- reactive({
-    fshifted <- fit_raw$do_foreshift(fit = formula_fit())
+  fit_plus_bundle <- reactive({
+    fshifted <- fit_plus_raw$do_foreshift(fit = formula_fit())
     cap_used <- (".cap" %in% all.vars(formula_fit()))
     
     pre <- viz_fore_input(fshifted, show_cap = cap_used)
@@ -62,15 +94,15 @@ shinyServer(function(input, output, session) {
   # build
   formula_fit <- callModule(fitSelector, "formula_fit")
   
-  callModule(dyRadioSelector, "factors_fit", reactive(fitvars))
+  callModule(dyRadioSelector, "factors_fit_plus", reactive(fitvars))
   
   output$fit_fitcurve <- renderDygraph({
-    fit_bundle()[["fitcurve"]]
+    fit_plus_bundle()[["fitcurve"]]
   })
   
   callModule(dyRadioSelector, "graph_fit_plus",
              iftrue = reactive(fit_random_bundle()), 
-             iffalse = reactive(fit_bundle()),
+             iffalse = reactive(fit_plus_bundle()),
              condition = reactive(fit_random_out()$switch))
   fit_random_out <- callModule(randomize, "fit_random_in")
   
