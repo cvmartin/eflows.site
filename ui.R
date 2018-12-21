@@ -182,7 +182,7 @@ tab_foreshift <-
           ),
           wideDiv(title = "Layers of flexibility",
                   box(width = 12,
-                      dyRadioSelectorUI("graph_fsh_plus", c("original", "foreshifted", "comparison")),
+                      dyRadioSelectorUI("graph_fsh_plus", c("original", "foreshifted", "comparison", "unstacked by flex")),
                       dyCornerDiv(randomizeInput("fsh_random_in", label = "Random profile"))
                   )
           ),
@@ -254,7 +254,27 @@ tab_ev <-
           narrowDiv(
             includeMarkdown("./rmarkdown/ev/ev-3.Rmd")
           ),
-          wideDiv(title = "Estimating flexibility with a large number of Electric Vehicles"),
+          wideDiv(title = "Estimating flexibility with a large number of Electric Vehicles",
+                  inputDiv(
+                    column(4, sliderInput("ev_dist_evs", "Number of EVs",
+                                          min = 0, max = 200,
+                                          value = 100, step = 5, ticks = FALSE)
+                    ), 
+                    column(4, sliderInput("ev_dist_households", "Number of households",
+                                          min = 0, max = 200,
+                                          value = 100, step = 5, ticks = FALSE)
+                    ),
+                    column(4, selectInput("ev_dist_match", 
+                                          label = "Distict type",
+                                          choices = list(Downtown = "Centrum", 
+                                                         Residential = "Zuid", 
+                                                         `Late night charging` = "Nieuw-West"))
+                    )
+                  ),
+                  box(width = 12,
+                    dyRadioSelectorUI("graph_ev_dist",
+                                      c("original", "foreshifted","comparison"))
+                  )),
           narrowDiv(
             includeMarkdown("./rmarkdown/ev/ev-4.Rmd")
           ),

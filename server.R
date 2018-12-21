@@ -140,10 +140,13 @@ shinyServer(function(input, output, session) {
     pre <- viz_fore_input(o_layered, show_cap = FALSE)
     post <- viz_fore_output(o_layered, show_cap = FALSE)
     comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
+    unstacked <- viz_fore_output(o_layered, aggregate = "flex", 
+                                 show_fixed = FALSE, stacked = FALSE, show_cap = FALSE)
     
-    viz_bundle(pre, post, comp,
+    
+    viz_bundle(pre, post, comp, unstacked,
                ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
-               names = c("original", "foreshifted", "comparison"))
+               names = c("original", "foreshifted", "comparison", "unstacked by flex"))
   })
   
   # data (random)
@@ -166,10 +169,13 @@ shinyServer(function(input, output, session) {
     pre <- viz_fore_input(o_random, show_cap = FALSE)
     post <- viz_fore_output(o_random, show_cap = FALSE)
     comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
+    unstacked <- viz_fore_output(o_random, aggregate = "flex", 
+                                 show_fixed = FALSE, stacked = FALSE, show_cap = FALSE)
     
-    viz_bundle(pre, post, comp,
+    
+    viz_bundle(pre, post, comp, unstacked,
                ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
-               names = c("original", "foreshifted", "comparison"))
+               names = c("original", "foreshifted", "comparison", "unstacked by flex"))
   })
   
   # build
@@ -210,10 +216,6 @@ shinyServer(function(input, output, session) {
   
   # build
   callModule(dyRadioSelector, "graph_ev_one", reactive(ev_one_bundle()))
-  
-  # output$p_1ev_graph <- renderDygraph({
-  #   p_1ev_bundle()[[input$p_1ev_rbutton]]
-  # })
 
 # ev (ev) multi -----------------------------------------------------------
   # data
@@ -293,6 +295,50 @@ shinyServer(function(input, output, session) {
   
   callModule(dyRadioSelector, "graph_evs", reactive(ev_multi_bundle()))
 
+
+# ev (ev) dist --------------------------------------------------------
+  #data
+  ev_dist <- readRDS("data/districts_flex.rds")
+  
+  ev_dist_bundle <- reactive({
+    
+    ev_dist_df <- ev_dist %>% 
+      filter(stadsdeel == input$ev_dist_match) %>% 
+      select(- stadsdeel) %>% 
+      spread(flex, kwh) %>% 
+      slice(1:168)
+    
+    ev_dist_obj <- e_frame$new(ev_dist_df$datetime)
+    
+    ev_dist_obj$set_demand(e_demand$new(
+      fixed = (sept$d_house_smooth[1:168] * input$ev_dist_households * 1.3),
+      flex = list(flex_mtx$new(data = (cbind(ev_dist_df$`0`,
+                                             ev_dist_df$`2`,
+                                             ev_dist_df$`4`,
+                                             ev_dist_df$`6`,
+                                             ev_dist_df$`8`,
+                                             ev_dist_df$`10`,
+                                             ev_dist_df$`12`))*input$ev_dist_evs,
+                               steps = c(1,2,4,6,8,10,12),
+                               name = "district"))
+    )) 
+   
+    ev_dist_obj$do_foreshift()
+    
+    pre <- viz_fore_input(ev_dist_obj)
+    post <- viz_fore_output(ev_dist_obj)
+    comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
+    
+    viz_bundle(pre, post, comp,
+               ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
+               names = c("original", "foreshifted", "comparison"), 
+               group = "districtgroup")
+    
+  })
+  
+  #build
+  callModule(dyRadioSelector, "graph_ev_dist", reactive(ev_dist_bundle()))
+  
 
 # ev (ev) pwr -------------------------------------------------------------
   # data

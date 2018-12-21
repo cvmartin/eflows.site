@@ -15,8 +15,8 @@ o_1demand$set_demand(e_demand$new(fixed = base_demand,
                                                    steps = c(4),
                                                    name = "flexibility"))))
 o_1demand$set_production(e_production$new(fixed = list(solar = sept$solar[1:168]*120)))
-o_1demand$set_price(sept$eprice[1:168], unit = "euro/mWh")
-o_1demand$set_cap((sin(seq.int(1,168)/10*3)+55))
+o_1demand$set_price(sept$eprice[1:168]*0.6, unit = "euro/mWh")
+o_1demand$set_cap((sin(seq.int(1,168)/10*3) + 55))
 
 
 ##
