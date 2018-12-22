@@ -7,6 +7,7 @@ library(shinyjs)
 library(eflows)
 library(eflows.viz)
 library(dplyr)
+library(tidyr)
 library(R6)
 
 dy_height <- 210
