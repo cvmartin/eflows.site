@@ -177,6 +177,9 @@ tab_foreshift <-
                   box(width = 12,
                       dyRadioSelectorUI("graph_fsh_basic", c("original", "foreshifted", "comparison"))
           )),
+          mreDiv(
+            "test", "Flexible demand", "mre/mre_flexible_demand.R"
+          ),
           narrowDiv(
             includeMarkdown("./rmarkdown/foreshift/fsh-2.Rmd")
           ),

@@ -44,6 +44,15 @@
   padding:0;
 }
 
+.narrowDiv {
+  max-width: 700px;
+  margin: 0 auto; 
+  padding: 20px; 
+  font-family: Georgia, Times, serif; 
+  font-size: 120%;
+}
+
+
 .narrowDiv img {
   width: 100%;
   margin-top:15px;
@@ -57,13 +66,39 @@
   border-left-color: #767171;
 }
 
+.mreDiv {
+  max-width: 700px;
+  margin: 0 auto; 
+  padding: 20px;
+}
+
+.mreDiv .box {
+  background-color: #565656;
+}
+
+.mreDiv .box-title {
+  color: white;
+}
+
+.mreDiv .btn-box-tool {
+  color: white;
+}
+
+
+@media (min-width: 1100px) {
+  .broadImage {
+  min-width: 1000px;
+  margin-left: -170px;
+  padding: 20px;
+  text-align: center;
+}
+}
+
 
 @media (min-width: 770px) {
-  
   .main-header {
     display: none;
   }
-  
 }
 
 

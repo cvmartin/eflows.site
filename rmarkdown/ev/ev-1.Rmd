@@ -20,7 +20,7 @@ Particularly, this is an example of foreshifting where the demand is *punctual* 
 
 In the "business as usual" scenario, the energy requirements of the EV can be conceptualized as a punctual peak of demand, with little to zero flexibility. At that monent in time, the EV *demands* a certain amount of energy, although such theoretical peak is never realized because there are technical limitations to the power that can be assimilated, either by the side of the EV or the charging pole. The resulting profile of demand is thus a high consumption sustained over time, until the battery is filled, moment in which the demand is over. 
 
-![Business as usual](../../www/images/foreshift/case-usual.png)
+![Business as usual](../../www/images/ev/case-usual.png)
 
 Controlling the flow of electricity towards the EV is useful because more often than not, the time at which an EV finishes to charge is way earlier than when the EV is needed. In other words, if an EV is needed at 7:00 AM and finishes to charge at midnight, there are seven hours of potential flexibility that could have been used to optimize the energy flows (doing peak shaving, optimizing for renewable energy consumption, or other cases).
 
@@ -28,6 +28,6 @@ It is often the case that a user is indifferent to when the EV will be charged o
 
 At the far end of the flexibility, there are users that will not mind to have their battery fluctuating between half-charged and full-charged, meaning the requirements for charging can be fulfilled at any time in, perhaps, up to 24 hours. Many user cases will fall in between. 
 
-![Business as usual](../../www/images/foreshift/cases-charging.png)
+![Business as usual](../../www/images/ev/cases-charging.png)
 
 

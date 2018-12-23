@@ -3,6 +3,7 @@ library(shinydashboard)
 library(shinyWidgets)
 library(dygraphs)
 library(shinyjs)
+library(shinyAce)
 
 library(eflows)
 library(eflows.viz)

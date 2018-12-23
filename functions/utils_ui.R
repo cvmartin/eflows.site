@@ -66,7 +66,7 @@ inputDiv <- function(...){
 }
 
 narrowDiv <- function(...){
-  fluidRow(tags$div(class = "narrowDiv", style = "max-width: 700px;margin: 0 auto; padding: 20px; font-family: Georgia, Times, serif; font-size: 120%;", 
+  fluidRow(tags$div(class = "narrowDiv", 
                ...
   ))
 }
@@ -77,9 +77,19 @@ broadDiv <- function(..., title = NULL){
   ))
 }
 
-mreDiv <- function(..., title = NULL){
-  fluidRow(div(style = "max-width: 700px;margin: 0 auto; padding: 20px;", 
-               box(title = title, width = 12, collapsible = TRUE, collapsed = TRUE, ...)
+mreDiv <- function(id, title = NULL, path){
+  fluidRow(div(class = "mreDiv",
+               box(title = tagList(icon("code"), p(title, style = "display:inline;padding-left:10px")), 
+                   width = 12, collapsible = TRUE, 
+                   collapsed = TRUE,
+                   aceEditor(outputId = id, 
+                             value = readr::read_file(path), 
+                             mode = "r", 
+                             theme = "twilight",
+                             wordWrap = TRUE,
+                             readOnly = TRUE
+                             )
+                   )
   )
   )
 }
