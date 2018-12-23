@@ -1,11 +1,33 @@
+The graph above is generated as follows:
 
-Several variables can be chosen to manipulate the fitting curve
+- The several inputs are combined into a *fitting formula*.
+- The fitting formula, applied to the actual data of the `e_frame` object, defines the *fitting curve* for the graph.
+- In function of the fitting formula and the fitting curve, `foreshift()` allocates the flexible demand so the lowest points of the fitting curve are allocated energy in the first place. 
 
-- `.demand` : total demand (it changes over iterations of the algorithm, and serves as feedback mechanism)
-- `.demand_fixed`: fixed demand
-- `.production_fixed`: sum of all the production that is deemed fixed (renewable energy). Confusingly, the renewable energy is fixed, because unlike fossil fuels, it cannot be produced on demand; instead, the production is *fixed* already. 
-- `.price`: energy price.
+## Fitting formula
 
-`.demand` shall be normally included, because unlike any other vector, it changes as `foreshift()` runs and the flexible demand is allocated, acting as a feedback mechanism; otherwise, the demand would be allocated in the same spots
+In the eflows framework, a fitting formula is a mathematical representation of *what is important to optimize* when timeshifting energy demand.
+
+![Fitting formula](../../www/images/fitting/fitting-formula.png)
+
+A fitting formula is very flexible and can take any number of user-defined variables. For the sake of usability, the most important factors within an `e_flow` object are already available to use them directly:
+
+- `.demand_fixed`: it reflects the demand that is *fixed* (it cannot be reallocated in time).
+- `.demand` : represents the *total demand*, namely, the sum of fixed demand and flexible demand. This variable is special because it *changes as `foreshift()` or `backshift()` is executed*. As described below, it acts as a *feedback mechanism* to limit the amount of energy that is allocated at a certain point in time.  
+- `.production_fixed`: It is the sum of all the production that is deemed fixed (renewable energy is fixed because, unlike energy from fossil fuels, cannot be produced on demand).
+- `.price`: self-explanatory; this is the vector of energy price defined by `e_frame$set_price()`.
+- `.cap`: indicates the grid capacity. Remarkably, using `e_frame$set_cap()` is not enough to consider `.cap` in the formula. It has to be explicitly used.
+
+Following R conventions, the fitting formula is prefixed by `~`. Then, in its simplest shape it takes a form like `~ 1* .price`. This means that, at any given moment, the flexible demand shall be allocated where the price of the energy is the cheapest.
+
+Note that to maximize the consumption of renewable energy the formula should be `~ -1* .production_fixed`; *negative*, because we want to allocate the demand when `.production_fixed` is the highest, not the lowest. In the case of `~ 1* .demand` the flexible demand will be allocated where the total demand is the lowest, but here is the catch: the point in time where `.demand` is the lowest will change as new demand is allocated. 
+
+## Fitting curves and `.demand` as feedback mechanism
+
+The fitting curve is *adimensional*. Utility. Therefore, the objective is to *minimize the expense of utility*.
+
+![Fitting formula](../../www/images/fitting/fitting-comparison.png)
 
 This means that it is possible to customize what is considered a good allocation of the future demand. Until now we have considered only the option of peak shaving (`1* .demand`), that is very 
+
+## Aoplying fitting formulas

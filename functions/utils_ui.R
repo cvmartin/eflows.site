@@ -85,9 +85,10 @@ mreDiv <- function(id, title = NULL, path){
                    aceEditor(outputId = id, 
                              value = readr::read_file(path), 
                              mode = "r", 
-                             theme = "twilight",
+                             theme = "idle_fingers",
                              wordWrap = TRUE,
-                             readOnly = TRUE
+                             readOnly = TRUE, 
+                             showLineNumbers = TRUE
                              )
                    )
   )
