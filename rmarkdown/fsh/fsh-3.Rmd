@@ -1,0 +1,3 @@
+The combination of two or more items in the `e_demand` object offers a powerful option for the management of flexible demans accross several devices. Electric vehicles are a prime case of it, as discusse in THE LINK. 
+
+`foreshift()` allocates flexible demand first by timestep, and second by level of flexibility. In the case of two or more items with the same level of flexibility in the same timestep, the order of the several `flex_mtx` in `e_demand$flex` matter. The items placed first will be allocated first their demand, which means that they may have better utility. The final result doesn't matter in a *for the common good* approach.

@@ -24,10 +24,33 @@ Note that to maximize the consumption of renewable energy the formula should be 
 
 ## Fitting curves and `.demand` as feedback mechanism
 
-The fitting curve is *adimensional*. Utility. Therefore, the objective is to *minimize the expense of utility*.
+`foreshift()` and `backshift()` work by gnawing away the original flexible demand, and allocating the bits where the fitting curve is the lowest, of course considering *time constrains*: the demand that can be foreshifted 10 hours will only consider the lowest point in the fitting curve up to 10 hours into the future, not in the whole timeseries. 
+
+At the start of the function execution, the fitting curve is determined by the fitting formula. At this point, the only demand that is allocated is the fixed one, so `~ 1* .demand_fixed` and `~ 1* .demand` will produce idential curves. 
+
+Every time a new bit of demand is allocated, the fitting curve is updated. This has consequences if the formula includes `.demand`, because the previously allocated flexible demand will be included in the new calculation of the curve, and hence will influence where is the new lowest point. 
+
+If the formula doesn't include `.demand`, the newly allocated demand will not affect the curve, nor the subsequent lower points in the curve.
 
 ![Fitting formula](../../www/images/fitting/fitting-comparison.png)
 
-This means that it is possible to customize what is considered a good allocation of the future demand. Until now we have considered only the option of peak shaving (`1* .demand`), that is very 
+This is why `.demand` acts a feedback mechanism. When the formula depends exclusively on it, it generates the "peak shaving profile"; when combined with other variables, it generates a "penalty factor" over those moments in time with a high amount of demand already allocated. 
 
-## Aoplying fitting formulas
+Note that if used `.demand` in the formula, in addition to the *initial* fitting curve there will be a *final* fitting curve. The fitting curves are *adimensional*, in the sense that they can combine parameters that use different units. Instead, it is useful to talk about *utility* to express the importance of a number of parameters combined in the fitting curve. Therefore, one can say that the objective of `foreshift()` and `backshift()` is to *minimize the expense of utility*.
+
+
+## Using `.cap` to include grid capacity
+
+Let us suppose we want to use the formula `~ 1* .price`, while keeping the total energy demand below the grid capacity (designated by `.cap`). 
+
+In this case the formula will be `ifelse(.demand < .cap, .price, NA)`. Note the conditional effect of `ifelse()`: *If* the demand is lower than the grid capacity, the fitting curve remains `.price`; *else* the fitting curve at that point becomes `NA` (not available).
+
+A detail that I hadn't mention yet is that the demand is allocated in the lowest point *among finite values* of the fitting curve. Because `NA` values are not finite, this prevents them to be assigned more demand. 
+
+Instead of `.cap` it can be used an integer, for instance: `ifelse(.demand < 60, .price, NA)`. The main advantage of using `.cap` instead is that it is easier to work programmatically with grid capacities that are variable in time.  
+
+## Applying fitting formulas
+
+Fitting formulas are remarkably powerful, allowing users to give preference to different factors in a procedural (non-predefined) way. 
+
+By default only a selection of R functions can be used within the formula (it would be too easy to use `system()` to execute malicious code), yet this could be changed to include any number of functions, including user defined ones. 

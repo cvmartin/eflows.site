@@ -1,0 +1,25 @@
+## Several flexibility layers and items
+
+One flexibility layer may reflect some user cases, but ideally we want `foreshift()` to be more flexible. For instance, a certain moment might have defined a flexible demand of 12 hours *and* a flexible demand of 6 hours. How to manage this complexity?
+
+`eflows` defines the `e_demand` object, to be attached to an `e_frame` object through the `e_frame$set_demand()` method. `e_demand` has a `fixed` field, indicating with a vector the fixed demand for the `e_frame`, and a `flex` field, indicating the flexible demand with a custom object of flexibility matrix (`flex_mtx`).
+
+Each flexibility matrix corresponds to a single *item*. An item can be a water pump, a dishwasher, an electric vehicle or anything else with flexible demand. Remarkably, `e_demand$flex` accepts not only a `flex_mtx`, but a *list* of `flex_mtx`, which means that a single execution of `foreshift()` can manage an arbitrary number of items, each one of them with an arbitray flexibility matrix. 
+
+
+A flexibility matrix may look like this:
+
+```
+#>       [,1]     [,2] [,3] [,4] [,5]
+#>  [1,]    0 2.646572    3    0    0
+#>  [2,]    0 8.402889    3    0    0
+#>  [3,]    0 7.839502    3    0    0
+#>  [4,]    0 9.433603    3    0    0
+#>  [5,]    0 2.606275    3    0    0
+#>  [6,]    0 3.868473    3    0   10
+#>  [7,]    0 9.097361    3    0    0
+#>  [8,]    0 8.740563    3    0    0
+#>  [9,]    0 7.057992    3    0    0
+#> [10,]    0 3.064047    3    0    0
+```
+The rows are the *timesteps* while the columns represent *flexibility*. The flexibility matrix above informs us, for instance, that this item doesn't have any demand with flexibility equal to 1 (it has to be dispatched in the next timestep), while it has quite some variable flexibility equal to 2 (it has to be dispatched in the following two timesteps). Moreover, it has a *constant* flexibility equal to 3, and no flexibility at all equal to 4. Last, the flexibility equal to 5 is zero except for a lone *peak* of consumption at the sixth timestep.

@@ -1,0 +1,14 @@
+
+# Foreshift
+
+![Foreshift](../../www/images/foreshift/fore.png)
+
+The function `foreshift()`allocates in the future the demand that would instead be consumed in the present. It serves to optimize the consumption of energy that has to be dispatched within a time window. If, say, a water pump has to consume 10 kWh between noon and midnight, this is expressed as a demand of 10kWh at noon  *with a flexibility of 12 hours*. 
+
+Foreshifting is based on the idea that the flexibility of energy is defined not only according with its volume and its location in time, but also by *how much can it be displaced into the future*.
+
+
+In its most basic example, the flexible demand can be presented as a "layer" over a fixed demand (cannot be foreshifted), and allocate this demand in the future do do "peak shaving": the flexible demand in the hours of peak consumption will be instead consumed in the hours with lower consumption. 
+
+
+

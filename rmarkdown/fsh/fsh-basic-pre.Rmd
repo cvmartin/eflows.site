@@ -1,0 +1,5 @@
+Try to modify the flexible layer; both in its amount of flexibility, and its volume. 
+To appreciate the changes, switch between the radio buttons over the graph:
+- **original**: How the energy profile looks like before passing through `foreshift()`.
+- **foreshifted**: The result after the application of `foreshift()`.
+- **comparison**: Quick comparison of the total demand of both profiles.

@@ -161,27 +161,29 @@ tab_fitting <-
 tab_foreshift <- 
   tabItem("foreshift", 
           narrowDiv(
-            includeMarkdown("./rmarkdown/foreshift/fsh-1.Rmd")
+            includeMarkdown("./rmarkdown/fsh/fsh-1.Rmd")
           ),
-          wideDiv(title = "Basic example",
+          wideDiv(title = "Flexibility layer",
+                  column(12, includeMarkdown("./rmarkdown/fsh/fsh-basic-pre.Rmd")),
                   inputDiv(
                     column(width = 6, 
                            sliderInput("hflex", label = "Hours of flexibility", min = 1,
                                        max = 12, value = 4, step = 1, ticks = FALSE)
                            ),
                     column(width = 6,
-                           sliderInput("vol", label = "Flexible demand volume", min = 0,
+                           sliderInput("vol", label = "Volume of flexible demand", min = 0,
                                        max = 30, value = 10, step = 0.1, ticks = FALSE)
                            )
                     ),
                   box(width = 12,
-                      dyRadioSelectorUI("graph_fsh_basic", c("original", "foreshifted", "comparison"))
-          )),
+                      dyRadioSelectorUI("graph_fsh_basic", c("original", "foreshifted", "comparison"))), 
+                  column(12, includeMarkdown("./rmarkdown/fsh/fsh-basic-post.Rmd"))
+                  ),
           mreDiv(
             "test", "Flexible demand", "mre/mre_flexible_demand.R"
           ),
           narrowDiv(
-            includeMarkdown("./rmarkdown/foreshift/fsh-2.Rmd")
+            includeMarkdown("./rmarkdown/fsh/fsh-2.Rmd")
           ),
           wideDiv(title = "Layers of flexibility",
                   box(width = 12,
@@ -190,7 +192,7 @@ tab_foreshift <-
                   )
           ),
           narrowDiv(
-            includeMarkdown("./rmarkdown/foreshift/fsh-3.Rmd")
+            includeMarkdown("./rmarkdown/fsh/fsh-3.Rmd")
           )
   ) 
 

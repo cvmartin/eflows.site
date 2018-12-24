@@ -78,7 +78,8 @@ broadDiv <- function(..., title = NULL){
 }
 
 mreDiv <- function(id, title = NULL, path){
-  fluidRow(div(class = "mreDiv",
+  # fluidRow(
+    div(class = "mreDiv",
                box(title = tagList(icon("code"), p(title, style = "display:inline;padding-left:10px")), 
                    width = 12, collapsible = TRUE, 
                    collapsed = TRUE,
@@ -92,7 +93,7 @@ mreDiv <- function(id, title = NULL, path){
                              )
                    )
   )
-  )
+  # )
 }
 
 wideDiv <- function(..., title = NULL){
