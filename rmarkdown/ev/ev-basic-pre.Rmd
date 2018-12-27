@@ -1,0 +1,3 @@
+The `original` graph reflects the initial profile of demand of the EV, in the "business as usual" scenario. There is no distinction between the different levels of flexibility, and the moment when the EV starts charging is irrelevant. The profile of consumption only depends on the sum of the three demands (one per flexibility) and the maximum charge rate. 
+
+`foreshifted` foreshifts each portion of the EV demand, with flexibility of 2 (near-instant demand), 6 and 12 hours. The objective is to reduce the peak of consumption. Changing the amount of energy that has to be consumed by a given deadline, multiple user cases can be defined. 

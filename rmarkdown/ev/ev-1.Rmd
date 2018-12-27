@@ -1,32 +1,32 @@
 
 # Electric Vehicle charging
 
-Electric vehicles (EVs) are one of the first cases for the application of eflows; they are a "low hanging fruit" when managing the demand side management of the EMS. 
+Electric vehicle (EV) charging is one of the most immediate applications of Energy Management Systems (EMS), because of their high volume of demand and the possibility of combining an IT infrastructure within gthe charging points. 
 
-The optimization is done by commanding either the EV or the charging pole to charge at a given power, or to halt the charge if appropiate. The optimization of the charge comes in two varieties, depending on the objective: 
+The objective of this IT infrastructure is to limit the charging rate of the EV (or to halt it) on demand. This leads to a two different kind of optimization:
 
-- Charge a certain amount of energy within a timeframe, allocating the charge in the moments when it is the most beneficial.
+- **Timeframe**: The objective is to charge a certain amount of energy before a deadline, and allocate this energy consumption whenever is the best. The constrains are given by deadlines and the fitting formula, and then `foreshift()` is used to fulfill the needs of all the EVs involved.
 
-- Charge as fast as possible given a certain available power, and distribute the charging load in the best possible way among cars. 
+- **Power**: Given a certain amount of power that can be dedicated to EV charge, the objective is to priorize the charge of some vehicles over others. The constrains are the grid capacity and the parameters and `distribute()` is used to establish which EVs are charged first. 
 
-eflows considers both cases. The first one makes use of `foresehift()`, while the second uses `distribute()`
+## Timeframe approach
 
+The user case to address is when an EV owner requires a certain amount of energy in his or her battery before a certain deadline; for instance: "I need to have my car charged by tomorrow morning. When exactly is charged over the night, I do not care". 
 
-## Optimize allocation of energy within a timeframe
+For the `eflows` framework this is an example of foreshifting where the demand is *punctual* in time, namely, when the EV is connected to the chargig point. 
 
-This is the sort of optimization like "I need to have my car charged by tomorrow morning. When exactly is charged over the night, I do not care". 
+This is easy to see in a "business as usual" scenario, where regardless of the actual needs of the EV user, the behavior of the EV and the charging point is to consume the energy necessary to fill the EV battery as fast as possible. 
 
-Particularly, this is an example of foreshifting where the demand is *punctual* in time, namely, when the EV is connected to the charging point.
+*As fast as possible* means that the charging power is technically limited by either the EV, the charging point or the grid capacity; in any case, the EV demand is not instant. Instead, what is obseved is a high power consumption that is sustained until the battery is filled. 
 
-In the "business as usual" scenario, the energy requirements of the EV can be conceptualized as a punctual peak of demand, with little to zero flexibility. At that monent in time, the EV *demands* a certain amount of energy, although such theoretical peak is never realized because there are technical limitations to the power that can be assimilated, either by the side of the EV or the charging pole. The resulting profile of demand is thus a high consumption sustained over time, until the battery is filled, moment in which the demand is over. 
 
 ![Business as usual](../../www/images/ev/case-usual.png)
 
-Controlling the flow of electricity towards the EV is useful because more often than not, the time at which an EV finishes to charge is way earlier than when the EV is needed. In other words, if an EV is needed at 7:00 AM and finishes to charge at midnight, there are seven hours of potential flexibility that could have been used to optimize the energy flows (doing peak shaving, optimizing for renewable energy consumption, or other cases).
+Controlling this power consumption is useful because more often than not an EV finishes to charge earlier than when it is necessary. Following with the previous user case: if the EV owner needs the battery full by 7:00 AM and in the "business as usual" scenario it is already filled by midnight, this means that there are seven hours of flexibility that were not seized. 
 
-It is often the case that a user is indifferent to when the EV will be charged overnight, but he or she will find important to have a minimum or charge in the car, a "just in case" capacity, to be ready to go. One of the main features of `foreshift()` is that it allows several deadlines for different amount of energy required by the same object and point in time; then, it is easy to define a charging profile that considers this need for fast charging, while also optimizing the energy consumption to fill the rest of the battery, with more flexibility. 
+This flexibility could be used to charge the EV instead when energy is cheaper, or to make better use of wind energy production in nightime. 
 
-At the far end of the flexibility, there are users that will not mind to have their battery fluctuating between half-charged and full-charged, meaning the requirements for charging can be fulfilled at any time in, perhaps, up to 24 hours. Many user cases will fall in between. 
+In addition to the previous user case, they can be considered those cases that involve *several deadines*; for instance an EV owner that needs some extra energy in the battery in case of emergency, but doesn't care when the rest of the energy is consumed. 
 
 ![Business as usual](../../www/images/ev/cases-charging.png)
 

@@ -1,0 +1,6 @@
+Note how:
+
+- The `foreshifted` profile is different depending on the charging start time: during peak demand, the demand with higher flexibility tends to be foreshifted; it is not the case if the charging starts during the night valley of demand.  
+
+- The effect of peak shaving is more notorious as the demand is more flexible and the maximum charge power is higher.
+

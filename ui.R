@@ -225,16 +225,20 @@ tab_ev <-
             includeMarkdown("./rmarkdown/ev/ev-1.Rmd")
           ),
           wideDiv(title = "One Electric Vehicle", 
+                  column(12, includeMarkdown("./rmarkdown/ev/ev-basic-pre.Rmd")),
                   inputDiv(div(style = "padding: 10px", tabPanelEV("0"))),
                   box(width = 12, 
                       dyRadioSelectorUI("graph_ev_one",
                                         c("original", "foreshifted","comparison"))
-                      )
+                      ),
+                  column(12, includeMarkdown("./rmarkdown/ev/ev-basic-post.Rmd"))
+                  
           ), 
           narrowDiv(
             includeMarkdown("./rmarkdown/ev/ev-2.Rmd")
           ),
           wideDiv(title = "Multiple Electric Vehicles", 
+                  column(12, includeMarkdown("./rmarkdown/ev/ev-plus-pre.Rmd")),
                   tabBox(title = "Electric Vehicles", width = 12,
                          id = "tab_evs",
                          tabPanelEV("1"), 
@@ -254,12 +258,16 @@ tab_ev <-
                   ), 
                   box(width = 12, 
                       dyRadioSelectorUI("graph_evs",
-                                           c("original", "foreshifted","aggregated by ev", "aggregated by flex", "comparison", "unstacked"))
-          )), 
+                                           c("original", "foreshifted","aggregated by ev", 
+                                             "aggregated by flex", "comparison", "unstacked"))
+                      ),
+                  column(12, includeMarkdown("./rmarkdown/ev/ev-plus-post.Rmd"))
+          ), 
           narrowDiv(
             includeMarkdown("./rmarkdown/ev/ev-3.Rmd")
           ),
-          wideDiv(title = "Estimating flexibility with a large number of Electric Vehicles",
+          wideDiv(title = "Electric Vehicles flexibility: large numbers",
+                  column(12, includeMarkdown("./rmarkdown/ev/ev-dist-pre.Rmd")),
                   inputDiv(
                     column(4, sliderInput("ev_dist_evs", "Number of EVs",
                                           min = 0, max = 200,
@@ -279,7 +287,9 @@ tab_ev <-
                   box(width = 12,
                     dyRadioSelectorUI("graph_ev_dist",
                                       c("original", "foreshifted","comparison"))
-                  )),
+                  ),
+                  column(12, includeMarkdown("./rmarkdown/ev/ev-dist-post.Rmd"))
+                  ),
           narrowDiv(
             includeMarkdown("./rmarkdown/ev/ev-4.Rmd")
           ),

@@ -1,7 +1,7 @@
-### Increasing complexity
+### Integrating the preferences of several EVs
 
-From the example above, there are several advancements that can be made: 
+A couple of significant improvements can be made from here:
 
-First, the algorithm should be able to process the preference of more than one EV. The charging profile of each one shall not depend on its particular preferences, but also *on the preferences of the other vehicles*. `e_flows` achieves this by allowing an indeterminate number of `flex_mtx` objects to be included into the `e_frame`.
+- The optimization should be able to integrate the deadlines and demand requirements of two or more EVs. As described in `foreshift()`[LINK], this is achieved using a list of `flex_mtx` objects, one per EV,
 
-Second, the algorithm shall benefit fromt the capabilities of the `fitting formula`, so the energy for the EVs charging is allocated for purposes other than peak shaving. This is achieved adjusting the `fitting formula`, as described in the article. 
+- The optimization should be able to foreshift the EV demand following other objectives besides peak shaving. This is achieved customizing the fitting formula [LINK].

@@ -2,15 +2,15 @@
 tabPanelEV <- function(int){
   tabPanel(sprintf("EV %s", int), 
            flowLayout(sliderInput(sprintf("ev%sflex2", int),
-                                  label = p("Charge in the next 2 hours", style = "color: white; padding:0px 3px;background-color: #338333;border-radius: 2px;margin-bottom:-1px;"), 
+                                  label = p("Flexibility: 2 hours", style = "color: white; padding:0px 3px;background-color: #338333;border-radius: 2px;margin-bottom:-1px;"), 
                                   min = 0,max = 40, value = 10, step = 1, ticks = FALSE, post = " kWh flex2"),
                       sliderInput(sprintf("ev%sflex6", int), 
-                                  label = p("Charge in the next 6 hours", style = "color: white; padding:0px 3px;background-color: #89a54f;border-radius: 2px;margin-bottom:-1px;"), 
+                                  label = p("Flexibility 6 hours", style = "color: white; padding:0px 3px;background-color: #89a54f;border-radius: 2px;margin-bottom:-1px;"), 
                                   min = 0, max = 40, value = 10, step = 1, ticks = FALSE, post = " kWh flex6"),
                       sliderInput(sprintf("ev%sflex12", int),
-                                  label = p("Charge in the next 12 hours", style = "color: white; padding:0px 3px;background-color: #ffb733;border-radius: 2px;margin-bottom:-1px;"), 
+                                  label = p("Flexibility: 12 hours", style = "color: white; padding:0px 3px;background-color: #ffb733;border-radius: 2px;margin-bottom:-1px;"), 
                                   min = 0, max = 40, value = 10, step = 1, ticks = FALSE, post = " kWh flex12"),
-                      sliderInput(sprintf("ev%scap", int), label = "Max charge power", min = 4,
+                      sliderInput(sprintf("ev%scap", int), label = "Maximum charge rate", min = 4,
                                   max = 40, value = 20, step = 1, ticks = FALSE, post = " kW")), 
            
            # div(

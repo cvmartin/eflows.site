@@ -1,0 +1,2 @@
+Use the tabs to switch between EVs, and modify the fitting curve to optimize in ways other than peak shaving. To observer well the differences, try to give similar *Charging start time* to each EV, so their demands overlap.
+

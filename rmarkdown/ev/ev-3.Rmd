@@ -1,7 +1,5 @@
-### Estimating EV flexibility in districts and cities
+### Integrating EV flexibility at large scale
 
-As the number of EVs increase, it is possible to take adavantage of the "law of big numbers" in order to estimate the potential for flexibility at district and city scale. 
+If several EV users charge their cars in a predictable way (each one of them with a similar demand, at more or less the same hour), a pattern starts to emerge. Integrating data of enough EV charging sessions produces a pattern with *predictive power*: it informs about the EV demand that will happen in the future. 
 
-Here it is necessary to play with statistical models, that try to predict the average demand of EV charging over a whole area, depending on a number of factors (for instance, the hour of the day and the day of the week). More precisely, the objective is not only to predict the total demand, but also know what proportion of such demand could be delayed how much over time. 
-
-The resulting profile can be then foreshifted, to have an estimation of how the energy flows may look like. As any estimation, it has to be taken with a grain of salt, and its accuracy depends on the first place on the accuracy of the estimations regarding the demand necessary for the EV charging. 
+If the data used include the flexibility of the EVs demand, it is possible to plan in advance how the demand of the EVs can be foreshifted for a better use of the grid. This includes the possibility of integrating EV demand with predictions of household consumption. 

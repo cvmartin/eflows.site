@@ -1,7 +1,7 @@
-## Optimize distribution of power
+## Power distribution approach
 
-In this modality, the objective is to distribute a given amount of power among several charging EVs. In case the demand overpasses the power available, the power shall be distribute accordingly between EVS, following a preference. 
+In this case, the objective is to distribute a given amount of power among several charging EVs.
 
-This is achieved by using `distribute()`. This allows to consider the different user options. 
+This will only be a problem if the demand of all EVs exceed the grid capacity. In this case, `distribute()` is used to allocate the appropiate amount of power to each EV. The parameters `soc`, `vol`, `share`, `cap` and `level` serve not only to decide the order of preference, but also to predict the time when the charge of the battery will be complete.  
 
-Ideally, the algorithm use adapts the consumption within the time constrains and the power requirements:
+
