@@ -4,6 +4,41 @@ title: "Principles"
 
 eflows strives to be a declarative package and probably requires a lot of documentation. In this file I strive to write some of the principles that govern the API and the design of the package
 
+## `e_frame` object
+`eflows` uses a custom object, called `e_frame`, to organize the relevant data to work with. The object has several fields, each one roughly representing one element of the energry system (production, consumption, storage, infrastructure, ect.). Each field has two subfields: *input* and *output*.
+
+A typical workflow consists in initializing the `e_frame` object, populate the *input* subfields with the relevant data, and then apply an algorithm that stores the results in the same object, in the *output* subfields.
+
+The following example contains four statements, that use the dataset `eflows::sept`:
+
+```
+testframe <- e_frame$new(sept$datetime[1:168])
+
+testframe$set_demand(e_demand$new(fixed = (sept$d_house_smooth[1:168]),
+                                  flex = list(flex_mtx$new(data = as.matrix((rep(0.03,168))),
+                                                           steps = 4))))
+
+testframe$set_production(e_production$new(fixed = list(solar = sept$solar[1:168])))
+
+testframe$do_foreshift(fit = ~ .demand - .production_fixed)
+```
+1. Initialize the `e_frame` object. At this step it is convenient to setup few features of the `e_frame`, particularly the time series to use. 
+
+2. Use the method `e_frame$set_demand()` to populate the field `testframe$demand$input`. Note how it is usd a custom object (`e_demand`, described shortly in LINK) that distingishes between fixed demand and flexible one. 
+
+3. Use the method `e_frame$set_production()` to populate the field `testframe$production$input`.
+
+4. Use the method `e_frame$do_foreshift()`, to apply `foreshift()` using the data already stored in the project (the method is a wrapper around the lower-level function). Note how `fit = ~ .demand - .production_fixed` expresses the objective of hte optimization [LINK]. Try to use `fit = ~ 1*.demand` to instead do peak shaving. 
+
+Once the `e_frame` has been processed, it still contains all the initial information (*input*) and the results of the calculation (*output*). This allows to easily build over these `e_frame` objects, using them as input to functions that can access their fields to generate new results or side effects. 
+
+For instance, the package `eflows.viz` is built around the idea of reading `e_frame` objects and generate web-ready graphs. `eflows.viz::viz_fore_input(testframe)` will show the data of `testframe` before it is foreshifted, while `eflows.viz::viz_fore_output(testframe)` will show it for the already processed data. 
+
+
+
+
+
+
 ## FAQ
 
 ### How does `eflow`
