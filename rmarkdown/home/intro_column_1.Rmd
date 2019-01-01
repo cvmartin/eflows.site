@@ -1,1 +1,1 @@
-Input the data from your souces, either real-time or else. Use the object - oriented API to relate production and consumption of energy, as well as much more data, in a meaningful way. 
+Input your data, and structure it using the object-oriented API. 

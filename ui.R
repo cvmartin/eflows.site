@@ -43,23 +43,19 @@ sidebar <- dashboardSidebar(
 # home --------------------------------------------------------------------
 tab_home <- 
   tabItem("home", 
-          div(br(),br(), br()),
           narrowDiv(
             includeMarkdown("./rmarkdown/home/header.Rmd")
           ),
-          broadDiv(div(style = "text-align:center;", 
-                       img(src = "images/main-banner.png", width = "80%")
-                       ), 
-                   fluidRow(style = "font-family: Georgia, Times, serif; font-size: 120%;", 
-                            column(width = 4, 
+          broadDiv(fluidRow(style = "font-family: Georgia, Times, serif; font-size: 120%; margin-top:-60px; margin-bottom:50px;",
+                            column(width = 4, style = "text-align: center;",
                                    includeMarkdown("./rmarkdown/home/intro_column_1.Rmd")),
-                            column(width = 4, 
+                            column(width = 4, style = "text-align: center;",
                                    includeMarkdown("./rmarkdown/home/intro_column_2.Rmd")),
-                            column(width = 4, 
+                            column(width = 4, style = "text-align: center;",
                                    includeMarkdown("./rmarkdown/home/intro_column_3.Rmd"))
                    ),
                    fluidRow(
-                     column(width = 6, style = "text-align: right;", 
+                     column(width = 6, style = "text-align: right;",
                             tags$a(href = "https://github.com/cvmartin/eflows", target = "_blank",
                                    actionBttn(
                                      inputId = "git_eflows",
@@ -166,14 +162,15 @@ tab_foreshift <-
           wideDiv(title = "Flexibility layer",
                   column(12, includeMarkdown("./rmarkdown/fsh/fsh-basic-pre.Rmd")),
                   inputDiv(
-                    column(width = 6, 
-                           sliderInput("hflex", label = "Hours of flexibility", min = 1,
-                                       max = 12, value = 4, step = 1, ticks = FALSE)
-                           ),
                     column(width = 6,
                            sliderInput("vol", label = "Volume of flexible demand", min = 0,
-                                       max = 30, value = 10, step = 0.1, ticks = FALSE)
+                                       max = 30, value = 10, step = 1, ticks = FALSE, post = " kWh")
+                    ),
+                    column(width = 6, 
+                           sliderInput("hflex", label = "Flexibility", min = 1,
+                                       max = 12, value = 4, step = 1, ticks = FALSE, post = " hours")
                            )
+                 
                     ),
                   box(width = 12,
                       dyRadioSelectorUI("graph_fsh_basic", c("original", "foreshifted", "comparison"))), 
