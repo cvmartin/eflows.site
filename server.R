@@ -469,4 +469,29 @@ shinyServer(function(input, output, session) {
       eflows.viz:::add_cap(socflow()[[4]]*input$cap_evs_pwr)
   })
   
+
+# OBSERVERS ---------------------------------------------------------------
+
+  # Add URL navigation
+  
+  observeEvent(input$sidebarmenudefault, {
+    # No work to be done if input$tabs and the hash are already the same
+    if (getUrlHash() == paste0("#", input$sidebarmenudefault)) return()
+    # update the URL when the tab selection changes
+    updateQueryString(
+      paste0(getQueryString(), paste0("#", input$sidebarmenudefault)),
+      "push"
+    )
+    # Don't run the first time 
+  }, ignoreInit = TRUE)
+  
+  # When the URL hash changes (typically because of pressing the forward/back button in browser)
+  observeEvent(getUrlHash(), {
+    hash <- getUrlHash()
+    # No work to be done if input$tabs and the hash are already the same
+    if (hash == paste0("#", input$sidebarmenudefault)) return()
+    # chang the current tab
+    updateTabsetPanel(session, "sidebarmenudefault", gsub("#", "", hash))
+  })  
+  
 })

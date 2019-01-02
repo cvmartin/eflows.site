@@ -22,3 +22,4 @@ The functions used, as well as their underlying algorithms, are integral part of
 To work with `eflows` you will need an installation of R, and R studio IDE is highly recomended. 
 
 The package is not available in CRAN, but can be installed easily from github using ` devtools::install_github('cvmartin/eflows')`. The companion package `eflows.viz` is used for visualizations, and it is installed in the same way: `devtools::install_github('cvmartin/eflows.viz')`. 
+

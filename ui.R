@@ -9,7 +9,7 @@ sidebar <- dashboardSidebar(
     tags$link(rel = "stylesheet", type = "text/css", href = "style.css"),
     tags$link(rel = "icon", href = "images/favicon/favicon-96x96.png", type = "image/x-icon")
   ),
-  sidebarMenu(
+  sidebarMenu(id = "sidebarmenudefault",
     div(style = "text-align:center; font-size:300%", 
         actionBttn(
           inputId = "title_button",
