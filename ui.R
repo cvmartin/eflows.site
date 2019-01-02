@@ -26,13 +26,13 @@ sidebar <- dashboardSidebar(
              menuSubItem("Principles", tabName = "principles"),
              menuSubItem("Fitting curve", tabName = "fitting")), 
     menuItem("Functions", 
-             menuSubItem("foreshift()", tabName = "foreshift"),
-             menuSubItem("backshift()", tabName = "backshift"),
-             menuSubItem("simulate()", tabName = "simulate"),
-             menuSubItem("distribute()", tabName = "distribute")
+             menuSubItem("foreshift", tabName = "foreshift"),
+             # menuSubItem("backshift", tabName = "backshift"),
+             # menuSubItem("simulate", tabName = "simulate"),
+             menuSubItem("distribute", tabName = "distribute")
              ),
-    menuItem("Cases",
-             menuSubItem("Electric Vehicle charing", tabName = "ev"))
+    menuItem("User cases",
+             menuSubItem("Electric Vehicles charging", tabName = "ev"))
     
   ) 
 ) 
@@ -76,7 +76,13 @@ tab_home <-
                    )
           ),
           narrowDiv(
-            includeMarkdown("./rmarkdown/home/description.Rmd")
+            includeMarkdown("./rmarkdown/home/home-1.Rmd")
+          ),
+          mreDiv(
+            "getting_started", "Getting started", "mre/mre_getting_started.R", height = "180px"
+          ),
+          narrowDiv(
+            includeMarkdown("./rmarkdown/home/home-2.Rmd")
           )
   )
 
@@ -177,7 +183,7 @@ tab_foreshift <-
                   column(12, includeMarkdown("./rmarkdown/fsh/fsh-basic-post.Rmd"))
                   ),
           mreDiv(
-            "test", "Flexible demand", "mre/mre_flexible_demand.R"
+            "flex_demand", "Flexible demand", "mre/mre_flexible_demand.R"
           ),
           narrowDiv(
             includeMarkdown("./rmarkdown/fsh/fsh-2.Rmd")

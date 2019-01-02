@@ -77,7 +77,7 @@ broadDiv <- function(..., title = NULL){
   ))
 }
 
-mreDiv <- function(id, title = NULL, path){
+mreDiv <- function(id, title = NULL, path, ...){
   # fluidRow(
     div(class = "mreDiv",
                box(title = tagList(icon("code"), p(title, style = "display:inline;padding-left:10px")), 
@@ -89,7 +89,8 @@ mreDiv <- function(id, title = NULL, path){
                              theme = "idle_fingers",
                              wordWrap = TRUE,
                              readOnly = TRUE, 
-                             showLineNumbers = TRUE
+                             showLineNumbers = TRUE,
+                             ...
                              )
                    )
   )

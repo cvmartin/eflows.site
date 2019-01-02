@@ -1,5 +1,5 @@
 
-# Electric Vehicle charging
+# Electric Vehicles charging
 
 Electric vehicle (EV) charging is one of the most immediate applications of Energy Management Systems (EMS), because of their high volume of demand and the possibility of combining an IT infrastructure within gthe charging points. 
 

@@ -1,0 +1,24 @@
+## What is `eflows`?
+
+`eflows` is a framework for managing energy management systems (EMS) data and apply functions over it. It is written in R and C++.
+
+The functions used, as well as their underlying algorithms, are integral part of the framework. Depending on if they involve steering or not, these can be:
+
+- **Descriptive**: They help to predict how the energy flows in an energy system will look like in the "baseline" scenario (no steering involved). `simulate()` and `distribute()` are examples of this. 
+
+- **Prescriptive**: Are based around the idea of *timeshifting energy demand*. The energy is consumed in a delayed way (`foreshift()`) or before and stored (`backshift()`), so the moment of consumption 
+
+
+![Foreshift and backshift](../../www/images/general/fore-backshift.png)
+
+`eflows` *is not* an EMS. It can be used as the "core" of the EMS, and then additional infrastructure depending on the EMS elements can be used to:
+
+- A way to gather real-time data from devices and other data sources (like weather forecasts) to use as inputs for `eflows`. This may involve heavy use of predictive models, that are absent from `eflows`.
+
+- A way to relay the instructions to the devices to steer in some direction, using the results of `eflows`.
+
+## Getting started
+
+To work with `eflows` you will need an installation of R, and R studio IDE is highly recomended. 
+
+The package is not available in CRAN, but can be installed easily from github using ` devtools::install_github('cvmartin/eflows')`. The companion package `eflows.viz` is used for visualizations, and it is installed in the same way: `devtools::install_github('cvmartin/eflows.viz')`. 

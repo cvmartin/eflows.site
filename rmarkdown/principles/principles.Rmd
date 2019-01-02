@@ -2,10 +2,58 @@
 title: "Principles"
 ---
 
-eflows strives to be a declarative package and probably requires a lot of documentation. In this file I strive to write some of the principles that govern the API and the design of the package
+## Motivation
 
-## `e_frame` object
+It is no secret that we are involved in the energy transition. A successful transition would involve to have control over the elements of the energy systems, to decide when do they consume (batteries, heat pumps, electric vehicles, smart appliances) and also when produce (in the case of biomass or CHP)  It is also evident that there is no "one size fits all" solution for coordinating such many elements of the energy system. 
+
+`eflows` does not aim to be the "end-it-all" solution for energy systems because how the software interfaces with hardware is difficult enough. Instead, `eflows` can be a reproducible solution for working with the *data* of such EMS. 
+
+The package offers a "high-level" object-oriented, meaning it is focus on making complex things with the minimum amount of code. Another way to put it is that the API is "declarative": the user *declares* what he or she wants without needing to know the details of the execution. 
+
+The intention is to organize all the data relating an EMS in a highly structured `e_frame` object, and then apply "lower-level" functions over this data in an easy way. 
+
+## Functional programming, object-oriented programming
+
+R is a functional-oriented programming language, which means the object-oriented approach described above is unorthodox. `eflows` code often doesn't "feel" as R code. The main difference between the functional and the object-oriented coding approach is that in the later the variables are modified "on the fly", without the need of assigning them to new variables. 
+
+This can make the code harder to understand because the context where the code is executed becomes more important. That said, `eflows` tries to minimize erros implementing methods that are "idempotent". Using the same method twice is the same as applying it once (for instance, using `e_frame$set_storage()` twice doesn't set two different storages in `e_frame`; the second application overrides the first one instead.)
+
+While it is debatable if this approach is the right one, `eflows` uses a "classic" object-oriented approach (through the R package `R6`) for a couple of reasons: 
+
+- The build and work of an `e_frame` object has to be quite strict. Using OO programming allows to encapsulate these operations in methods helps to clarify what can be done with the object. In addition, chaining methods allows to write more terse code.
+
+- EMS software has been traditionally been developed in OO languages, like Java. This makes sense, considering that an EMS consists in putting together a number of *objects* with different properties. The intention of `eflows` is to feel familiar to those accustomed to OO programming. 
+
+Ultimately, the objective is to use OOP and FP in a synergistic way; instead of being opposite poles in a gradient, both programming styles can reinforce each other by managing the complexity of EMS: organizing the data in objects, and then applying functions over them. 
+
+## Structure
+
+- A core of **C++ algortihms**: C++ is a low-level language, way more efficient than R. It is responsible of `eflows` speed. The algorithms (contained in functions) are very "imperative-style" oriented and use a weath of *for loops* that would be too slow in R instead. The algorithms do not include any form of machine learning or predictive modeling; indeed, by design `eflows` does not include any form of randomness in its calculations.  
+
+- A first layer of **R functions**: R interacts with C++ thanks to the `Rcpp` package. These functions are more than a simple *wrap* around the C++ functions, because they often "preprocess" the inputs, verifying them and processing them so they can be used by the lower-level C++ functions. These R functions are exposed in `eflows` meaning they are properly documented and users can work directly with them if they prefer to skip the OO API. 
+
+- A second layer of **R6 objects**: This is intended as the main API of `eflows`; the way by default users work with it. It includes a number of "tricks" to make easier to apply the underlying R functions. These functions are encapsulated in methods; for instance, `foreshift()` becomes the method `e_frame$do_foreshift()`. `foreshift()` requires a number of arguments. `e_frame$do_foreshift()` allows to apply the function without caring about the arguments, because these are fetched from within the `e_frame` structure.  
+
+<div class="broadImage">
+<img src="../../www/images/general/structure.png">
+</div>
+
+## Extending `eflows`
+
+Another example of the OO approach is that `eflows` can be extended over the third layer. Because the structure of the `e_frame` objects is consistent, it is easy to design R packages build around functions that take as input an `e_frame` object, and then can refer to the data stored in the specific field of the object. 
+
+This has several interesting possibilites for modularizing code. It could make very easy to relay instructions to specific devices based on the outputs of an `e_frame` object, and it would allow to interact with `eflows` directly though an HTTP API, using the OpenCPU framework (a possibility to be researched). 
+
+`eflows.viz` is an example of this way of working. The idea is to separate concerns: `eflows` takes care of the computation, and `eflows.viz` concerns the visualization. 
+
+## The`e_frame` object
 `eflows` uses a custom object, called `e_frame`, to organize the relevant data to work with. The object has several fields, each one roughly representing one element of the energry system (production, consumption, storage, infrastructure, ect.). Each field has two subfields: *input* and *output*.
+
+The *input* subfields are populated using a custom method for each field (`e_frame$set_demand()`, `e_frame$set_storage()` and so on). Many times, the data introduced with be time-based vectors. The time series itself is defined at initializing the object, and then vectors of the same length (to express *demand over time* or *production over time*, for intance) are passed into the methods. In the case of doing real-time steering, the time series would start in the present moment, and then extend into the future. This means that to know *demand over time* or *production over time* it would be needed a work of predicting them. 
+
+In any case, the time-based data is *left aligned*. This means that the changes in flows and storages SOC reflect the change of the system once that time step has been concluded. In an hourly-based simulation, the flows that correspond to 14:00 are the ones happened between 14:00 and 15:00, and the SOC of the batteries reflect their status once these energy flows have been resolved. 
+
+While initializing an `e_frame` object, it is possible to especify the unit employed, by default *kWh*. Note that this is an energy unit, not a power one. Instead of working with power, it is possible to pass it to energy depending on the timestep of the timeseries used. A power source of 10 kW will produce a constant energy flow of 10 kWh if the timestep is one hour, or 2.5 kWh if the timestep is 15 minutes.  
 
 A typical workflow consists in initializing the `e_frame` object, populate the *input* subfields with the relevant data, and then apply an algorithm that stores the results in the same object, in the *output* subfields.
 
@@ -34,89 +82,3 @@ Once the `e_frame` has been processed, it still contains all the initial informa
 
 For instance, the package `eflows.viz` is built around the idea of reading `e_frame` objects and generate web-ready graphs. `eflows.viz::viz_fore_input(testframe)` will show the data of `testframe` before it is foreshifted, while `eflows.viz::viz_fore_output(testframe)` will show it for the already processed data. 
 
-
-
-
-
-
-## FAQ
-
-### How does `eflow`
-
-
-### But it is not R a functional language?
-
-Yes, it is. Indeed, Object-Oriented Programming (OOP) as it is commonly understood is implemented as an afterthought in R. Indeed, there are un to four different implementations of OOP in R. Of them, the only one relevant for `eflows` is the one done with the package `R6`, that makes use of the very features of R to implement OOP in a way very approximate to languages like Java. 
-
-![Structure](../../www/images/general/reference-value.gif)
-
-
-Remarkably, the objects generated by the R6 (and thus, `e_frame` objects) have *reference semantics*, what is a rare occurence in R; as functional language, most of its objects have *value semantics*, namely the objects are immutable unless are explicity reassigned. 
-
-### OOP plus FP? Is it not confusing?
-
-Functional Programming style is indeed easy to understand, because the current state of the objects does not change no matter if part of the code in the script is run again. This makes it a very suitable style to work with data manipulation and transformation. 
-
-OOP allows to change objects on the fly, without reassigning values. Although this can make the programming potentially confusing, there are a number of reasons eflows adopts the OOP: 
-
-- The build of an `e_frame` object has to be quite strict. Other OOP in R, like `S3`, are easier to work with in a functional fashion, but do not allow the level of control and input verification that `R6` afford. 
-
-- Wether in an script or in interactive mode, the whole point of OOP is to build progressively an `e_frame` object, and modify it with methods that can be conveniently chained. 
-
-- Energy management software has been traditionally written in Java; perhaps it is not a good idea to depart from the OOP. 
-
-To reduce as much the complexity of understanding the programming as much as possible, by design the methods of the `e_frame` objects behave in an "idempotent way", namely, an `e_frame` does not change if the same method is applied twice to it. 
-
-Ultimately, the objective is to use OOP and FP in a synergistic way; instead of being opposite poles in a gradient, both programming styles can reinforce each other by managing the complexity of EMS. In short, the idea is to organize the data in objects, and then apply functions over the objects to obtain the best results. 
-
-
-
-
-## Use of dataframes with the first column as POSIXt object {.test}
-
-Time plays a vital role in eflows, yet the time series objects are not prefered. Instead, are used liberally data frames where the first column is time-based (and normally named "datetime"). This decision is taken for the sake of simplicity; a time series most of the times behaves like a data frame wehre the first column has different semantics. Where it is necessary to operate with actual time series, two helping functions to flip between data frames and time series are used: `df_to_ts` and `ts_to_df`
-
-<div class="broadImage">
-<img src="../../www/images/general/difference.png">
-</div>
-
-## No stochastic
-eflows is not a "black box"; it does not use any statistical approach to problem solving. This means that machine learning and lineal optimization methods are not considered in the core functions.    
-
-<div class="broadImage">
-<img src="../../www/images/general/structure.png">
-</div>
-
-<!-- ![Structure](../../www/images/general/structure.png) -->
-
-## Based on energy, not power
-The energy flows are expressed on basis of kWh (the default unit to work with in the package), not kW or any other power unit. In principle kWh and kW are equivalent if the time step is one hour. This makes easier to read the changes in the battery: "25 kWh have flown, so the battery is charged with extra 25 kWh"
-
-
-
-
-## Left-aligned
-The time-based data is left aligned. This means that the changes in flows and battery soc reflect the change of the system once that time step has been concluded. In an hourly-based simulation, the flows that correspond to 14:00 are the ones happened between 14:00 and 15:00, and the soc of the batteries reflect their status once these energy flows have been resolved. 
-
-## Prefixes and nomenclature
-eflows strive to offer a consistent API to interact with energy flows. 
-
-For instance, the prefix `ef_` connotes working with an eflows object, the basis for the package operations. Thus, after creating a first object with the function `ef_initialize`, different elements can be included in the model. 
-
-A first distiction lies in the distiction between the functions prefixed with `add_` (The data is ready to be included in the model) and the functions prefixed with `gen_` (from "generate". The data is not readily available yet, but it is generated on the spot, thanks to the application of algorithms, normally involving randomness somehow)
-
-Then, these functions are suffixed by the element in itself that refers to. These include: 
-
-- `battery`, that unless stated otherwise, it refers to an stationary one. On some parts of the package, this is refered also as `batt`.
-- `ev`, that stands for electric vehicles. This includes a number of factors, among them the battery and the soc available. When talking about batteries, the distinction between stationary batteries and electric vehicles batteries is signified with `batt` and `ev`.
-
-- `infrastructure`: It refers both to the grid (which most important factor is the "grid capactiy", and the charging points `chp` in the jargon (and chaging stations `chs`, that are bundles of charging points)).(future: divide in two functions?)
-
-- Electricity prices
-- Misc, for random stuff that can be used with steering?
-
-Once added the elements to the simulation, results can be generated using the function `ef_simulate`. This function uses the `steer` parameter to bundle the preferences for smart energy
-
-- (future) `steer`: A term used to especify the algorithms that direct the energy flows between elements of the system. It includes factors as the preference for charge/discharge, use of Vehicle to Grid, charge thresholds etc. The steering can be very simple if it includes just default values, or very complex if it consists in functions that change over time and consider the forecast, too. 
-
-Once the simulation has been run, there are a number of functions that easily visualize the results (using dygraphs), and that can be used both for exploratory anaysis and to include directly in websites using shiny. These functions are denoted with `graph_` For instance, `graph_flows`, `graph_ev` and else. Last, the functions prefixed by `display_` are used to modify the graph functions, adding new details or functionalities. 

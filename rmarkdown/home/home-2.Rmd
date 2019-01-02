@@ -1,0 +1,26 @@
+
+## About this website
+
+`eflows` is more than code. It is also a personal vision of the author on how to analyze and design energy systems. Hence this website is in large part an exposition of the theoretical foundations of `eflows`.
+
+In addition to explanations, the website embed live examples that allow to play with different scenarios in real time. These live examples are a thin shiny layer over `eflows` (to compute) and `eflows.viz` (to visualize).
+
+In addition, there are numerous examples of code that can be just copy-pasted in a R studio to showcase the capacities. 
+
+This website, as `eflows` itself, is in active development and hence largely incomplete. Shorter term plans include the integration of functions `backshift()` and `simulate()`, and the consideration of heat pumps and batteries as user cases.
+
+For the moment, the website can be read as a self-contained exposition on how to coordinate the charge of Electric Vehicles. For the best buck-for-your-time, you could get started in this order:
+
+- foreshift: A first grasp of `eflows` possibilites and its take on flexible demand.
+- fitting curve: A comprehensive approach to decide where to allocate this flexible demand. 
+- Electric Vehicles: A first practical user case that could be used already in production for real-time steering. 
+- Design principles: To delve deeper in the architecture and the decission design of `eflows`.
+
+## Improving `eflows`
+
+`eflows` can be considered an experiment on energy systems. Faced with the energy transition. The best way to help developing `eflows` is trying it, see for what it works and for what not. Then, you can report bugs and request new functionalities in the corresponding Github pages. 
+
+And of course, feel free to fork the project, or to propose changes with a pull request. 
+
+
+

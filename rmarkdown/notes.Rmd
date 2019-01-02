@@ -20,3 +20,42 @@ eflows aims to provide high-level building blocks for doing practical, applied e
 - Interactive analysis
 - Dashboarding
 - Real-time steering. 
+
+Uses of eflows:
+- **Interactive analysis**: Use `eflows` in the console or within short R scripts to explore different scenarios.
+
+- **Real-time steering**: Embed `eflows` in a web infrastructure, and benefit of its speed to indicate to devices what to do. 
+
+- **Dashboarding and visualization**: The speed of `eflows` allow to integrate it within shiny framework (like in this website).
+
+#### Use of dataframes with the first column as POSIXt object {.test}
+
+Time plays a vital role in eflows, yet the time series objects are not prefered. Instead, are used liberally data frames where the first column is time-based (and normally named "datetime"). This decision is taken for the sake of simplicity; a time series most of the times behaves like a data frame wehre the first column has different semantics. Where it is necessary to operate with actual time series, two helping functions to flip between data frames and time series are used: `df_to_ts` and `ts_to_df`
+
+<div class="broadImage">
+<img src="../../www/images/general/difference.png">
+</div>
+
+## Prefixes and nomenclature (outdated)
+
+eflows strive to offer a consistent API to interact with energy flows. 
+
+For instance, the prefix `ef_` connotes working with an eflows object, the basis for the package operations. Thus, after creating a first object with the function `ef_initialize`, different elements can be included in the model. 
+
+A first distiction lies in the distiction between the functions prefixed with `add_` (The data is ready to be included in the model) and the functions prefixed with `gen_` (from "generate". The data is not readily available yet, but it is generated on the spot, thanks to the application of algorithms, normally involving randomness somehow)
+
+Then, these functions are suffixed by the element in itself that refers to. These include: 
+
+- `battery`, that unless stated otherwise, it refers to an stationary one. On some parts of the package, this is refered also as `batt`.
+- `ev`, that stands for electric vehicles. This includes a number of factors, among them the battery and the soc available. When talking about batteries, the distinction between stationary batteries and electric vehicles batteries is signified with `batt` and `ev`.
+
+- `infrastructure`: It refers both to the grid (which most important factor is the "grid capactiy", and the charging points `chp` in the jargon (and chaging stations `chs`, that are bundles of charging points)).(future: divide in two functions?)
+
+- Electricity prices
+- Misc, for random stuff that can be used with steering?
+
+Once added the elements to the simulation, results can be generated using the function `ef_simulate`. This function uses the `steer` parameter to bundle the preferences for smart energy
+
+- (future) `steer`: A term used to especify the algorithms that direct the energy flows between elements of the system. It includes factors as the preference for charge/discharge, use of Vehicle to Grid, charge thresholds etc. The steering can be very simple if it includes just default values, or very complex if it consists in functions that change over time and consider the forecast, too. 
+
+Once the simulation has been run, there are a number of functions that easily visualize the results (using dygraphs), and that can be used both for exploratory anaysis and to include directly in websites using shiny. These functions are denoted with `graph_` For instance, `graph_flows`, `graph_ev` and else. Last, the functions prefixed by `display_` are used to modify the graph functions, adding new details or functionalities. 
