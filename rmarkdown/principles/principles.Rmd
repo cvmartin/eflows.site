@@ -1,6 +1,4 @@
----
-title: "Principles"
----
+# Design principles
 
 ## Motivation
 

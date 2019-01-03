@@ -482,16 +482,22 @@ shinyServer(function(input, output, session) {
       paste0(getQueryString(), paste0("#", input$sidebarmenudefault)),
       "push"
     )
+    # scroll to the top
+    shinyjs::runjs("window.scrollTo(0, 10)")
+    
     # Don't run the first time 
   }, ignoreInit = TRUE)
   
-  # When the URL hash changes (typically because of pressing the forward/back button in browser)
+  # When the URL hash changes (typically because of pressing 
+  # the forward/back button in browser)
   observeEvent(getUrlHash(), {
     hash <- getUrlHash()
     # No work to be done if input$tabs and the hash are already the same
     if (hash == paste0("#", input$sidebarmenudefault)) return()
     # chang the current tab
     updateTabsetPanel(session, "sidebarmenudefault", gsub("#", "", hash))
+    # scroll to the top
+    shinyjs::runjs("window.scrollTo(0, 10)")
   })  
   
 })

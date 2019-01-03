@@ -11,10 +11,10 @@ This website, as `eflows` itself, is in active development and hence largely inc
 
 For the moment, the website can be read as a self-contained exposition on how to coordinate the charge of Electric Vehicles. For the best buck-for-your-time, you could get started in this order:
 
-- foreshift: A first grasp of `eflows` possibilites and its take on flexible demand.
-- fitting curve: A comprehensive approach to decide where to allocate this flexible demand. 
-- Electric Vehicles: A first practical user case that could be used already in production for real-time steering. 
-- Design principles: To delve deeper in the architecture and the decission design of `eflows`.
+- [Foreshift](.#foreshift): A first grasp of `eflows` possibilites and its take on flexible demand.
+- [Fitting formula and curve](.#fitting): A comprehensive approach to decide where to allocate this flexible demand. 
+- [Electric Vehicles charging](.#ev): A first practical user case that could be used already in production for real-time steering. 
+- [Design principles](.#principles): To delve deeper in the architecture and the decission design of `eflows`.
 
 ## Improving `eflows`
 
