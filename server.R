@@ -500,4 +500,9 @@ shinyServer(function(input, output, session) {
     shinyjs::runjs("window.scrollTo(0, 10)")
   })  
   
+  # When pressing home button
+  observeEvent(input$title_button, {
+    updateTabsetPanel(session, "sidebarmenudefault", "home")
+  })
+  
 })

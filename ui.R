@@ -104,6 +104,7 @@ tab_fitting <-
             includeMarkdown("./rmarkdown/fitting/fit-1.Rmd")
           ),
           wideDiv(title = "Fitting curve: combining factors", 
+                  column(12, includeMarkdown("./rmarkdown/fitting/fit-basic-pre.Rmd")),
                   box(width = 12, title = "Factors that influence the fitting curve", 
                       collapsible = TRUE, collapsed = TRUE,
                       dyRadioSelectorUI("factors_fit_basic", c("demand", "production", "price", "grid capacity"))
@@ -135,7 +136,9 @@ tab_fitting <-
                   ),
                   box(width = 12,
                       dyRadioSelectorUI("graph_fit_basic", c("original", "foreshifted", "comparison"))
-                  )),
+                  ),
+                  column(12, includeMarkdown("./rmarkdown/fitting/fit-basic-post.Rmd"))
+                  ),
           narrowDiv(
             includeMarkdown("./rmarkdown/fitting/fit-2.Rmd")
           ),
@@ -176,7 +179,6 @@ tab_foreshift <-
                            sliderInput("hflex", label = "Flexibility", min = 1,
                                        max = 12, value = 4, step = 1, ticks = FALSE, post = " hours")
                            )
-                 
                     ),
                   box(width = 12,
                       dyRadioSelectorUI("graph_fsh_basic", c("original", "foreshifted", "comparison"))), 
@@ -190,8 +192,10 @@ tab_foreshift <-
           ),
           wideDiv(title = "Layers of flexibility",
                   box(width = 12,
+                      column(12, includeMarkdown("./rmarkdown/fsh/fsh-plus-pre.Rmd")),
                       dyRadioSelectorUI("graph_fsh_plus", c("original", "foreshifted", "comparison", "unstacked by flex")),
-                      dyCornerDiv(randomizeInput("fsh_random_in", label = "Random profile"))
+                      dyCornerDiv(randomizeInput("fsh_random_in", label = "Random profile")),
+                      column(12, includeMarkdown("./rmarkdown/fsh/fsh-plus-post.Rmd"))
                   )
           ),
           narrowDiv(

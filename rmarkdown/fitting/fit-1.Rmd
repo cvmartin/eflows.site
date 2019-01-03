@@ -1,11 +1,11 @@
 # Fitting formula and curve
 
-For the sake of simplicity, the optimization of energy flows is often equaled with doing peak shaving. It is a case easy to understand and visualize, because the optimization depends only on one factor: the **energy demand**. 
+For the sake of simplicity, timeshifting optimization is often equaled with doing peak shaving. It is a case easy to understand and visualize, because the optimization just depends of one factor: the **energy demand**. 
 
-However, it is rare the case where the peak of demand is the *only* factor worth considering. Most of the times there are other factors in play. Some of them are:
+However, most of the times there are other factors in play besides demand. For instance:
 
-- **Energy production**: can serve to consume energy preferentially when there is abundance of renewable energy production. 
-- **Price**: to consume energy preferentially when prices are lower
-- **Grid capacity**: on top of that, it is worth to consider a limit to the maximum power consumption, in order to avoid grid congestion. 
+- **Energy production**: to consume energy when there is renewable energy production. 
+- **Price**: to consume more energy when prices are lower.
+- **Grid capacity**: To avoid grid congestion.
 
-As different actors have different interests in the enrgy system, ideally we would like to consider all these factors *at the same time* and give them *more or less importance*, to obtain a virtually endless combination of ways to optimize energy consumption.
+As different actors have different interests in the energy system, ideally we want to consider all these factors *at the same time* and give them *more or less importance*, to obtain a virtually endless combination of ways to optimize energy consumption.

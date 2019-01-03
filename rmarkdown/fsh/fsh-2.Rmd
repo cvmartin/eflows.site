@@ -1,13 +1,10 @@
-## Several flexibility layers and items
+## Several flexibility layers and devices
 
-One flexibility layer may reflect some user cases, but ideally we want `foreshift()` to be more flexible. For instance, a certain moment might have defined a flexible demand of 12 hours *and* a flexible demand of 6 hours. How to manage this complexity?
+A continuous, uniform layer of flexible demand may reflect some user cases, but ideally `foreshift()` shall consider them all. For instance, a volume of flexible demand of 12 hours *and* a flexible demand of 6 hours may match in time. 
 
-`eflows` defines the `e_demand` object, to be attached to an `e_frame` object through the `e_frame$set_demand()` method. `e_demand` has a `fixed` field, indicating with a vector the fixed demand for the `e_frame`, and a `flex` field, indicating the flexible demand with a custom object of flexibility matrix (`flex_mtx`).
+To manage energy data, `eflows` uses a custom object, `e_frame`, that is constructed by populating its several fields with specific data. One of these fields is `demand`, that in turn has two subfields: `fixed` and `flex`.
 
-Each flexibility matrix corresponds to a single *item*. An item can be a water pump, a dishwasher, an electric vehicle or anything else with flexible demand. Remarkably, `e_demand$flex` accepts not only a `flex_mtx`, but a *list* of `flex_mtx`, which means that a single execution of `foreshift()` can manage an arbitrary number of items, each one of them with an arbitray flexibility matrix. 
-
-
-A flexibility matrix may look like this:
+The `fixed` subfield is just a vector representing the fixed demand. `flex` subfield is more complex: it consists of one or more *flexibility matrix*. In this matrix, the rows are the *timesteps* while the columns represent the *level of flexibility*. As an example:
 
 ```
 #>       [,1]     [,2] [,3] [,4] [,5]
@@ -22,4 +19,10 @@ A flexibility matrix may look like this:
 #>  [9,]    0 7.057992    3    0    0
 #> [10,]    0 3.064047    3    0    0
 ```
-The rows are the *timesteps* while the columns represent *flexibility*. The flexibility matrix above informs us, for instance, that this item doesn't have any demand with flexibility equal to 1 (it has to be dispatched in the next timestep), while it has quite some variable flexibility equal to 2 (it has to be dispatched in the following two timesteps). Moreover, it has a *constant* flexibility equal to 3, and no flexibility at all equal to 4. Last, the flexibility equal to 5 is zero except for a lone *peak* of consumption at the sixth timestep.
+Each device (electric vehicle, water pump, smart dishwasher, etc.) can have its flexibility described with a flexibility matrix. The one above informs us taht this device: 
+
+- Doesn't have any demand with flexibility equal to 1 (the one that has to be dispatched in the next timestep).
+- Has *variable* flexibility equal to 2 (it has to be dispatched in the following two timesteps).
+- Has a *constant* flexibility equal to 3.
+- Has no flexibility at all equal to 4.
+- The flexibility equal to 5 is zero except for a lone *peak* of consumption at the sixth timestep.

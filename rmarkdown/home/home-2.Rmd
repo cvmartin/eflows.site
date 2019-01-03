@@ -1,26 +1,25 @@
 
 ## About this website
 
-`eflows` is more than code. It is also a personal vision of the author on how to analyze and design energy systems. Hence this website is in large part an exposition of the theoretical foundations of `eflows`.
+`eflows` is more than code. It is also the personal vision of [the author](.#author) about how EMS and the energy sector can look like in the near future. Therefore, this website is in large part an exposition of the theoretical foundations of this vision, that is materialized in `eflows`.
 
-In addition to explanations, the website embed live examples that allow to play with different scenarios in real time. These live examples are a thin shiny layer over `eflows` (to compute) and `eflows.viz` (to visualize).
+Because code without examples is impractical, you will also find *live examples* that can be interacted with in real time. These are a thin [shiny](https://shiny.rstudio.com/) layer over `eflows` (used to compute in the server-side) and `eflows.viz` (to visualize).
 
-In addition, there are numerous examples of code that can be just copy-pasted in a R studio to showcase the capacities. 
+In addition, there are numerous snippets of code that can be directly copy-pasted in R studio for a working example. Note that these snippets use `sept`, the same "dummy dataset" employed in the live examples of this site. In principle, substituting `sept` with your own dataset is all you need to get production-ready results. 
 
-This website, as `eflows` itself, is in active development and hence largely incomplete. Shorter term plans include the integration of functions `backshift()` and `simulate()`, and the consideration of heat pumps and batteries as user cases.
+This website, as `eflows` itself, is in active development and hence largely incomplete. Shorter term plans include the integration of functions `backshift()` and `simulate()`, and the consideration of heat pumps and batteries as user cases. Please consider subscribing to the mail list to keep updated about `eflows` releases. 
 
-For the moment, the website can be read as a self-contained exposition on how to coordinate the charge of Electric Vehicles. For the best buck-for-your-time, you could get started in this order:
+Righ now, the site aims to expose how `eflows` can be used to coordinate the charging of Electric Vehicles. The full explanation spans several articles, better read in this order: 
 
-- [Foreshift](.#foreshift): A first grasp of `eflows` possibilites and its take on flexible demand.
-- [Fitting formula and curve](.#fitting): A comprehensive approach to decide where to allocate this flexible demand. 
-- [Electric Vehicles charging](.#ev): A first practical user case that could be used already in production for real-time steering. 
-- [Design principles](.#principles): To delve deeper in the architecture and the decission design of `eflows`.
+1. [Foreshift](.#foreshift): A first grasp of `eflows` possibilites and its take on flexible demand.
+2. [Fitting formula and curve](.#fitting): A comprehensive approach to decide when is the best moment to realize this flexible demand. 
+3. [Electric Vehicles charging](.#ev): A first practical `eflows` application, almost production-ready for steering in real-time. 
+- [Design principles](.#principles): An additional article that delves into the architecture and the dessign behind `eflows`.
 
-## Improving `eflows`
+## Helping to improve `eflows`
 
-`eflows` can be considered an experiment on energy systems. Faced with the energy transition. The best way to help developing `eflows` is trying it, see for what it works and for what not. Then, you can report bugs and request new functionalities in the corresponding Github pages. 
+`eflows` is largely an experiment in the face of the energy transition. Concepts like *fitting formula*, *foreshift* and *flexibility matrix* are only useful to the extent that they *work in real life*. 
 
-And of course, feel free to fork the project, or to propose changes with a pull request. 
+So, the best way to improve `eflows` is testing it; try to use it with your data, see what works and what not, and please provide feedback. You can always write me an email (LINK), although I'd rather have bug reports and request of new functionalities in the corresponding Github pages ([here](https://github.com/cvmartin/eflows/issues) and [here](https://github.com/cvmartin/eflows.viz/issues)). 
 
-
-
+And of course, feel free to fork the repository, or propose changes through a merge[??] request.

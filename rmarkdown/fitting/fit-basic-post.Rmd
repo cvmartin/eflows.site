@@ -1,0 +1,2 @@
+Note how: 
+- Giving all the importance to the *Demand* produces the typical "peak shaving" profile. 

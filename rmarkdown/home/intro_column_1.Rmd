@@ -1,1 +1,1 @@
-Input your data, and structure it using the object-oriented API. 
+Structure data from multiple sources using the object-oriented API. 

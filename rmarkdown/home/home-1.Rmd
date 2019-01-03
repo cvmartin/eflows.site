@@ -1,25 +1,24 @@
 ## What is `eflows`?
 
-`eflows` is a framework for managing energy management systems (EMS) data and apply functions over it. It is written in R and C++.
+`eflows` is an open-source framework for managing energy-related data and apply functions over it. It is written in R and C++.
 
-The functions used, as well as their underlying algorithms, are integral part of the framework. Depending on if they involve steering or not, these can be:
+The functions and algorithms are integral part of the framework. These can be used to:
 
-- **Descriptive**: They help to predict how the energy flows in an energy system will look like in the "baseline" scenario (no steering involved). `simulate()` and `distribute()` are examples of this. 
+- **Descibe**: To predict how an energy system will behave without steering it (no "smart management" involved). The main functions are `simulate()` and `distribute()`.
 
-- **Prescriptive**: Are based around the idea of *timeshifting energy demand*. The energy is consumed in a delayed way (`foreshift()`) or before and stored (`backshift()`), so the moment of consumption 
-
+- **Timeshift**: To steer the energy system, so the demand (Electric Vehicles, Batteries, Heat Pumps, etc.) is realized when is more convenient. Timeshifting involves either delaying the energy consumption (`foreshift()`) or storing it beforehand (`backshift()`).
 
 ![Foreshift and backshift](../../www/images/general/fore-backshift.png)
 
-`eflows` *is not* an EMS. It can be used as the "core" of the EMS, and then additional infrastructure depending on the EMS elements can be used to:
+`eflows` can be used as the core of an Energy Management System (EMS). That said, having a functional EMS requires a number of software components customized to interact with the EMS hardware: 
 
-- A way to gather real-time data from devices and other data sources (like weather forecasts) to use as inputs for `eflows`. This may involve heavy use of predictive models, that are absent from `eflows`.
+- A component to gather real-time data from devices and other data sources (like weather forecasts). This may involve heavy use of predictive models, that are absent from `eflows`.
 
-- A way to relay the instructions to the devices to steer in some direction, using the results of `eflows`.
+- A component to relay instructions to the devices so they are steered following the results obtained with `eflows`.
 
 ## Getting started
 
-To work with `eflows` you will need an installation of R, and R studio IDE is highly recomended. 
+Working with `eflows` requires an installation of [R](https://www.r-project.org/). In addition, [R studio](https://www.rstudio.com/) is highly recommended for visualizing the results as graphs.
 
-The package is not available in CRAN, but can be installed easily from github using ` devtools::install_github('cvmartin/eflows')`. The companion package `eflows.viz` is used for visualizations, and it is installed in the same way: `devtools::install_github('cvmartin/eflows.viz')`. 
+The package is not available in CRAN, but can be installed easily from github using the R console: ` devtools::install_github('cvmartin/eflows')`. The companion package `eflows.viz` is used for visualizations, and it is installed in the same way: `devtools::install_github('cvmartin/eflows.viz')`. 
 
