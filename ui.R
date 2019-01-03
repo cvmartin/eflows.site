@@ -327,7 +327,8 @@ tab_ev <-
                      ),
                   box(width = 12, title = "Power flow into EVs",
                       dygraphOutput("ev_pwr_flow", height = dy_height)
-                  )
+                  ),
+                  column(12, includeMarkdown("./rmarkdown/ev/ev-pwr-post.Rmd"))
           ),
           narrowDiv(
             includeMarkdown("./rmarkdown/ev/ev-5.Rmd")

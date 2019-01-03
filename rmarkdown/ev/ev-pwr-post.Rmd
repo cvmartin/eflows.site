@@ -1,0 +1,4 @@
+Note how:
+
+- The profiles look like when all the EVs have the same `level`. Compare when each EV has assigned a different `level`. 
+- A *Random capacity* profile often causes EVs to charge at variable rates. 

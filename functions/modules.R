@@ -88,7 +88,7 @@ fitSelectorInput <- function(id) {
     box(width = 12, class = "fitSelectorDiv", 
         column(width = 9, style = "margin: 0px -5px -8px -5px;",
                div(class = "formulaInput",
-               searchInput(ns("formula"), tagList("Fit formula:", tags$code("fit = ~")),
+               searchInput(ns("formula"), tagList("Fitting formula:", tags$code("fit = ~")),
                            value = "1*.demand", btnSearch = icon("level-down"), width = "100%")
                )
         ), 
