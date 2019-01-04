@@ -1,1 +1,1 @@
-Simulate enerrgy flows and apply steering algorithms. 
+Simulate energy flows and apply steering algorithms. 

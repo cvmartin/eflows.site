@@ -19,7 +19,7 @@ The `fixed` subfield is just a vector representing the fixed demand. `flex` subf
 #>  [9,]    0 7.057992    3    0    0
 #> [10,]    0 3.064047    3    0    0
 ```
-Each device (electric vehicle, water pump, smart dishwasher, etc.) can have its flexibility described with a flexibility matrix. The one above informs us taht this device: 
+Each device (electric vehicle, water pump, smart dishwasher, etc.) can have its flexibility described with a flexibility matrix. The one above informs us that this device: 
 
 - Doesn't have any demand with flexibility equal to 1 (the one that has to be dispatched in the next timestep).
 - Has *variable* flexibility equal to 2 (it has to be dispatched in the following two timesteps).

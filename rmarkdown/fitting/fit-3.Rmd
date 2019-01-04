@@ -1,1 +1,1 @@
-Using fitting formulas allow to easily explore different steering policies, and know the benefits and disadvantages of each one of them. This allows to balance the concerns and the interests of two or more actors participating in an energy system. 
+Using fitting formulas allow to explore different steering policies, and know the benefits and disadvantages of each one of them. This helps in balancing the concerns and the interests of two or more actors participating in the energy system. 

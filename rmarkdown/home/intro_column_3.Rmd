@@ -1,1 +1,1 @@
-Use the structured results for dashboarding and real-time steering.
+Use the structured results for visualization and real-time steering.

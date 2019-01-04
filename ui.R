@@ -22,16 +22,17 @@ sidebar <- dashboardSidebar(
         "Data driven energy transition", 
         br(),br()),
     menuItem("Home", tabName = "home"),
-    menuItem("Articles", 
-             menuSubItem("Design principles", tabName = "principles"),
-             menuSubItem("Fitting formula and curve", tabName = "fitting")), 
     menuItem("Functions", 
              menuSubItem("foreshift", tabName = "foreshift"),
              # menuSubItem("backshift", tabName = "backshift"),
              # menuSubItem("simulate", tabName = "simulate"),
              menuSubItem("distribute", tabName = "distribute")
+    ),
+    menuItem("Articles", 
+             menuSubItem("Fitting formula and curve", tabName = "fitting"),
+             menuSubItem("Design principles", tabName = "principles")
              ),
-    menuItem("User cases",
+    menuItem("Applications",
              menuSubItem("Electric Vehicles charging", tabName = "ev"))
     
   ) 

@@ -6,11 +6,11 @@ The functions and algorithms are integral part of the framework. These can be us
 
 - **Descibe**: To predict how an energy system will behave without steering it (no "smart management" involved). The main functions are `simulate()` and `distribute()`.
 
-- **Timeshift**: To steer the energy system, so the demand (Electric Vehicles, Batteries, Heat Pumps, etc.) is realized when is more convenient. Timeshifting involves either delaying the energy consumption (`foreshift()`) or storing it beforehand (`backshift()`).
+- **Timeshift**: To steer the energy system, so the demand is realized when is more convenient. Timeshifting involves either delaying the energy consumption (`foreshift()`) or storing it beforehand (`backshift()`).
 
 ![Foreshift and backshift](../../www/images/general/fore-backshift.png)
 
-`eflows` can be used as the core of an Energy Management System (EMS). That said, having a functional EMS requires a number of software components customized to interact with the EMS hardware: 
+`eflows` can be used as the core of an Energy Management System (EMS). That said, having a functional EMS requires extra software components customized to interact with the EMS hardware: 
 
 - A component to gather real-time data from devices and other data sources (like weather forecasts). This may involve heavy use of predictive models, that are absent from `eflows`.
 
@@ -20,5 +20,5 @@ The functions and algorithms are integral part of the framework. These can be us
 
 Working with `eflows` requires an installation of [R](https://www.r-project.org/). In addition, [R studio](https://www.rstudio.com/) is highly recommended for visualizing the results as graphs.
 
-The package is not available in CRAN, but can be installed easily from github using the R console: ` devtools::install_github('cvmartin/eflows')`. The companion package `eflows.viz` is used for visualizations, and it is installed in the same way: `devtools::install_github('cvmartin/eflows.viz')`. 
+The package is not available in CRAN, but it can be installed from github using the R console: ` devtools::install_github('cvmartin/eflows')`. The companion package `eflows.viz` is used for visualizations, and it is installed in the same way: `devtools::install_github('cvmartin/eflows.viz')`. 
 
