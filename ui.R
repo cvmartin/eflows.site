@@ -33,8 +33,9 @@ sidebar <- dashboardSidebar(
              menuSubItem("Design principles", tabName = "principles")
              ),
     menuItem("Applications",
-             menuSubItem("Electric Vehicles charging", tabName = "ev"))
-    
+             menuSubItem("Electric Vehicles charging", tabName = "ev")),
+    tags$hr(style = "width: 53%;"),
+    menuItem("Author", tabName = "author")
   ) 
 ) 
 
@@ -158,6 +159,9 @@ tab_fitting <-
                       dyCornerDiv(randomizeInput("fit_random_in", label = "Random profile"))
                   )
           ),
+          mreDiv(
+            "fit", "Fitting formula and curve", "mre/mre_fit.R"
+          ),
           narrowDiv(
             includeMarkdown("./rmarkdown/fitting/fit-3.Rmd")
           )
@@ -186,10 +190,13 @@ tab_foreshift <-
                   column(12, includeMarkdown("./rmarkdown/fsh/fsh-basic-post.Rmd"))
                   ),
           mreDiv(
-            "flex_demand", "Flexible demand", "mre/mre_flexible_demand.R"
+            "fsh_oneflex", "Foreshift: one flexibility", "mre/mre_fsh_oneflex.R"
           ),
           narrowDiv(
             includeMarkdown("./rmarkdown/fsh/fsh-2.Rmd")
+          ),
+          mreDiv(
+            "fsh_multiflex", "Foreshift: one object, multiple flexibility", "mre/mre_fsh_multiflex.R"
           ),
           wideDiv(title = "Layers of flexibility",
                   box(width = 12,
@@ -198,6 +205,9 @@ tab_foreshift <-
                       dyCornerDiv(randomizeInput("fsh_random_in", label = "Random profile")),
                       column(12, includeMarkdown("./rmarkdown/fsh/fsh-plus-post.Rmd"))
                   )
+          ),
+          mreDiv(
+            "fsh_multiobject", "Foreshift: multiple objects, multiple flexibility", "mre/mre_fsh_multiobject.R"
           ),
           narrowDiv(
             includeMarkdown("./rmarkdown/fsh/fsh-3.Rmd")
@@ -222,8 +232,11 @@ tab_distribute <-
           narrowDiv(
             includeMarkdown("./rmarkdown/distribute/distribute-intro.Rmd")
           ), 
-          wideDiv(
-          ))
+          mreDiv(
+            "distribute", "Distribute", "mre/mre_distribute.R"
+          ),
+          narrowDiv()
+          )
 
 # ev (ev) ------------------------------------------------------------------
 
@@ -273,6 +286,9 @@ tab_ev <-
           ), 
           narrowDiv(
             includeMarkdown("./rmarkdown/ev/ev-3.Rmd")
+          ),
+          mreDiv(
+            "ev_timeframe", "EV charging: Timeframe", "mre/mre_ev_timeframe.R"
           ),
           wideDiv(title = "Electric Vehicles flexibility: large numbers",
                   column(12, includeMarkdown("./rmarkdown/ev/ev-dist-pre.Rmd")),
@@ -331,10 +347,23 @@ tab_ev <-
                   ),
                   column(12, includeMarkdown("./rmarkdown/ev/ev-pwr-post.Rmd"))
           ),
+          mreDiv(
+            "ev_gridcapacity", "EV charging: Grid Capacity", "mre/mre_ev_gridcapacity.R"
+          ),
           narrowDiv(
             includeMarkdown("./rmarkdown/ev/ev-5.Rmd")
           )
           )
+
+
+# author ------------------------------------------------------------------
+
+tab_author <- 
+  tabItem("author", 
+          narrowDiv(
+            includeMarkdown("./rmarkdown/author/author.Rmd")
+          )
+  )
 
 
 # BUILD ----------------
@@ -348,7 +377,8 @@ body <- dashboardBody(
     tab_principles,
     tab_backshift,
     tab_distribute,
-    tab_foreshift
+    tab_foreshift,
+    tab_author
 ))
 
 dashboardPage(header, sidebar, body, skin = "black")
