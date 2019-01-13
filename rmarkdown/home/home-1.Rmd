@@ -2,6 +2,8 @@
 
 `eflows` is an open-source framework for managing energy-related data and apply functions over it. It is written in R and C++.
 
+As an R package, it can be used either interactively in an R programming environment, or embedded in an R script into a larger automated infrastructure. 
+
 The functions and algorithms are integral part of the framework. These can be used to:
 
 - **Descibe**: To predict how an energy system will behave without steering it (no "smart management" involved). The main functions are `simulate()` and `distribute()`.
