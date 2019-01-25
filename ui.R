@@ -7,7 +7,15 @@ header <- dashboardHeader(title = "eflows", disable = FALSE)
 sidebar <- dashboardSidebar(
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "style.css"),
-    tags$link(rel = "icon", href = "images/favicon/favicon-96x96.png", type = "image/x-icon")
+    tags$link(rel = "icon", href = "images/favicon/favicon-96x96.png", type = "image/x-icon"),
+    # Google analytics
+    tags$script(async = TRUE, 
+                src = "https://www.googletagmanager.com/gtag/js?id=UA-70471257-2"),
+    tags$script("window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                
+                gtag('config', 'UA-70471257-2');")
   ),
   sidebarMenu(id = "sidebarmenudefault",
     div(style = "text-align:center; font-size:300%", 
