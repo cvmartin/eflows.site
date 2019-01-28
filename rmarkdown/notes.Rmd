@@ -59,3 +59,35 @@ Once added the elements to the simulation, results can be generated using the fu
 - (future) `steer`: A term used to especify the algorithms that direct the energy flows between elements of the system. It includes factors as the preference for charge/discharge, use of Vehicle to Grid, charge thresholds etc. The steering can be very simple if it includes just default values, or very complex if it consists in functions that change over time and consider the forecast, too. 
 
 Once the simulation has been run, there are a number of functions that easily visualize the results (using dygraphs), and that can be used both for exploratory anaysis and to include directly in websites using shiny. These functions are denoted with `graph_` For instance, `graph_flows`, `graph_ev` and else. Last, the functions prefixed by `display_` are used to modify the graph functions, adding new details or functionalities. 
+
+## What the all-round Spctral Utilities is doing (and serves of inspiration professionally)
+
+Features
+
+- Battery
+- Smart Meter
+- CHP
+- Grid
+- Elecric Vehicle Charger
+- PV
+- HVAC
+- Wind
+
+Behind the meter services
+
+- Maximizing self-consumption
+- Peak shaving
+- Time of use shift
+- Back-up power
+- PV power forecasting
+- Demand forecasting
+- Microgrid optimization
+
+Grid services
+
+- Demand response
+- Frequency response
+- Frequency regulation
+- Congestion Relief
+- Voltage support
+- Resource optimization

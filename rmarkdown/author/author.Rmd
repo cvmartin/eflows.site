@@ -19,7 +19,10 @@
   <p>
   <a href="https://www.linkedin.com/in/carlosvarelamartin/" target="_blank">LinkedIn</a>
   </p>
+  <p>
+  <a href="CV6.pdf" target="_blank">CV</a>
+  </p>
   </div>
 </div>
 
-`eflows` is developed throught the involvement with <a href="https://resourcefully.nl/" target="_blank">Resourcefully</a>, an energy transition consulting firm based in Amsterdam. eflows has been already used to simulate the local effects of a varibale number of electric vehicles and PV installations at local scale.
+`eflows` is developed throught the involvement with <a href="https://resourcefully.nl/" target="_blank">Resourcefully</a>, an energy transition consulting firm based in Amsterdam. `eflows` has been already used to simulate the local effects of a varibale number of electric vehicles and PV installations at local scale.
