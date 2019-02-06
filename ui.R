@@ -24,7 +24,7 @@ sidebar <- dashboardSidebar(
     menuItem("Home", tabName = "home"),
     menuItem("Functions", 
              menuSubItem("foreshift", tabName = "foreshift"),
-             # menuSubItem("backshift", tabName = "backshift"),
+             menuSubItem("backshift", tabName = "backshift"),
              # menuSubItem("simulate", tabName = "simulate"),
              menuSubItem("distribute", tabName = "distribute")
     ),
@@ -221,8 +221,52 @@ tab_backshift <-
           narrowDiv(
             includeMarkdown("./rmarkdown/backshift/backshift-intro.Rmd")
           ), 
-          wideDiv(
-          ))
+          wideDiv( title = "The cost of backshifing",
+            inputDiv(
+              column(3,
+                     sliderInput("bsh_cost_self_discharge",
+                                 "Self discharge",
+                                 min = 0, max = 10, value = 1, step = 0.1,
+                                 ticks = FALSE, post = " % per hour")
+              ), 
+              column(3,
+                     sliderInput("bsh_cost_eff_to",
+                                 "Efficiency to battery:",
+                                 min = 85, max = 100, value = 100,
+                                 ticks = FALSE, post = " %")
+              ), 
+              column(3,
+                     sliderInput("bsh_cost_eff_from",
+                                 "Efficiency from battery:",
+                                 min = 85, max = 100, value = 100,
+                                 ticks = FALSE, post = " %")
+              ), 
+              column(3, 
+                     sliderInput("bsh_cost_back_time",
+                                 "Time horizon",
+                                 min = 1, max = 24, value = 12,
+                                 ticks = FALSE, post = " hours")
+              ),
+              column(12, 
+                     div(
+                       # style = "display:inline;width = 500px",
+                       style = "padding-left: 60px",
+                       tags$strong("Point in time"),
+                       sliderInput("bsh_cost_back_point", label = NULL,
+                                   min = 1, max = 168, value = 94, 
+                                   ticks = FALSE, post = " hours from the start")
+                     )
+                     
+              )
+            ),
+            box(width = 12,
+                dygraphOutput("graph_bsh_cost", height = dy_height),
+                dyCornerDiv(randomizeInput("bsh_cost_random_in", label = "Random profile"))
+                ),
+            box(width = 12,
+                dyRadioSelectorUI("graph_bsh_basic", c("potential", "backshifted", "comparison")))
+            )
+          )
 
 
 # distribute (dis) ------------------------------------------------------------
