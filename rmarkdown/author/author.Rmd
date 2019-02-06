@@ -11,15 +11,18 @@
   <br>
   
   <p>
-  Carlos Varela Martín is an MSc in Industrial Ecology with a strong interest in renwable energies and computer sciences. In the quest to catalize the energy transition, his tools are Data Science and IT infrastructure, plus web design to showcase results. 
+  Carlos Varela Martín is an MSc in Industrial Ecology with a strong interest in renewable energies and computer sciences. In the quest to catalize the energy transition, his tools are Data Science and IT infrastructure, plus web design to showcase results. 
   </p>
   <p>
-  He didn't find any energy management software that suited his needs, so he started to write eflows. 
+  He didn't find any energy management software that suited his needs, so he started to write <code>eflows</code>. 
   </p>
   <p>
   <a href="https://www.linkedin.com/in/carlosvarelamartin/" target="_blank">LinkedIn</a>
   </p>
+  <p>
+  <a href="CV6.pdf" target="_blank">CV</a>
+  </p>
   </div>
 </div>
 
-eflows is developed throught the involvement with <a href="https://resourcefully.nl/" target="_blank">Resourcefully</a>, an energy transition consulting firm based in Amsterdam. eflows has been already used to simulate the local effects of a varibale number of electric vehicles and PV installations at local scale.
+`eflows` is developed throught the involvement with <a href="https://resourcefully.nl/" target="_blank">Resourcefully</a>, an energy transition consulting firm based in Amsterdam. `eflows` has been already used to simulate the local effects of a varibale number of electric vehicles and PV installations at local scale.

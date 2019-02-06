@@ -7,7 +7,7 @@ library(eflows.viz)
 # note the use of `$` to chain methods
 
 test_object <- e_frame$new(sept$datetime[1:168])$
-  set_demand(e_demand$new(fixed = base_demand,
+  set_demand(e_demand$new(fixed = as.vector(sept$d_house_smooth[1:168]*120),
                            flex = list(
                              flex_mtx$new(data = cbind(rep(2, 168),
                                                        rep(2, 168),
