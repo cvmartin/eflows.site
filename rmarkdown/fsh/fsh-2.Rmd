@@ -1,10 +1,10 @@
 ## Several flexibility layers and devices
 
-A continuous, uniform layer of flexible demand may reflect some user cases, but ideally `foreshift()` shall consider them all. For instance, a volume of flexible demand of 12 hours *and* a flexible demand of 6 hours may match in time. 
+A continuous, uniform layer of flexible demand may reflect some user cases, but ideally `foreshift()` should consider all of them. For instance, a volume of flexible demand of 12 hours *and* a flexible demand of 6 hours may match in time. 
 
 To manage energy data, `eflows` uses a custom object, `e_frame`, that is constructed by populating its several fields with specific data. One of these fields is `demand`, that in turn has two subfields: `fixed` and `flex`.
 
-The `fixed` subfield is just a vector representing the fixed demand. `flex` subfield is more complex: it consists of one or more *flexibility matrix*. In this matrix, the rows are the *timesteps* while the columns represent the *level of flexibility*. As an example:
+The `fixed` subfield is just a vector representing the fixed demand. `flex` subfield is more complex: it consists of one or more *flexibility matrix*. In this matrix, the rows are the *timesteps* while the columns represent the *level of flexibility*. As a contrived example:
 
 ```
 #>       [,1]     [,2] [,3] [,4] [,5]

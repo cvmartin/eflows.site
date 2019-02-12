@@ -6,7 +6,7 @@ As an R package, it can be used either interactively in an R programming environ
 
 The functions and algorithms are integral part of the framework. These can be used to:
 
-- **Descibe**: To predict how an energy system will behave without steering it (no "smart management" involved). The main functions are `simulate()` and `distribute()`.
+- **Describe**: To predict how an energy system will behave without steering it (no "smart management" involved). The main functions are `simulate()` and `distribute()`.
 
 - **Timeshift**: To steer the energy system, so the demand is realized when is more convenient. Timeshifting involves either delaying the energy consumption (`foreshift()`) or storing it beforehand (`backshift()`).
 
