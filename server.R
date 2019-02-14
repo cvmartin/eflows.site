@@ -186,6 +186,144 @@ shinyServer(function(input, output, session) {
   fsh_random_out <- callModule(randomize, "fsh_random_in")
   
 
+# backshift (bsh) cost ----------------------------------------------------
+# data
+
+  bsh_cost_randomvec <- reactive({
+    if (bsh_cost_random_out()$switch) {
+      vec_normal(168, sd = 0.2)
+    } else {
+      rep(1,168)
+    }
+  })
+  
+  p_only_demand <- o_bare$clone(deep = TRUE)
+  
+  o_only_demand <- reactive({
+    p_only_demand$set_demand(e_demand$new(
+      fixed = ((sept$d_house_smooth[1:168]*120) - 5) * bsh_cost_randomvec()))
+  })
+  
+  bsh_cost_backcurve <- reactive({
+    vec <- o_only_demand()$demand$input$fixed
+    
+    piece <- diff(range(vec))/100
+    
+    middle <- eflows:::depreciate(
+      vector = rep((vec[input$bsh_cost_back_point]) - piece,
+                   (input$bsh_cost_back_time + 1)),
+      self_discharge = input$bsh_cost_self_discharge/100,
+      eff = list(input$bsh_cost_eff_to/100,input$bsh_cost_eff_from/100), 
+      backwards = TRUE
+    )
+    
+    tooearly <- (input$bsh_cost_back_point - input$bsh_cost_back_time) < 0
+    
+    if (tooearly) {
+      from <- abs(input$bsh_cost_back_point - input$bsh_cost_back_time)
+      middle <- c(middle[from:length(middle)],rep(NA, from))
+    }
+    
+    behind <- rep(NA, ifelse(tooearly, 0, 
+                             input$bsh_cost_back_point - input$bsh_cost_back_time -1))
+    
+    front <- rep(NA, length(vec) - input$bsh_cost_back_point)
+    
+    c(behind, middle, front)
+  })
+  
+  output$graph_bsh_cost <- renderDygraph({
+    
+    palette <- bsh_cost_backcurve() > o_only_demand()$demand$input$fixed
+    palette <- is.na(palette) | palette == FALSE
+    
+    
+    viz_fore_input(o_only_demand()) %>% 
+      eflows.viz:::add_cap(bsh_cost_backcurve(), 
+                           label = "depreciation curve", 
+                           color = "#7A378B") %>% 
+      dyRibbon(palette, palette = c("#fff5bf", "white"))
+  }) 
+  
+  # build
+  bsh_cost_random_out <- callModule(randomize, "bsh_cost_random_in")
+  
+  # backshift (bsh) basic ----------------------------------------------------
+  # data
+  
+  
+  bsh_basic_bundle <- reactive({
+    
+    o_only_demand()$
+    set_storage(e_storage$new(storage$new(vol = 23, 
+                                          eff = list(input$bsh_cost_eff_to/100,
+                                                     input$bsh_cost_eff_from/100), 
+                                          self_discharge = input$bsh_cost_self_discharge/100,
+                                          name = "battery")))
+    
+    o_only_demand()$do_backshift(input$bsh_cost_back_time)
+  
+    potential <- viz_back_potential(o_only_demand())
+    post <- viz_back_output(o_only_demand())
+    comp <- viz_compare(list(potential, post), c("original", "backshifted"))
+    
+    bundle <- viz_bundle(potential, post, comp,
+                         ymax = max_yaxis(list_stacked = list(potential), list_unstacked = list(comp)),
+                         names = c("potential", "backshifted", "comparison"))
+    bundle
+  })
+  #build
+  callModule(dyRadioSelector, "graph_bsh_basic", reactive(bsh_basic_bundle()))
+  
+  # backshift (bsh) fit ----------------------------------------------------
+  # data
+  bsh_fit_bundle <- reactive({
+    
+    o_only_demand <- reactive({
+      e_frame$new(sept$datetime[1:168])$
+        set_demand(e_demand$new(fixed = sept$d_house_smooth[1:168]*120 - 5))
+      
+    })
+    
+    o_only_demand()$
+      set_production(e_production$new(fixed = list(solar = sept$solar[1:168]*120)))$
+      set_price(sept$eprice[1:168]*0.6, unit = "euro/mWh")$
+      set_cap((sin(seq.int(1,168)/10*3) + 55))$
+      set_storage(e_storage$new(storage$new(vol = 23, 
+                                            eff = list(input$bsh_fit_eff_to/100,
+                                                       input$bsh_fit_eff_from/100), 
+                                            self_discharge = input$bsh_fit_self_discharge/100,
+                                            name = "battery")))
+    
+    o_only_demand()$do_backshift(horizon = input$bsh_fit_back_time, fit = formula_bsh_fit())
+    
+    potential <- viz_back_potential(o_only_demand())
+    post <- viz_back_output(o_only_demand())
+    comp <- viz_compare(list(potential, post), c("original", "backshifted"))
+    fitcurve <- viz_fit(o_only_demand())
+    
+    bundle <- viz_bundle(potential, post, comp,
+                         ymax = max_yaxis(list_stacked = list(potential), list_unstacked = list(comp)),
+                         names = c("potential", "backshifted", "comparison"))
+    bundle[["fitcurve"]] <- fitcurve
+    bundle
+  })
+  
+  # build
+
+  formula_bsh_fit <- callModule(fitSelector, "formula_bsh_fit")
+  
+  callModule(dyRadioSelector, "factors_bsh_fit", reactive(fitvars))
+  
+  callModule(dyRadioSelector, "graph_bsh_fit", reactive(bsh_fit_bundle()))
+  
+  output$bsh_fit_fitcurve <- renderDygraph({
+    bsh_fit_bundle()[["fitcurve"]]
+  })
+ 
+  
+  
+  
 # ev (ev) one -------------------------------------------------------------
   # data
   p_1ev <- o_1ev$clone()
@@ -470,6 +608,10 @@ shinyServer(function(input, output, session) {
   })
   
 
+  
+  
+  
+  
 # OBSERVERS ---------------------------------------------------------------
 
   # Add URL navigation

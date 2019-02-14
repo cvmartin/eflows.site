@@ -71,42 +71,4 @@ o_Xdemand$set_demand(e_demand$new(fixed = base_demand,
 
 
 
-##
 
-randomprof <- o_1demand$clone(deep = TRUE)
-# randomprof$set_demand(e_demand$new(fixed = base_demand,
-#                                   flex = list(flex_mtx$new(data = cbind(vec_spiked(168, 2),
-#                                                                         vec_spiked(168, 2),
-#                                                                         vec_spiked(168, 2),
-#                                                                         vec_spiked(168, 2),
-#                                                                         vec_spiked(168, 2),
-#                                                                         vec_spiked(168, 2)),
-#                                                            steps = c(2,4,6,8,10,12),
-#                                                            name = "obj"))))
-# 
-# viz_fore_input(randomprof)
-# viz_fore_input(o_Xdemand)
-# 
-# plot(vec_spiked(168, 2, round(168/10)), type = "l" )
-
-
-# proto$demand$input$fixed[1:10]
-# customfit$demand$input$fixed[1:10]
-
-# save(list = ls(), file = "www/preprocessed_data.rda")
-
-##
-
-# amst <- e_frame$new(sept$datetime[1:168])
-# 
-# original_data <-  evdistrict[["nieuw_west"]] %>%
-#   select(-datetime, -`0`) %>%
-#   slice(1:168) %>%
-#   as.matrix()
-# 
-# amst_demand_original <- e_demand$new(fixed = as.vector(sept$d_house_smooth[1:168]),
-#                                      flex = list(flex_mtx$new(original_data, c(2,4,6,8,10,12), "ev")
-#                                      ))
-# amst$set_demand(amst_demand_original)
-
-##
