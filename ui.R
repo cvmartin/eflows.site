@@ -30,9 +30,9 @@ sidebar <- dashboardSidebar(
         "Data driven energy transition", 
         br(),br()),
     menuItem("Home", tabName = "home"),
-    menuItem("Functions", 
+    menuItem("Functions",
              menuSubItem("foreshift", tabName = "foreshift"),
-             menuSubItem("backshift", tabName = "backshift"),
+             menuSubItem("backshift (BETA)", tabName = "backshift"),
              # menuSubItem("simulate", tabName = "simulate"),
              menuSubItem("distribute", tabName = "distribute")
     ),
@@ -229,51 +229,130 @@ tab_backshift <-
           narrowDiv(
             includeMarkdown("./rmarkdown/backshift/backshift-intro.Rmd")
           ), 
-          wideDiv( title = "The cost of backshifing",
-            inputDiv(
-              column(3,
-                     sliderInput("bsh_cost_self_discharge",
-                                 "Self discharge",
-                                 min = 0, max = 10, value = 1, step = 0.1,
-                                 ticks = FALSE, post = " % per hour")
-              ), 
-              column(3,
-                     sliderInput("bsh_cost_eff_to",
-                                 "Efficiency to battery:",
-                                 min = 85, max = 100, value = 100,
-                                 ticks = FALSE, post = " %")
-              ), 
-              column(3,
-                     sliderInput("bsh_cost_eff_from",
-                                 "Efficiency from battery:",
-                                 min = 85, max = 100, value = 100,
-                                 ticks = FALSE, post = " %")
-              ), 
-              column(3, 
-                     sliderInput("bsh_cost_back_time",
-                                 "Time horizon",
-                                 min = 1, max = 24, value = 12,
-                                 ticks = FALSE, post = " hours")
-              ),
-              column(12, 
-                     div(
-                       # style = "display:inline;width = 500px",
-                       style = "padding-left: 60px",
-                       tags$strong("Point in time"),
-                       sliderInput("bsh_cost_back_point", label = NULL,
-                                   min = 1, max = 168, value = 94, 
-                                   ticks = FALSE, post = " hours from the start")
-                     )
-                     
-              )
+          wideDiv( title = "The cost of backshifing", #####
+          inputDiv(
+            column(3,
+                   sliderInput("bsh_cost_self_discharge",
+                               "Self discharge",
+                               min = 0, max = 10, value = 1, step = 0.1,
+                               ticks = FALSE, post = " % per hour")
             ),
-            box(width = 12,
-                dygraphOutput("graph_bsh_cost", height = dy_height),
-                dyCornerDiv(randomizeInput("bsh_cost_random_in", label = "Random profile"))
-                ),
-            box(width = 12,
-                dyRadioSelectorUI("graph_bsh_basic", c("potential", "backshifted", "comparison")))
+            column(3,
+                   sliderInput("bsh_cost_eff_to",
+                               "Efficiency to battery:",
+                               min = 85, max = 100, value = 100,
+                               ticks = FALSE, post = " %")
+            ),
+            column(3,
+                   sliderInput("bsh_cost_eff_from",
+                               "Efficiency from battery:",
+                               min = 85, max = 100, value = 100,
+                               ticks = FALSE, post = " %")
+            ),
+            column(3,
+                   sliderInput("bsh_cost_back_time",
+                               "Time horizon",
+                               min = 1, max = 24, value = 12,
+                               ticks = FALSE, post = " hours")
+            ),
+            column(12,
+                   div(
+                     # style = "display:inline;width = 500px",
+                     style = "padding-left: 60px",
+                     tags$strong("Point in time"),
+                     sliderInput("bsh_cost_back_point", label = NULL,
+                                 min = 1, max = 168, value = 94,
+                                 ticks = FALSE, post = " hours from the start")
+                   )
+
             )
+          ),
+          box(width = 12,
+              dygraphOutput("graph_bsh_cost", height = dy_height),
+              dyCornerDiv(randomizeInput("bsh_cost_random_in", label = "Random profile"))
+              )
+          # ,
+          # box(width = 12,
+          #     dyRadioSelectorUI("graph_bsh_basic", c("potential", "backshifted", "comparison")))
+          ),
+          ###
+          ######
+          wideDiv(title = "Fitting to backshift", 
+                  inputDiv(
+                    column(3,
+                           sliderInput("bsh_fit_self_discharge",
+                                       "Self discharge",
+                                       min = 0, max = 10, value = 1, step = 0.1,
+                                       ticks = FALSE, post = " % per hour")
+                    ), 
+                    column(3,
+                           sliderInput("bsh_fit_eff_to",
+                                       "Efficiency to battery:",
+                                       min = 85, max = 100, value = 100,
+                                       ticks = FALSE, post = " %")
+                    ), 
+                    column(3,
+                           sliderInput("bsh_fit_eff_from",
+                                       "Efficiency from battery:",
+                                       min = 85, max = 100, value = 100,
+                                       ticks = FALSE, post = " %")
+                    ), 
+                    column(3, 
+                           sliderInput("bsh_fit_back_time",
+                                       "Time horizon",
+                                       min = 1, max = 24, value = 12,
+                                       ticks = FALSE, post = " hours")
+                    ),
+                    ##
+                    
+                    column(2, 
+                           sliderInput("bsh_fit_pwr_to",
+                                       "Max. charge rate",
+                                       min = 0, max = 5, value = 3,
+                                       ticks = FALSE, post = " kW")
+                    ),
+                    column(2, 
+                           sliderInput("bsh_fit_pwr_from",
+                                       "Max. discharge rate",
+                                       min = 0, max = 5, value = 3,
+                                       ticks = FALSE, post = " kW")
+                    ),
+                    column(3, 
+                           sliderInput("bsh_fit_soc_init",
+                                       "Initial State Of Charge",
+                                       min = 0, max = 100, value = 5,
+                                       ticks = FALSE, post = " %")
+                    ),
+                    column(3, 
+                           sliderInput("bsh_fit_vol",
+                                       "Storage capacity",
+                                       min = 0, max = 100, value = 5,
+                                       ticks = FALSE, post = " kWh")
+                    ),
+                    column(2, 
+                           div(style = "text-align:center; padding-top:22px;",
+                               switchInput("switch_bsh_fit_vol_unlimit", 
+                                           label = "Unlimited",
+                                           labelWidth = 100, 
+                                           inline = TRUE)
+                           )
+                    )
+                    
+                  ),
+                  
+                  fitSelectorInput("formula_bsh_fit"),
+                  
+                  box(width = 12, title = "Factors that influence the fitting curve", 
+                      collapsible = TRUE, collapsed = TRUE,
+                      dyRadioSelectorUI("factors_bsh_fit", c("demand", "production", "price", "grid capacity"))
+                  ),
+                  box(width = 12, title = "Fitting curves", collapsible = TRUE, collapsed = TRUE,
+                      dygraphOutput("bsh_fit_fitcurve", height = dy_height)
+                  ), 
+                  box(width = 12, 
+                      dyRadioSelectorUI("graph_bsh_fit", c("potential", "backshifted", "comparison"))
+                  )
+          )
           )
 
 
