@@ -44,7 +44,10 @@ sidebar <- dashboardSidebar(
              menuSubItem("Electric Vehicles charging", tabName = "ev")),
     tags$hr(style = "width: 53%;"),
     menuItem("Author", tabName = "author")
-  ) 
+  ),
+  actionButton("hide_bar", label = NULL, icon = icon("caret-square-left"), 
+               class = "sidebar-toggle togbar",
+               `data-toggle` = "offcanvas")
 ) 
 
 # BODY --------------------------------------------------------------------
@@ -501,6 +504,9 @@ tab_author <-
 
 body <- dashboardBody(
   useShinyjs(),
+  actionButton("show_bar", label = NULL, icon = icon("caret-square-right"), 
+               class = "sidebar-toggle togbar",
+               `data-toggle` = "offcanvas"),
   tabItems(
     tab_home,
     tab_fitting,
