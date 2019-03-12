@@ -323,17 +323,21 @@ tab_backshift <-
                                        min = 0, max = 100, value = 5,
                                        ticks = FALSE, post = " %")
                     ),
-                    column(3, 
+                    # column(5, 
+                    #        battsliderInput("bsh_fit_vol")
+                    #        )
+                    
+                    column(3,
                            sliderInput("bsh_fit_vol",
                                        "Storage capacity",
                                        min = 0, max = 100, value = 5,
                                        ticks = FALSE, post = " kWh")
                     ),
-                    column(2, 
+                    column(2,
                            div(style = "text-align:center; padding-top:22px;",
-                               switchInput("switch_bsh_fit_vol_unlimit", 
+                               switchInput("switch_bsh_fit_vol_unlimit",
                                            label = "Unlimited",
-                                           labelWidth = 100, 
+                                           labelWidth = 100,
                                            inline = TRUE)
                            )
                     )

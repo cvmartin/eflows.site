@@ -55,6 +55,57 @@ randomize <- function(input, output, session) {
 }
 
 
+
+# battslider (slider of battery with infinite button) ----------------------
+
+battsliderInput <- function(id) {
+  
+  ns <- NS(id)
+  
+  # div(
+  tagList(
+    singleton(tags$style('
+.infinity_button .btn {
+transition: background-color 0.5s ease;
+color:white; 
+background-color: #337ab7; 
+border-color: #cccccc}
+
+.infinity_button .btn:active {
+background-color: #193f5f;
+color: white;
+}
+
+')),
+    div(style = "display:inline;",
+      sliderInput(ns("vol"),width = "80%",
+                  "Storage capacity",
+                  min = 0, max = 100, value = 5,
+                  ticks = FALSE, post = " kWh"
+      ), 
+      div(style = "display:inline;", class = "infinity_button",
+          actionButton(ns("do_inf"), NULL , icon = icon("infinity")))
+    )
+  )
+}
+
+
+battslider <- function(input, output, session) {
+  
+  observeEvent(input$do_inf, toggleState("vol"))
+  
+  return(reactive({
+    if (isTRUE(input$do_inf)){
+      0
+    } else {
+      input$vol
+    }
+  })
+  )
+  
+}
+
+
 # fitSelector (associate input bar with predefined formulas) --------------
 
 list_formulas <- list(`Peak shaving` = "1* .demand", 

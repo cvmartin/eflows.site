@@ -297,8 +297,10 @@ shinyServer(function(input, output, session) {
     
     o_only_demand()$do_backshift(horizon = input$bsh_fit_back_time, fit = formula_bsh_fit())
     
-    potential <- viz_back_potential(o_only_demand())
-    post <- viz_back_output(o_only_demand())
+    cap_used <- (".cap" %in% all.vars(formula_bsh_fit()))
+    
+    potential <- viz_back_potential(o_only_demand(), show_cap = cap_used)
+    post <- viz_back_output(o_only_demand(), show_cap = cap_used)
     comp <- viz_compare(list(potential, post), c("original", "backshifted"))
     fitcurve <- viz_fit(o_only_demand())
     
@@ -310,6 +312,7 @@ shinyServer(function(input, output, session) {
   })
   
   # build
+  bsh_fit_vol <- callModule(battslider, "bsh_fit_vol") 
 
   formula_bsh_fit <- callModule(fitSelector, "formula_bsh_fit")
   
