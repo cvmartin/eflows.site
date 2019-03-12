@@ -602,7 +602,7 @@ shinyServer(function(input, output, session) {
         stackedGraph = TRUE,
         colors = palette_pwr, 
         mobileDisableYTouch = TRUE,
-        retainDateWindow = TRUE)%>% 
+        retainDateWindow = TRUE) %>% 
       dyAxis("x", label = "minutes of charge") %>% 
       dyAxis("y", "kW") %>% 
       dyLegend(show = "onmouseover") %>% 
@@ -651,3 +651,7 @@ shinyServer(function(input, output, session) {
   })
   
 })
+
+
+
+# observeEvent(input$hide_bar, toggleState("title_button"))

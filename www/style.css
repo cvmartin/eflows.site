@@ -3,6 +3,15 @@
   position: fixed;
 }
 
+.togbar {
+ position: fixed;
+ bottom:10px;
+ left:10px;
+ background-color: #222d32;
+ color: #b8c7ce;
+ border:0;
+}
+
 .inputDiv {
   padding:0;
   padding-top:5px;
@@ -107,4 +116,8 @@
   }
 }
 
-
+@media (max-width: 770px) {
+  .togbar {
+    display: none;
+  }
+}
