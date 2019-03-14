@@ -163,7 +163,7 @@ tab_fitting <-
                       dyRadioSelectorUI("factors_fit_plus", c("demand", "production", "price", "grid capacity"))
                       ),
                   box(width = 12, title = "Fitting curves", collapsible = TRUE,
-                      dygraphOutput("fit_fitcurve", height = dy_height)
+                      dygraphOutput("fit_fitcurve", height = const$dy_height)
                   ), 
                   box(width = 12,
                       dyRadioSelectorUI("graph_fit_plus", c("original", "foreshifted", "comparison")),
@@ -271,7 +271,7 @@ tab_backshift <-
             )
           ),
           box(width = 12,
-              dygraphOutput("graph_bsh_cost", height = dy_height),
+              dygraphOutput("graph_bsh_cost", height = const$dy_height),
               dyCornerDiv(randomizeInput("bsh_cost_random_in", label = "Random profile"))
               )
           # ,
@@ -344,9 +344,7 @@ tab_backshift <-
                                            inline = TRUE)
                            )
                     )
-                    
                   ),
-                  
                   fitSelectorInput("formula_bsh_fit"),
                   
                   box(width = 12, title = "Factors that influence the fitting curve", 
@@ -354,12 +352,13 @@ tab_backshift <-
                       dyRadioSelectorUI("factors_bsh_fit", c("demand", "production", "price", "grid capacity"))
                   ),
                   box(width = 12, title = "Fitting curves", collapsible = TRUE, collapsed = TRUE,
-                      dygraphOutput("bsh_fit_fitcurve", height = dy_height)
+                      dygraphOutput("bsh_fit_fitcurve", height = const$dy_height)
                   ), 
                   box(width = 12, 
-                      dyRadioSelectorUI("graph_bsh_fit", c("potential", "backshifted", "comparison"))
+                      dyRadioSelectorUI("graph_bsh_fit", c("potential", "backshifted", "comparison")),
+                      dyRadioSelectorUI("graph_bsh_str", c("storage_flow", "storage_soc"), height = 120)
                   )
-          )
+                  )
           )
 
 
@@ -413,7 +412,7 @@ tab_ev <-
                       dyRadioSelectorUI("factors_ev", c("demand", "production", "price", "grid capacity"))
                   ),
                   box(width = 12, title = "Fitting curves", collapsible = TRUE, collapsed = TRUE,
-                      dygraphOutput("ev_multi_fitcurve", height = dy_height)
+                      dygraphOutput("ev_multi_fitcurve", height = const$dy_height)
                   ), 
                   box(width = 12, 
                       dyRadioSelectorUI("graph_evs",
@@ -478,10 +477,10 @@ tab_ev <-
                            )
                   ),
                   box(width = 12, title = "EVs State Of Charge", 
-                      dygraphOutput("ev_pwr_soc", height = dy_height)
+                      dygraphOutput("ev_pwr_soc", height = const$dy_height)
                      ),
                   box(width = 12, title = "Power flow into EVs",
-                      dygraphOutput("ev_pwr_flow", height = dy_height)
+                      dygraphOutput("ev_pwr_flow", height = const$dy_height)
                   ),
                   column(12, includeMarkdown("./rmarkdown/ev/ev-pwr-post.Rmd"))
           ),

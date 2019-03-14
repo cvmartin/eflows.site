@@ -213,7 +213,8 @@ shinyServer(function(input, output, session) {
       vector = rep((vec[input$bsh_cost_back_point]) - piece,
                    (input$bsh_cost_back_time + 1)),
       self_discharge = input$bsh_cost_self_discharge/100,
-      eff = list(input$bsh_cost_eff_to/100,input$bsh_cost_eff_from/100), 
+      eff_to = input$bsh_cost_eff_to/100, 
+      eff_from = input$bsh_cost_eff_from/100, 
       backwards = TRUE
     )
     
@@ -303,12 +304,22 @@ shinyServer(function(input, output, session) {
     post <- viz_back_output(o_only_demand(), show_cap = cap_used)
     comp <- viz_compare(list(potential, post), c("original", "backshifted"))
     fitcurve <- viz_fit(o_only_demand())
+    storage_flow <- viz_storage_flows(o_only_demand())
+    storage_soc <- viz_storage_soc(o_only_demand())
     
     bundle <- viz_bundle(potential, post, comp,
                          ymax = max_yaxis(list_stacked = list(potential), list_unstacked = list(comp)),
                          names = c("potential", "backshifted", "comparison"))
     bundle[["fitcurve"]] <- fitcurve
+    bundle[["storage_flow"]] <- storage_flow
+    bundle[["storage_soc"]] <- storage_soc
+    
+    bundle <- lapply(bundle, eflows.viz:::set_group, groupname = "bsh_fit_bundle")
+    
     bundle
+    
+    
+    
   })
   
   # build
@@ -319,6 +330,8 @@ shinyServer(function(input, output, session) {
   callModule(dyRadioSelector, "factors_bsh_fit", reactive(fitvars))
   
   callModule(dyRadioSelector, "graph_bsh_fit", reactive(bsh_fit_bundle()))
+  
+  callModule(dyRadioSelector, "graph_bsh_str", reactive(bsh_fit_bundle()))
   
   output$bsh_fit_fitcurve <- renderDygraph({
     bsh_fit_bundle()[["fitcurve"]]

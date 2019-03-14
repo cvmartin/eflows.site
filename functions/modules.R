@@ -170,11 +170,11 @@ fitSelector <- function(input, output, session) {
 
 # dyRadioSelector -----------------------------------------------------------
 
-dyRadioSelectorUI <- function(id, tabs) {
+dyRadioSelectorUI <- function(id, tabs, height = const$dy_height) {
   ns <- NS(id)
   tags$div(
     radioGroupButtons(ns("dy_radio_buttons"), NULL, tabs, justified = TRUE),
-    dygraphOutput(ns("dy_radio_graph"), height = dy_height)
+    dygraphOutput(ns("dy_radio_graph"), height = height)
   )
 }
 

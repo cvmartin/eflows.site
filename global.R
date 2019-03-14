@@ -11,9 +11,9 @@ library(dplyr)
 library(tidyr)
 library(R6)
 
-dy_height <- 210
+const <- list(dy_height = 210)
 
-source("functions/utils.R", local = TRUE)
-source("functions/data_preprocessing.R", local = TRUE)
+source("functions/utils_server.R", local = TRUE)
 source("functions/utils_ui.R", local = TRUE)
+source("functions/data_preprocessing.R", local = TRUE)
 source("functions/modules.R", local = TRUE)
