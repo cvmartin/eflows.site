@@ -356,7 +356,7 @@ tab_backshift <-
                   ), 
                   box(width = 12, 
                       dyRadioSelectorUI("graph_bsh_fit", c("potential", "backshifted", "comparison")),
-                      dyRadioSelectorUI("graph_bsh_str", c("storage_flow", "storage_soc"), height = 120)
+                      dyRadioSelectorUI("graph_bsh_str", c("storage: exchange", "storage: soc"), height = 120)
                   )
                   )
           )

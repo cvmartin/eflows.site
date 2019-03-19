@@ -283,14 +283,13 @@ shinyServer(function(input, output, session) {
     o_only_demand <- reactive({
       e_frame$new(sept$datetime[1:168])$
         set_demand(e_demand$new(fixed = sept$d_house_smooth[1:168]*120 - 5))
-      
     })
     
     o_only_demand()$
       set_production(e_production$new(fixed = list(solar = sept$solar[1:168]*120)))$
       set_price(sept$eprice[1:168]*0.6, unit = "euro/mWh")$
       set_cap((sin(seq.int(1,168)/10*3) + 55))$
-      set_storage(e_storage$new(storage$new(vol = 23, 
+      set_storage(e_storage$new(storage$new(vol = input$bsh_fit_vol, 
                                             eff = list(input$bsh_fit_eff_to/100,
                                                        input$bsh_fit_eff_from/100), 
                                             self_discharge = input$bsh_fit_self_discharge/100,
@@ -311,8 +310,8 @@ shinyServer(function(input, output, session) {
                          ymax = max_yaxis(list_stacked = list(potential), list_unstacked = list(comp)),
                          names = c("potential", "backshifted", "comparison"))
     bundle[["fitcurve"]] <- fitcurve
-    bundle[["storage_flow"]] <- storage_flow
-    bundle[["storage_soc"]] <- storage_soc
+    bundle[["storage: exchange"]] <- storage_flow
+    bundle[["storage: soc"]] <- storage_soc
     
     bundle <- lapply(bundle, eflows.viz:::set_group, groupname = "bsh_fit_bundle")
     
