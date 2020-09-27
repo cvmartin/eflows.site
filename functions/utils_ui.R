@@ -12,35 +12,19 @@ tabPanelEV <- function(int){
                                   min = 0, max = 40, value = 10, step = 1, ticks = FALSE, post = " kWh flex12"),
                       sliderInput(sprintf("ev%scap", int), label = "Maximum charge rate", min = 4,
                                   max = 40, value = 20, step = 1, ticks = FALSE, post = " kW")), 
-           
-           # div(
-           # div(style = "display:inline; width = 60px", 
-           #     icon("clock")), 
            div(
-             # style = "display:inline;width = 500px",
              style = "padding-left: 60px",
              tags$strong("Charging start time"),
              
                sliderInput(sprintf("ev%spos", int), label = NULL, min = 1, max = 168, value = sample(seq(1,168),1), 
                            ticks = FALSE, post = " hours from start") 
            )
-           # )
   )
 }
 
 tabPanelPwrEV <- function(int, isoc, ivol, icap, ilevel){
   tabPanel(sprintf("EV %s", int), 
            fluidRow(
-             # column(3, 
-             #        sliderInput(sprintf("ev%ssoc", int),
-             #                    label = "Initial SOC", 
-             #                    min = 0,max = 100, value = isoc, step = 1, ticks = FALSE, post = " kWh")
-             #        ),
-             # column(3, 
-             #        sliderInput(sprintf("ev%svol", int), 
-             #                    label = "Battery volume", 
-             #                    min = 0, max = 100, value = ivol, step = 1, ticks = FALSE, post = " kWh")
-             # ),
              column(6, 
                     sliderInput(sprintf("ev%ssocvol", int), 
                                 label = "Initial State Of Charge - Final State of Charge (battery size)", 
@@ -78,7 +62,6 @@ broadDiv <- function(..., title = NULL){
 }
 
 mreDiv <- function(id, title = NULL, path, ...){
-  # fluidRow(
     div(class = "mreDiv",
                box(title = tagList(icon("code"), p(title, style = "display:inline;padding-left:10px")), 
                    width = 12, collapsible = TRUE, 
@@ -94,7 +77,6 @@ mreDiv <- function(id, title = NULL, path, ...){
                              )
                    )
   )
-  # )
 }
 
 wideDiv <- function(..., title = NULL){
@@ -107,6 +89,5 @@ dyCornerDiv <- function(...){
   tags$div(style = "float:right;margin-top:5px;margin-bottom:-5px;margin-right:-10px", 
            ...
            )
-  
 }   
 

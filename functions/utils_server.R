@@ -36,7 +36,6 @@ do_ev_prof <- function(matrix, inputs = c(), pos, cap) {
 
 
 # profile generators ------------------------------------------------------
-
 vec_const <-function(l, v = 1){rep(v,l)}
 
 vec_normal <- function(l, v = 1, sd = v/2){rnorm(l, v, sd)}
@@ -60,14 +59,7 @@ ondulation <- function(l, v = 1, k = round(l/10)) {
   (scale(y)/10)+1
 }
 
-
-# generators --------------------------------------------------------------
-
-
-
-
 # aesthetics --------------------------------------------------------------
-
 gg_palette <- function(n) {
   hues = seq(15, 375, length = n + 1)
   hcl(h = hues, l = 65, c = 100)[1:n]

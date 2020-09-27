@@ -3,10 +3,8 @@ shinyServer(function(input, output, session) {
 
 # reactive variables 
   master_seed <- reactiveVal(sample(1:100,1))  
-  
 
 # fitting (fit) basic -----------------------------------------------------
-
   callModule(dyRadioSelector, "factors_fit_basic", reactive(fitvars))
   
   fit_basic_formula <- reactive({
@@ -42,7 +40,6 @@ shinyServer(function(input, output, session) {
   callModule(dyRadioSelector, "graph_fit_basic", reactive(fit_basic_bundle()))
   
 # fitting (fit) plus ------------------------------------------------------
-  
   # data
   fit_plus_raw <- o_Xdemand$clone(deep = TRUE)
   
@@ -185,10 +182,8 @@ shinyServer(function(input, output, session) {
              condition = reactive(fsh_random_out()$switch))
   fsh_random_out <- callModule(randomize, "fsh_random_in")
   
-
 # backshift (bsh) cost ----------------------------------------------------
 # data
-
   bsh_cost_randomvec <- reactive({
     if (bsh_cost_random_out()$switch) {
       vec_normal(168, sd = 0.2)
@@ -251,8 +246,6 @@ shinyServer(function(input, output, session) {
   
   # backshift (bsh) basic ----------------------------------------------------
   # data
-  
-  
   bsh_basic_bundle <- reactive({
     
     o_only_demand()$
@@ -316,9 +309,6 @@ shinyServer(function(input, output, session) {
     bundle <- lapply(bundle, eflows.viz:::set_group, groupname = "bsh_fit_bundle")
     
     bundle
-    
-    
-    
   })
   
   # build
@@ -336,9 +326,6 @@ shinyServer(function(input, output, session) {
     bsh_fit_bundle()[["fitcurve"]]
   })
  
-  
-  
-  
 # ev (ev) one -------------------------------------------------------------
   # data
   p_1ev <- o_1ev$clone()
@@ -449,7 +436,6 @@ shinyServer(function(input, output, session) {
   
   callModule(dyRadioSelector, "graph_evs", reactive(ev_multi_bundle()))
 
-
 # ev (ev) dist --------------------------------------------------------
   #data
   ev_dist <- readRDS("data/districts_flex.rds")
@@ -493,7 +479,6 @@ shinyServer(function(input, output, session) {
   #build
   callModule(dyRadioSelector, "graph_ev_dist", reactive(ev_dist_bundle()))
   
-
 # ev (ev) pwr -------------------------------------------------------------
   # data
   palette_pwr <- gg_palette(5)
@@ -623,15 +608,8 @@ shinyServer(function(input, output, session) {
       eflows.viz:::add_cap(socflow()[[4]]*input$cap_evs_pwr)
   })
   
-
-  
-  
-  
-  
 # OBSERVERS ---------------------------------------------------------------
-
   # Add URL navigation
-  
   observeEvent(input$sidebarmenudefault, {
     # No work to be done if input$tabs and the hash are already the same
     if (getUrlHash() == paste0("#", input$sidebarmenudefault)) return()
@@ -665,6 +643,3 @@ shinyServer(function(input, output, session) {
   
 })
 
-
-
-# observeEvent(input$hide_bar, toggleState("title_button"))

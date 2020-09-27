@@ -3,7 +3,6 @@
 header <- dashboardHeader(title = "eflows", disable = FALSE)
 
 # SIDEBAR -----------------------------------------------------------------
-
 sidebar <- dashboardSidebar(
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "style.css"),
@@ -51,8 +50,6 @@ sidebar <- dashboardSidebar(
 ) 
 
 # BODY --------------------------------------------------------------------
-
-
 # home --------------------------------------------------------------------
 tab_home <- 
   tabItem("home", 
@@ -100,7 +97,6 @@ tab_home <-
   )
 
 # principles (princ) ----------------------------------------------------------
-
 tab_principles <- 
   tabItem("principles", 
           narrowDiv(
@@ -110,7 +106,6 @@ tab_principles <-
           ))
 
 # fitting (fit) ---------------------------------------------------------------
-
 tab_fitting <- 
   tabItem("fitting", 
           narrowDiv(
@@ -226,7 +221,6 @@ tab_foreshift <-
   ) 
 
 # backshift (bsh) ------------------------------------------------------------
-
 tab_backshift <- 
   tabItem("backshift", 
           narrowDiv(
@@ -274,12 +268,7 @@ tab_backshift <-
               dygraphOutput("graph_bsh_cost", height = const$dy_height),
               dyCornerDiv(randomizeInput("bsh_cost_random_in", label = "Random profile"))
               )
-          # ,
-          # box(width = 12,
-          #     dyRadioSelectorUI("graph_bsh_basic", c("potential", "backshifted", "comparison")))
           ),
-          ###
-          ######
           wideDiv(title = "Fitting to backshift", 
                   inputDiv(
                     column(3,
@@ -326,10 +315,6 @@ tab_backshift <-
                                        min = 0, max = 100, value = 5,
                                        ticks = FALSE, post = " %")
                     ),
-                    # column(5, 
-                    #        battsliderInput("bsh_fit_vol")
-                    #        )
-                    
                     column(3,
                            sliderInput("bsh_fit_vol",
                                        "Storage capacity",
@@ -363,7 +348,6 @@ tab_backshift <-
 
 
 # distribute (dis) ------------------------------------------------------------
-
 tab_distribute <- 
   tabItem("distribute", 
           narrowDiv(
@@ -376,7 +360,6 @@ tab_distribute <-
           )
 
 # ev (ev) ------------------------------------------------------------------
-
 tab_ev <- 
   tabItem("ev", 
           narrowDiv(
@@ -492,9 +475,7 @@ tab_ev <-
           )
           )
 
-
 # author ------------------------------------------------------------------
-
 tab_author <- 
   tabItem("author", 
           narrowDiv(
@@ -502,9 +483,7 @@ tab_author <-
           )
   )
 
-
 # BUILD ----------------
-
 body <- dashboardBody(
   useShinyjs(),
   actionButton("show_bar", label = NULL, icon = icon("caret-square-right"), 

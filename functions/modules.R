@@ -1,12 +1,7 @@
-
-
 # Randomize (slider to randomize + randomize button) ----------------------
-
 randomizeInput <- function(id, label = "Randomize profile") {
-  
   ns <- NS(id)
   
-  # div(
   tagList(
     singleton(tags$style('
 .randomize_button .btn {
@@ -41,7 +36,6 @@ color: white;
   )
 }
 
-
 randomize <- function(input, output, session) {
   
   observeEvent(input$switch_rand, toggleState("do_rand"))
@@ -51,15 +45,10 @@ randomize <- function(input, output, session) {
          button = input$do_rand)
   })
   )
-  
 }
 
-
-
 # battslider (slider of battery with infinite button) ----------------------
-
 battsliderInput <- function(id) {
-  
   ns <- NS(id)
   
   # div(
@@ -89,25 +78,17 @@ color: white;
   )
 }
 
-
 battslider <- function(input, output, session) {
   
   observeEvent(input$do_inf, toggleState("vol"))
   
-  return(reactive({
-    if (isTRUE(input$do_inf)){
-      0
-    } else {
-      input$vol
-    }
-  })
+  reactive(
+    if (isTRUE(input$do_inf)) 0 else input$vol
   )
-  
 }
 
 
 # fitSelector (associate input bar with predefined formulas) --------------
-
 list_formulas <- list(`Peak shaving` = "1* .demand", 
                       `To the lowest demand` = "1*.demand_fixed",
                       `To the minimum price` = "1* .price",
@@ -121,7 +102,6 @@ list_formulas <- list(`Peak shaving` = "1* .demand",
 )
 
 fitSelectorInput <- function(id) {
-  # Create a namespace function using the provided id
   ns <- NS(id)
   
   tagList(
@@ -150,7 +130,6 @@ fitSelectorInput <- function(id) {
   }
 
 
-
 fitSelector <- function(input, output, session) {
   # it requires the very last version of shinyWidgets
   observeEvent(c(input$predefined_formulas), {
@@ -160,18 +139,16 @@ fitSelector <- function(input, output, session) {
                       trigger = TRUE)
   })
   
-  current_formula <- reactive({ 
+  reactive( 
     as.formula(c("~", input$formula))
-    })
-  
-  return(current_formula)
+  )
 }
 
 
 # dyRadioSelector -----------------------------------------------------------
-
 dyRadioSelectorUI <- function(id, tabs, height = const$dy_height) {
   ns <- NS(id)
+  
   tags$div(
     radioGroupButtons(ns("dy_radio_buttons"), NULL, tabs, justified = TRUE),
     dygraphOutput(ns("dy_radio_graph"), height = height)
