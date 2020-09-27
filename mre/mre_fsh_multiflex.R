@@ -37,3 +37,8 @@ multiple_flex <-
 
 # display
 vizget(multiple_flex)
+
+
+
+lapply(test_object$demand$output$flex, function(x){x[["data"]]})[[1]] %>% 
+  apply(1, sum)

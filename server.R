@@ -426,12 +426,13 @@ shinyServer(function(input, output, session) {
     post_flex <- viz_fore_output(evs, aggregate = "flex", show_cap = cap_used)
     comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
     unstacked <- viz_fore_output(evs, aggregate = "object", show_fixed = FALSE, stacked = FALSE, show_cap = FALSE)
+    stacked <- viz_fore_output(evs, aggregate = "object", show_fixed = FALSE, show_cap = FALSE)
     fitcurve <- viz_fit(evs)
     
-    bundle <- viz_bundle(pre, post, post_ev,post_flex, comp, unstacked,
+    bundle <- viz_bundle(pre, post, post_ev,post_flex, comp, unstacked, stacked,
                ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
                names = c("original", "foreshifted","aggregated by ev", 
-                         "aggregated by flex", "comparison", "unstacked"))
+                         "aggregated by flex", "comparison", "unstacked", "stacked"))
     bundle[["fitcurve"]] <- fitcurve
     bundle
   })

@@ -417,7 +417,7 @@ tab_ev <-
                   box(width = 12, 
                       dyRadioSelectorUI("graph_evs",
                                            c("original", "foreshifted","aggregated by ev", 
-                                             "aggregated by flex", "comparison", "unstacked"))
+                                             "aggregated by flex", "comparison", "unstacked", "stacked"))
                       ),
                   column(12, includeMarkdown("./rmarkdown/ev/ev-plus-post.Rmd"))
           ), 
