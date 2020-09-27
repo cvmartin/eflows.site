@@ -131,7 +131,6 @@ fitSelectorInput <- function(id) {
 
 
 fitSelector <- function(input, output, session) {
-  # it requires the very last version of shinyWidgets
   observeEvent(c(input$predefined_formulas), {
     updateSearchInput(session = session, 
                       inputId = "formula", 
@@ -140,7 +139,7 @@ fitSelector <- function(input, output, session) {
   })
   
   reactive( 
-    as.formula(c("~", input$formula))
+    as.formula(paste("~", input$formula))
   )
 }
 

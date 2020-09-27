@@ -17,7 +17,7 @@ shinyServer(function(input, output, session) {
       theformula <- sprintf("ifelse(.demand < .cap, (%s), NA)", 
                             theformula)
     }
-    as.formula(c("~", theformula))
+    as.formula(paste("~", theformula))
   })
   
   # data
