@@ -1,0 +1,19 @@
+install.packages(
+  "caTools",
+  "devtools",
+  "dplyr",
+  "dygraphs",
+  "eflows",
+  "eflows.viz",
+  "knitr",
+  "R6",
+  "readr",
+  "renv",
+  "rmarkdown",
+  "shiny",
+  "shinyAce",
+  "shinydashboard",
+  "shinyjs",
+  "shinyWidgets",
+  "tidyr"
+)
