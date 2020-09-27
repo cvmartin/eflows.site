@@ -1,0 +1,34 @@
+Type: Compendium
+Package: eflows.site
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.1
+Authors@R: 
+    person(given = "First",
+           family = "Last",
+           role = c("aut", "cre"),
+           email = "first.last@example.com")
+Description: Web to visualize eflows functionalities
+License: What license it uses
+Depends: 
+    caTools,
+    devtools,
+    dplyr,
+    dygraphs,
+    eflows,
+    eflows.viz,
+    knitr,
+    R6,
+    readr,
+    renv,
+    rmarkdown,
+    shiny,
+    shinyAce,
+    shinydashboard,
+    shinyjs,
+    shinyWidgets,
+    tidyr
+Remotes: 
+    cvmartin/eflows,
+    cvmartin/eflows.viz
+Encoding: UTF-8
+LazyData: true
