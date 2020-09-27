@@ -1,11 +1,11 @@
-FROM rocker/binder:4.0.2
-LABEL maintainer='carlos_varela'
+FROM rocker/binder:3.4.2
+LABEL maintainer='Carlos Varela'
 USER root
 COPY . ${HOME}
 RUN chown -R ${NB_USER} ${HOME}
 USER ${NB_USER}
 
-RUN touch test
+
 
 RUN wget https://github.com/cvmartin/eflows-site/raw/master/DESCRIPTION && R -e "options(repos = list(CRAN = 'http://mran.revolutionanalytics.com/snapshot/2020-09-27/')); devtools::install_deps()"
 
