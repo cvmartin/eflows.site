@@ -1,4 +1,4 @@
-install.packages(
+install.packages(c(
   "remotes",
   "caTools",
   #"devtools",
@@ -17,7 +17,7 @@ install.packages(
   "shinyjs",
   "shinyWidgets",
   "tidyr"
-)
+))
 
 remotes::install_github("cvmartin/eflows")
 remotes::install_github("cvmartin/eflows.viz")
