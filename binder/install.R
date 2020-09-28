@@ -1,6 +1,7 @@
 install.packages(
+  "remotes",
   "caTools",
-  "devtools",
+  #"devtools",
   "dplyr",
   "dygraphs",
   "eflows",
@@ -8,7 +9,7 @@ install.packages(
   "knitr",
   "R6",
   "readr",
-  "renv",
+  #"renv",
   "rmarkdown",
   "shiny",
   "shinyAce",
@@ -17,3 +18,6 @@ install.packages(
   "shinyWidgets",
   "tidyr"
 )
+
+remotes::install_github("cvmartin/eflows")
+remotes::install_github("cvmartin/eflows.viz")
