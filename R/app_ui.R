@@ -6,12 +6,13 @@
 app_ui <- function(request) {
   # load UI content from modules --------------------------------------------
   tab_home <- mod_tab_home_ui("x")
-  tab_fitting <- mod_tab_fitting_ui("x")
   tab_foreshift <- mod_tab_foreshift_ui("x")
   tab_backshift <- mod_tab_backshift_ui("x")
-  tab_ev <- mod_tab_ev_ui("x")
-  
+  tab_distribute <- mod_tab_distribute_ui("x")
+  tab_fitting <- mod_tab_fitting_ui("x")
   tab_principles <- mod_tab_principles_ui("x")
+  tab_ev <- mod_tab_ev_ui("x")
+  tab_author <- mod_tab_author_ui("x")
   
   # sidebar -----------------------------------------------------------------
   sidebar <- dashboardSidebar(
@@ -42,7 +43,7 @@ app_ui <- function(request) {
                 menuItem("Functions",
                          tab_foreshift$sidebar,
                          tab_backshift$sidebar,
-                         menuSubItem("distribute", tabName = "distribute")
+                         tab_distribute$sidebar
                 ),
                 menuItem("Articles", 
                          tab_fitting$sidebar,
@@ -51,34 +52,13 @@ app_ui <- function(request) {
                 menuItem("Applications",
                          tab_ev$sidebar),
                 tags$hr(style = "width: 53%;"),
-                menuItem("Author", tabName = "author")
+                tab_author$sidebar
+                
     ),
     actionButton("hide_bar", label = NULL, icon = icon("caret-square-left"), 
                  class = "sidebar-toggle togbar",
                  `data-toggle` = "offcanvas")
   ) 
-  
-  
-  # distribute (dis) ------------------------------------------------------------
-  tab_distribute <- 
-    tabItem("distribute", 
-            narrowDiv(
-              include_md_text("distribute/distribute-intro.md")
-            ), 
-            mreDiv(
-              "distribute", "Distribute", "mre_distribute.R"
-            ),
-            narrowDiv()
-    )
-  
-  
-  # author ------------------------------------------------------------------
-  tab_author <- 
-    tabItem("author", 
-            narrowDiv(
-              include_md_text("author/author.md")
-            )
-    )
   
   # body ----------------
   body <- dashboardBody(
@@ -88,13 +68,13 @@ app_ui <- function(request) {
                  `data-toggle` = "offcanvas"),
     tabItems(
       tab_home$content,
-      tab_fitting$content,
-      tab_ev$content,
-      tab_principles$content,
-      tab_backshift$content,
-      tab_distribute,
       tab_foreshift$content,
-      tab_author
+      tab_backshift$content,
+      tab_distribute$content,
+      tab_fitting$content,
+      tab_principles$content,
+      tab_ev$content,
+      tab_author$content
     )
     )
   
