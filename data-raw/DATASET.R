@@ -1,5 +1,4 @@
 library(eflows)
-library(eflows.viz)
 
 base_demand <- (sept$d_house_smooth[1:168]*120) - 5 # a bit shorter seems to be better
 
@@ -72,5 +71,6 @@ o_Xdemand$set_demand(e_demand$new(fixed = base_demand,
 
 usethis::use_data(
   base_demand, o_bare, o_1demand, o_1ev, o_Xev, o_Xdemand, 
+  ev0, ev1, ev2, ev3, ev4, fitvars,
   internal = TRUE, overwrite = TRUE
   )

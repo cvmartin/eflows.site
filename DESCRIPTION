@@ -22,6 +22,12 @@ Imports:
     tidyr,
     R6,
     readr,
-    magrittr
+    magrittr,
+    eflows (>= 0.1.9.9000),
+    eflows.viz (>= 0.1.4.9000),
+    shinyWidgets
 Depends: 
     R (>= 2.10)
+Remotes: 
+    cvmartin/eflows,
+    cvmartin/eflows.viz
