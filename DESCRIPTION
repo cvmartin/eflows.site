@@ -4,10 +4,20 @@ Version: 0.0.0.9000
 Authors@R: 
     person(given = "Carlos",
            family = "Varela",
-           role = c("aut", "cre"))
+           role = c("aut", "cre"),
+           email = "cvarelamail@gmail.com")
 Description: Showcase eflows functions and showcase minimal reproducible examples
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Imports: 
+    shiny,
+    shinydashboard,
+    dygraphs,
+    shinyjs,
+    shinyAce,
+    dplyr,
+    tidyr,
+    R6
