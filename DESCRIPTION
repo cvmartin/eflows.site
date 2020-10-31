@@ -23,3 +23,5 @@ Imports:
     R6,
     readr,
     magrittr
+Depends: 
+    R (>= 2.10)
