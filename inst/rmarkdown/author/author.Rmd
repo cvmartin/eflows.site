@@ -20,7 +20,7 @@
   <a href="https://www.linkedin.com/in/carlosvarelamartin/" target="_blank">LinkedIn</a>
   </p>
   <p>
-  <a href="CV6.pdf" target="_blank">CV</a>
+  <a href="www/CV6.pdf" target="_blank">CV</a>
   </p>
   </div>
 </div>

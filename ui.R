@@ -89,7 +89,7 @@ tab_home <-
             includeMarkdown("./rmarkdown/home/home-1.Rmd")
           ),
           mreDiv(
-            "getting_started", "Getting started", "mre/mre_getting_started.R", height = "180px"
+            "getting_started", "Getting started", "mre_getting_started.R", height = "180px"
           ),
           narrowDiv(
             includeMarkdown("./rmarkdown/home/home-2.Rmd")
@@ -158,7 +158,7 @@ tab_fitting <-
                       dyRadioSelectorUI("factors_fit_plus", c("demand", "production", "price", "grid capacity"))
                       ),
                   box(width = 12, title = "Fitting curves", collapsible = TRUE,
-                      dygraphOutput("fit_fitcurve", height = const$dy_height)
+                      dygraphs::dygraphOutput("fit_fitcurve", height = Sys.getenv("DYGRAPH_HEIGHT"))
                   ), 
                   box(width = 12,
                       dyRadioSelectorUI("graph_fit_plus", c("original", "foreshifted", "comparison")),
@@ -166,7 +166,7 @@ tab_fitting <-
                   )
           ),
           mreDiv(
-            "fit", "Fitting formula and curve", "mre/mre_fit.R"
+            "fit", "Fitting formula and curve", "mre_fit.R"
           ),
           narrowDiv(
             includeMarkdown("./rmarkdown/fitting/fit-3.Rmd")
@@ -196,13 +196,13 @@ tab_foreshift <-
                   column(12, includeMarkdown("./rmarkdown/fsh/fsh-basic-post.Rmd"))
                   ),
           mreDiv(
-            "fsh_oneflex", "Foreshift: one flexibility", "mre/mre_fsh_oneflex.R"
+            "fsh_oneflex", "Foreshift: one flexibility", "mre_fsh_oneflex.R"
           ),
           narrowDiv(
             includeMarkdown("./rmarkdown/fsh/fsh-2.Rmd")
           ),
           mreDiv(
-            "fsh_multiflex", "Foreshift: one object, multiple flexibility", "mre/mre_fsh_multiflex.R"
+            "fsh_multiflex", "Foreshift: one object, multiple flexibility", "mre_fsh_multiflex.R"
           ),
           wideDiv(title = "Layers of flexibility",
                   box(width = 12,
@@ -213,7 +213,7 @@ tab_foreshift <-
                   )
           ),
           mreDiv(
-            "fsh_multiobject", "Foreshift: multiple objects, multiple flexibility", "mre/mre_fsh_multiobject.R"
+            "fsh_multiobject", "Foreshift: multiple objects, multiple flexibility", "mre_fsh_multiobject.R"
           ),
           narrowDiv(
             includeMarkdown("./rmarkdown/fsh/fsh-3.Rmd")
@@ -265,7 +265,7 @@ tab_backshift <-
             )
           ),
           box(width = 12,
-              dygraphOutput("graph_bsh_cost", height = const$dy_height),
+              dygraphs::dygraphOutput("graph_bsh_cost", height = Sys.getenv("DYGRAPH_HEIGHT")),
               dyCornerDiv(randomizeInput("bsh_cost_random_in", label = "Random profile"))
               )
           ),
@@ -337,7 +337,7 @@ tab_backshift <-
                       dyRadioSelectorUI("factors_bsh_fit", c("demand", "production", "price", "grid capacity"))
                   ),
                   box(width = 12, title = "Fitting curves", collapsible = TRUE, collapsed = TRUE,
-                      dygraphOutput("bsh_fit_fitcurve", height = const$dy_height)
+                      dygraphs::dygraphOutput("bsh_fit_fitcurve", height = Sys.getenv("DYGRAPH_HEIGHT"))
                   ), 
                   box(width = 12, 
                       dyRadioSelectorUI("graph_bsh_fit", c("potential", "backshifted", "comparison")),
@@ -354,7 +354,7 @@ tab_distribute <-
             includeMarkdown("./rmarkdown/distribute/distribute-intro.Rmd")
           ), 
           mreDiv(
-            "distribute", "Distribute", "mre/mre_distribute.R"
+            "distribute", "Distribute", "mre_distribute.R"
           ),
           narrowDiv()
           )
@@ -395,7 +395,7 @@ tab_ev <-
                       dyRadioSelectorUI("factors_ev", c("demand", "production", "price", "grid capacity"))
                   ),
                   box(width = 12, title = "Fitting curves", collapsible = TRUE, collapsed = TRUE,
-                      dygraphOutput("ev_multi_fitcurve", height = const$dy_height)
+                      dygraphs::dygraphOutput("ev_multi_fitcurve", height = Sys.getenv("DYGRAPH_HEIGHT"))
                   ), 
                   box(width = 12, 
                       dyRadioSelectorUI("graph_evs",
@@ -408,7 +408,7 @@ tab_ev <-
             includeMarkdown("./rmarkdown/ev/ev-3.Rmd")
           ),
           mreDiv(
-            "ev_timeframe", "EV charging: Timeframe", "mre/mre_ev_timeframe.R"
+            "ev_timeframe", "EV charging: Timeframe", "mre_ev_timeframe.R"
           ),
           wideDiv(title = "Electric Vehicles flexibility: large numbers",
                   column(12, includeMarkdown("./rmarkdown/ev/ev-dist-pre.Rmd")),
@@ -460,15 +460,15 @@ tab_ev <-
                            )
                   ),
                   box(width = 12, title = "EVs State Of Charge", 
-                      dygraphOutput("ev_pwr_soc", height = const$dy_height)
+                      dygraphs::dygraphOutput("ev_pwr_soc", height = Sys.getenv("DYGRAPH_HEIGHT"))
                      ),
                   box(width = 12, title = "Power flow into EVs",
-                      dygraphOutput("ev_pwr_flow", height = const$dy_height)
+                      dygraphs::dygraphOutput("ev_pwr_flow", height = Sys.getenv("DYGRAPH_HEIGHT"))
                   ),
                   column(12, includeMarkdown("./rmarkdown/ev/ev-pwr-post.Rmd"))
           ),
           mreDiv(
-            "ev_gridcapacity", "EV charging: Grid Capacity", "mre/mre_ev_gridcapacity.R"
+            "ev_gridcapacity", "EV charging: Grid Capacity", "mre_ev_gridcapacity.R"
           ),
           narrowDiv(
             includeMarkdown("./rmarkdown/ev/ev-5.Rmd")

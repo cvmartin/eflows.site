@@ -61,13 +61,15 @@ broadDiv <- function(..., title = NULL){
   ))
 }
 
-mreDiv <- function(id, title = NULL, path, ...){
+mreDiv <- function(id, title = NULL, file, ...){
     div(class = "mreDiv",
                box(title = tagList(icon("code"), p(title, style = "display:inline;padding-left:10px")), 
                    width = 12, collapsible = TRUE, 
                    collapsed = TRUE,
-                   aceEditor(outputId = id, 
-                             value = readr::read_file(path), 
+                   shinyAce::aceEditor(outputId = id, 
+                             value = readr::read_file(
+                               system.file("mre", file, package = "eflows.site")
+                               ), 
                              mode = "r", 
                              theme = "idle_fingers",
                              wordWrap = TRUE,

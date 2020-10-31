@@ -20,4 +20,5 @@ Imports:
     shinyAce,
     dplyr,
     tidyr,
-    R6
+    R6,
+    readr

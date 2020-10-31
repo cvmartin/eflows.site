@@ -38,7 +38,7 @@ color: white;
 
 randomize <- function(input, output, session) {
   
-  observeEvent(input$switch_rand, toggleState("do_rand"))
+  observeEvent(input$switch_rand, shinyjs::toggleState("do_rand"))
   
   return(reactive({
     list(switch = input$switch_rand, 
@@ -80,7 +80,7 @@ color: white;
 
 battslider <- function(input, output, session) {
   
-  observeEvent(input$do_inf, toggleState("vol"))
+  observeEvent(input$do_inf, shinyjs::toggleState("vol"))
   
   reactive(
     if (isTRUE(input$do_inf)) 0 else input$vol
@@ -145,12 +145,13 @@ fitSelector <- function(input, output, session) {
 
 
 # dyRadioSelector -----------------------------------------------------------
-dyRadioSelectorUI <- function(id, tabs, height = const$dy_height) {
+# TODO: Parametrize height
+dyRadioSelectorUI <- function(id, tabs, height = 210) {
   ns <- NS(id)
   
   tags$div(
     radioGroupButtons(ns("dy_radio_buttons"), NULL, tabs, justified = TRUE),
-    dygraphOutput(ns("dy_radio_graph"), height = height)
+    dygraphs::dygraphOutput(ns("dy_radio_graph"), height = height)
   )
 }
 
@@ -168,7 +169,7 @@ dyRadioSelector <- function(input, output, session,
   })
   
  output$dy_radio_graph <-  
-   renderDygraph({
+   dygraphs::renderDygraph({
      choice()[[input$dy_radio_buttons]]
    })
 }

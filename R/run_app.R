@@ -4,7 +4,15 @@
 #' @importFrom shiny shinyApp
 run_app <- function() {
   
-  const <- list(dy_height = 210)
+  Sys.setenv(
+    DYGRAPH_HEIGHT = 210
+  )
+  
+  shiny::addResourcePath(
+    'www', 
+    system.file('app', 'www', package='eflows.site')
+  )
+  
   
   shinyApp(
     ui = app_ui,

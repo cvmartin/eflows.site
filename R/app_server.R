@@ -98,7 +98,7 @@ app_server <- function(input, output, session) {
   
   callModule(dyRadioSelector, "factors_fit_plus", reactive(fitvars))
   
-  output$fit_fitcurve <- renderDygraph({
+  output$fit_fitcurve <- dygraphs::renderDygraph({
     fit_plus_bundle()[["fitcurve"]]
   })
   
@@ -233,7 +233,7 @@ app_server <- function(input, output, session) {
     c(behind, middle, front)
   })
   
-  output$graph_bsh_cost <- renderDygraph({
+  output$graph_bsh_cost <- dygraphs::renderDygraph({
     
     palette <- bsh_cost_backcurve() > o_only_demand()$demand$input$fixed
     palette <- is.na(palette) | palette == FALSE
@@ -327,7 +327,7 @@ app_server <- function(input, output, session) {
   
   callModule(dyRadioSelector, "graph_bsh_str", reactive(bsh_fit_bundle()))
   
-  output$bsh_fit_fitcurve <- renderDygraph({
+  output$bsh_fit_fitcurve <- dygraphs::renderDygraph({
     bsh_fit_bundle()[["fitcurve"]]
   })
   
@@ -434,7 +434,7 @@ app_server <- function(input, output, session) {
   
   callModule(dyRadioSelector, "factors_ev", reactive(fitvars))
   
-  output$ev_multi_fitcurve <- renderDygraph({
+  output$ev_multi_fitcurve <- dygraphs::renderDygraph({
     ev_multi_bundle()[["fitcurve"]]
     
   })
@@ -575,7 +575,7 @@ app_server <- function(input, output, session) {
   cap_random_out <- callModule(randomize, "cap_random_in") 
   
   # graph: SOC
-  output$ev_pwr_soc <- renderDygraph({
+  output$ev_pwr_soc <- dygraphs::renderDygraph({
     s2graph <- dygraph(socflow()[[1]]) %>% 
       dyHighlight(highlightSeriesBackgroundAlpha = 0.6,
                   highlightSeriesOpts = list(strokeWidth = 2)) %>% 
@@ -597,7 +597,7 @@ app_server <- function(input, output, session) {
   })
   
   # graph: power flow
-  output$ev_pwr_flow <- renderDygraph({
+  output$ev_pwr_flow <- dygraphs::renderDygraph({
     dygraph(socflow()[[2]]) %>% 
       dyHighlight(highlightSeriesBackgroundAlpha = 0.6,
                   highlightSeriesOpts = list(strokeWidth = 2)) %>%
