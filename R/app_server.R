@@ -443,7 +443,7 @@ app_server <- function(input, output, session) {
   
   # ev (ev) dist --------------------------------------------------------
   #data
-  ev_dist <- readRDS("data/districts_flex.rds")
+  ev_dist <- readRDS(system.file('extdata', 'districts_flex.rds', package='eflows.site'))
   
   ev_dist_bundle <- reactive({
     
