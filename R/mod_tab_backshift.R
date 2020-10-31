@@ -45,7 +45,7 @@ mod_tab_backshift_ui <- function(id){
                               div(
                                 style = "padding-left: 60px",
                                 tags$strong("Point in time"),
-                                sliderInput("bsh_cost_back_point", label = NULL,
+                                sliderInput(ns("bsh_cost_back_point"), label = NULL,
                                             min = 1, max = 168, value = 94,
                                             ticks = FALSE, post = " hours from the start")
                               )
@@ -147,8 +147,9 @@ mod_tab_backshift_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     ns <- session
     
+    bsh_cost_random_out <- callModule(randomize, "bsh_cost_random_in")
+    
     bsh_cost_randomvec <- reactive({
-      req(bsh_cost_random_out())
       if (bsh_cost_random_out()$switch) {
         vec_normal(168, sd = 0.2)
       } else {
@@ -204,9 +205,6 @@ mod_tab_backshift_server <- function(id) {
                              color = "#7A378B") %>%
         dyRibbon(palette, palette = c("#fff5bf", "white"))
     })
-    
-    # build
-    # bsh_cost_random_out <- callModule(randomize, "bsh_cost_random_in")
     
     # backshift (bsh) basic ----------------------------------------------------
     data
