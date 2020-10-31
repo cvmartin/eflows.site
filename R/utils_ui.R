@@ -91,5 +91,10 @@ dyCornerDiv <- function(...){
   tags$div(style = "float:right;margin-top:5px;margin-bottom:-5px;margin-right:-10px", 
            ...
            )
-}   
+}
+
+include_md_text <- function(markdown_file){
+  includeMarkdown(system.file('markdown', markdown_file, package='eflows.site'))
+}
+
 
