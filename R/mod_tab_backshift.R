@@ -8,10 +8,10 @@
 mod_tab_backshift_ui <- function(id){
   ns <- NS(id)
   
-  sidebar <- menuSubItem("backshift (BETA)", tabName = ns("backshift"))
+  sidebar <- menuSubItem("backshift (BETA)", tabName = "backshift")
   
   content <- 
-    tabItem(ns("backshift"), 
+    tabItem("backshift", 
             narrowDiv(
               include_md_text("backshift/backshift-intro.md")
             ), 

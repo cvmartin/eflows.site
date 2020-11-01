@@ -8,10 +8,10 @@
 mod_tab_author_ui <- function(id){
   ns <- NS(id)
   
-  sidebar <- menuItem("Author", tabName = ns("author"))
+  sidebar <- menuItem("Author", tabName = "author")
   
   content <-
-    tabItem(ns("author"), 
+    tabItem("author", 
             narrowDiv(
               include_md_text("author/author.md")
             )

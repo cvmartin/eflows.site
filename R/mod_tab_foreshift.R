@@ -8,10 +8,10 @@
 mod_tab_foreshift_ui <- function(id){
   ns <- NS(id)
   
-  sidebar <- menuSubItem("foreshift", tabName = ns("foreshift"))
+  sidebar <- menuSubItem("foreshift", tabName = "foreshift")
   
   content <- 
-    tabItem(ns("foreshift"), 
+    tabItem("foreshift", 
             narrowDiv(
               include_md_text("fsh/fsh-1.md")
             ),

@@ -8,10 +8,10 @@
 mod_tab_principles_ui <- function(id){
   ns <- NS(id)
   
-  sidebar <- menuSubItem("Design principles", tabName = ns("principles"))
+  sidebar <- menuSubItem("Design principles", tabName = "principles")
   
   content <- 
-    tabItem(ns("principles"), 
+    tabItem("principles", 
             narrowDiv(
               include_md_text("principles/principles.md")
             ), 

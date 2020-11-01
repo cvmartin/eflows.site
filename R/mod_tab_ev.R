@@ -8,10 +8,10 @@
 mod_tab_ev_ui <- function(id){
   ns <- NS(id)
   
-  sidebar <- menuSubItem("Electric Vehicles charging", tabName = ns("ev"))
+  sidebar <- menuSubItem("Electric Vehicles charging", tabName = "ev")
   
   content <- 
-    tabItem(ns("ev"), 
+    tabItem("ev", 
             narrowDiv(
               include_md_text("ev/ev-1.md")
             ),

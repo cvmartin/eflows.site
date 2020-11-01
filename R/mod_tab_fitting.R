@@ -8,10 +8,10 @@
 mod_tab_fitting_ui <- function(id) {
   ns <- NS(id)
   
-  sidebar <- menuSubItem("Fitting formula and curve", tabName = ns("fitting"))
+  sidebar <- menuSubItem("Fitting formula and curve", tabName = "fitting")
   
   content <- 
-    tabItem(ns("fitting"), 
+    tabItem("fitting", 
             narrowDiv(
               include_md_text("fitting/fit-1.md")
             ),

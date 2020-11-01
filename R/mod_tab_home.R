@@ -8,10 +8,10 @@
 mod_tab_home_ui <- function(id){
   ns <- NS(id)
   
-  sidebar <- menuItem("Home", tabName = ns("home"))
+  sidebar <- menuItem("Home", tabName = "home")
   
   content <- 
-    tabItem(ns("home"), 
+    tabItem("home", 
             narrowDiv(
               include_md_text("home/header.md")
             ),

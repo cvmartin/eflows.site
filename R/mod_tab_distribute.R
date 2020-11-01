@@ -8,10 +8,10 @@
 mod_tab_distribute_ui <- function(id){
   ns <- NS(id)
   
-  sidebar <- menuSubItem("distribute", tabName = ns("distribute"))
+  sidebar <- menuSubItem("distribute", tabName = "distribute")
   
   content <-
-    tabItem(ns("distribute"), 
+    tabItem("distribute", 
             narrowDiv(
               include_md_text("distribute/distribute-intro.md")
             ), 
