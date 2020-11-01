@@ -95,7 +95,7 @@ dyCornerDiv <- function(...){
 }
 
 include_md_text <- function(markdown_file){
-  includeMarkdown(system.file('markdown', markdown_file, package='eflows.site'))
+  includeMarkdown(get_inst_file(sprintf("markdown/%s", markdown_file)))
 }
 
 

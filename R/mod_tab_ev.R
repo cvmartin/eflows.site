@@ -251,7 +251,8 @@ mod_tab_ev_server <- function(id) {
     
     # ev (ev) dist --------------------------------------------------------
     #data
-    ev_dist <- readRDS(system.file('extdata', 'districts_flex.rds', package='eflows.site'))
+    
+    ev_dist <- readRDS(get_inst_file('extdata/districts_flex.rds'))
     
     ev_dist_bundle <- reactive({
       

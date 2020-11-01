@@ -13,7 +13,6 @@ run_app <- function() {
     system.file('app', 'www', package='eflows.site')
   )
   
-  
   shinyApp(
     ui = app_ui,
     server = app_server

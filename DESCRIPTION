@@ -28,7 +28,8 @@ Imports:
     shinyWidgets,
     pkgload,
     markdown,
-    caTools
+    caTools,
+    rlang
 Depends: 
     R (>= 2.10)
 Remotes: 
