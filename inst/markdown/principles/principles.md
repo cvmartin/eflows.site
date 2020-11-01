@@ -35,7 +35,7 @@ Ultimately, the objective is to use OO and Functional programming in a synergist
 - A second layer of **R6 objects**: This is intended as the default API of `eflows`. It makes easy to apply lower-level functions by encapsulating them in methods; for instance, `foreshift()` becomes the method `e_frame$do_foreshift()`. While the function requires a number of arguments as input, the method fetches them directly from the `e_frame` it is called onto.
 
 <div class="broadImage">
-<img src="../../www/images/general/structure.png">
+<img src="../../app/www/images/general/structure.png">
 </div>
 
 ## Extending `eflows`

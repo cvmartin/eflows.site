@@ -11,7 +11,7 @@ The result is a list of three values: `soc` (the actual state of charge after th
 
 As in other `eflows` functions, the unit of `distribute()` arguments is not especified. A good default is kWh, both for the energy flow and the storage. 
 
-![Distribute](../../www/images/distribute/distribute-inputoutput.png)
+![Distribute](../../app/www/images/distribute/distribute-inputoutput.png)
 
 In it simplest application, `distribute()` feels trivial. `eflows::distribute(flow = 30, soc = 40, vol = 80)` means that a flow of 30 (kWh) is introduced in a storage of 80 kWh that is half full. As a result, the function informs that `flow` is 30 (all the energy ends up in the storage), `soc` is 70 (the initial state of charge plus the flow) and `left` is zero (there is no "leftover" energy, it all interacts with the storage).
 

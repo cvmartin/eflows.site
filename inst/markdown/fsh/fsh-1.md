@@ -1,7 +1,7 @@
 
 # Foreshift
 
-![Foreshift](../../www/images/foreshift/fore.png)
+![Foreshift](../../app/www/images/foreshift/fore.png)
 
 `foreshift()`allocates in the future demand that would instead be realized in the present. It serves to optimize the consumption of energy that has to be dispatched within a time window. If, say, a water pump has to consume 10 kWh between noon and midnight, this is expressed as a demand of 10kWh at noon  *with a flexibility of 12 hours*. 
 

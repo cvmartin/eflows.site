@@ -10,7 +10,7 @@ The functions and algorithms are integral part of the framework. These can be us
 
 - **Timeshift**: To steer the energy system, so the demand is realized when is more convenient. Timeshifting involves either delaying the energy consumption (`foreshift()`) or storing it beforehand (`backshift()`).
 
-![Foreshift and backshift](../../www/images/general/fore-backshift.png)
+![Foreshift and backshift](../../app/www/images/general/fore-backshift.png)
 
 `eflows` can be used as the core of an Energy Management System (EMS). That said, having a functional EMS requires extra software components customized to interact with the EMS hardware: 
 

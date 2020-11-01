@@ -20,7 +20,7 @@ This is easy to see in a "business as usual" scenario, where regardless of the a
 As fast as *possible* means that the charging rate is technically limited by either the EV, the charging point or the grid capacity; in any case, the EV demand is not instant. Instead, what is observed is a high power consumption that is sustained until the battery is full. 
 
 
-![Business as usual](../../www/images/ev/case-usual.png)
+![Business as usual](../../app/www/images/ev/case-usual.png)
 
 Controlling this power consumption is useful because more often than not an EV finishes to charge earlier than when it is necessary. Linking with the previous user case: if the EV owner needs the battery full by 7:00 AM and in the "business as usual" scenario it is full by midnight, there are seven hours of flexibility that were not seized. 
 
@@ -28,6 +28,6 @@ This "slack time" could be used instead to charge the EV when energy is cheaper,
 
 Additionally, there are other user cases that involve *several deadlines*. A typical scenario is an EV owner that needs some extra energy in the battery in case of emergency, but doesn't care when the rest of the energy is consumed. In this case part of the punctual demand has low flexibility, and part has high flexibility.
 
-![Business as usual](../../www/images/ev/cases-charging.png)
+![Business as usual](../../app/www/images/ev/cases-charging.png)
 
 

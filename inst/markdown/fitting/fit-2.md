@@ -10,7 +10,7 @@ The live example above is generated as follows:
 
 A fitting formula is a mathematical representation of *what is important to optimize* when timeshifting energy demand.
 
-![Fitting formula](../../www/images/fitting/fitting-formula.png)
+![Fitting formula](../../app/www/images/fitting/fitting-formula.png)
 
 A fitting formula can include any number of variables. `eflows` puts a prime on API usability, so when working with `e_frame` objects the most important factors can be directly introduced in the formula using predefined variable names:
 
@@ -43,7 +43,7 @@ If the formula doesn't include `.demand`, the newly allocated demand will not af
 However, there are consequences if the formula includes `.demand`, because the previously allocated flexible demand will influence the location of the new fitting curve's lowest point. 
 
 
-![Fitting formula](../../www/images/fitting/fitting-comparison.png)
+![Fitting formula](../../app/www/images/fitting/fitting-comparison.png)
 
 This is why `.demand` acts a feedback mechanism. When the formula depends exclusively on it, it generates the "peak shaving profile"; when combined with other variables, it generates a "penalty factor" over those moments in time where demand is already high.
 

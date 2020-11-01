@@ -33,7 +33,7 @@ Uses of eflows:
 Time plays a vital role in eflows, yet the time series objects are not prefered. Instead, are used liberally data frames where the first column is time-based (and normally named "datetime"). This decision is taken for the sake of simplicity; a time series most of the times behaves like a data frame wehre the first column has different semantics. Where it is necessary to operate with actual time series, two helping functions to flip between data frames and time series are used: `df_to_ts` and `ts_to_df`
 
 <div class="broadImage">
-<img src="../../www/images/general/difference.png">
+<img src="../../app/www/images/general/difference.png">
 </div>
 
 ## Prefixes and nomenclature (outdated)

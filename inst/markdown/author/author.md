@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-sm-4">
   
-  <img src="../../www/images/author/carlos.png">
+  <img src="../../app/www/images/author/carlos.png">
   
   </div>
   <div class="col-sm-8">

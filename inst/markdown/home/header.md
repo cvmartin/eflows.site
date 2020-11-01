@@ -13,6 +13,6 @@ A data-driven framework for the energy transition.
 
 
 <div class="broadImage">
-<img src="../../www/images/main-banner.png">
+<img src="../../app/www/images/main-banner.png">
 </div>
 
