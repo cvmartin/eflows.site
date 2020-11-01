@@ -18,14 +18,8 @@ app_ui <- function(request) {
   sidebar <- dashboardSidebar(
     tags$head(
       tags$link(rel = "stylesheet", type = "text/css", href = "www/style.css"),
-      tags$link(rel = "icon", href = "www/images/favicon/favicon.ico", type = "image/x-icon"),
-      # Google analytics
-      tags$script(async = TRUE, 
-                  src = "https://www.googletagmanager.com/gtag/js?id=UA-70471257-2"),
-      tags$script("window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', 'UA-70471257-2');")
+      tags$link(rel = "icon", type = "image/x-icon", 
+                href = "www/images/favicon/favicon.ico"),
     ),
     sidebarMenu(id = "sidebarmenudefault",
                 div(style = "text-align:center; font-size:300%", 

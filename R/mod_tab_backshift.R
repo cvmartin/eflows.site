@@ -15,7 +15,7 @@ mod_tab_backshift_ui <- function(id){
             narrowDiv(
               include_md_text("backshift/backshift-intro.md")
             ), 
-            wideDiv( title = "The cost of backshifing", #####
+            wideDiv( title = "The cost of backshifing",
                      inputDiv(
                        column(3,
                               sliderInput(ns("bsh_cost_self_discharge"),
@@ -203,7 +203,7 @@ mod_tab_backshift_server <- function(id) {
         eflows.viz:::add_cap(bsh_cost_backcurve(),
                              label = "depreciation curve",
                              color = "#7A378B") %>%
-        dyRibbon(palette, palette = c("#fff5bf", "white"))
+        dygraphs::dyRibbon(palette, palette = c("#fff5bf", "white"))
     })
     
     # backshift (bsh) basic ----------------------------------------------------

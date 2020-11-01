@@ -5,7 +5,7 @@ start_date <- function(date_range) {
 peak_in_zeroes <- function(l, pos, vol, cap = 0){
   v <- rep(0,l)
   
-  if (cap == 0){
+  if (cap == 0) {
     v[pos] <- vol
     return(v)
   }
@@ -16,7 +16,7 @@ peak_in_zeroes <- function(l, pos, vol, cap = 0){
   if (full == 0) {
     v[pos] <- left
   } else {
-    v[pos: (pos + full-1)] <- cap
+    v[pos:(pos + full - 1)] <- cap
     v[pos + full] <- left
   }
   

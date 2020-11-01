@@ -1,7 +1,7 @@
 #' The application server-side
 #'
 #' @param input,output,session Internal parameters for {shiny}.
-#' @import shiny
+#' @import shiny eflows eflows.viz
 #' @noRd
 app_server <- function(input, output, session) {
   # server tab content ------------------------------------------------------

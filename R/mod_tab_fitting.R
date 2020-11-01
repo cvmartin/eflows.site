@@ -19,23 +19,29 @@ mod_tab_fitting_ui <- function(id) {
                     column(12, include_md_text("fitting/fit-basic-pre.md")),
                     box(width = 12, title = "Factors that influence the fitting curve", 
                         collapsible = TRUE, collapsed = TRUE,
-                        dyRadioSelectorUI(ns("factors_fit_basic"), c("demand", "production", "price", "grid capacity"))
+                        dyRadioSelectorUI(
+                          ns("factors_fit_basic"), 
+                          c("demand", "production", "price", "grid capacity")
+                          )
                     ),
                     inputDiv(
                       column(3,
                              sliderInput(ns("fit_basic_demand"), 
                                          "Demand: relative importance",
-                                         min = 0, max = 1, value = 0.5, step = 0.1, ticks = FALSE)
+                                         min = 0, max = 1, value = 0.5, 
+                                         step = 0.1, ticks = FALSE)
                       ), 
                       column(3,
                              sliderInput(ns("fit_basic_solar"), 
                                          "Production: relative importance",
-                                         min = 0, max = 1, value = 0.5, step = 0.1, ticks = FALSE)
+                                         min = 0, max = 1, value = 0.5, 
+                                         step = 0.1, ticks = FALSE)
                       ), 
                       column(3,
                              sliderInput(ns("fit_basic_price"), 
                                          "Price: relative importance",
-                                         min = 0, max = 1, value = 0.5, step = 0.1, ticks = FALSE)
+                                         min = 0, max = 1, value = 0.5, 
+                                         step = 0.1, ticks = FALSE)
                       ), 
                       column(3, 
                              div(style = "text-align:center; padding-top:22px;",
@@ -47,7 +53,10 @@ mod_tab_fitting_ui <- function(id) {
                       )
                     ),
                     box(width = 12,
-                        dyRadioSelectorUI(ns("graph_fit_basic"), c("original", "foreshifted", "comparison"))
+                        dyRadioSelectorUI(
+                          ns("graph_fit_basic"), 
+                          c("original", "foreshifted", "comparison")
+                          )
                     ),
                     column(12, include_md_text("fitting/fit-basic-post.md"))
             ),
@@ -57,16 +66,30 @@ mod_tab_fitting_ui <- function(id) {
             wideDiv(title = "Fitting curve: applying fitting formulas",
                     column(12, include_md_text("fitting/fit-plus-pre.md")),
                     fitSelectorInput(ns("formula_fit")),
-                    
-                    box(width = 12, title = "Factors that influence the fitting curve", collapsible = TRUE,
-                        dyRadioSelectorUI(ns("factors_fit_plus"), c("demand", "production", "price", "grid capacity"))
+                    box(width = 12, 
+                        title = "Factors that influence the fitting curve", 
+                        collapsible = TRUE,
+                        dyRadioSelectorUI(
+                          ns("factors_fit_plus"), 
+                          c("demand", "production", "price", "grid capacity")
+                          )
                     ),
-                    box(width = 12, title = "Fitting curves", collapsible = TRUE,
-                        dygraphs::dygraphOutput(ns("fit_fitcurve"), height = Sys.getenv("DYGRAPH_HEIGHT"))
+                    box(width = 12, 
+                        title = "Fitting curves", 
+                        collapsible = TRUE,
+                        dygraphs::dygraphOutput(
+                          ns("fit_fitcurve"), 
+                          height = Sys.getenv("DYGRAPH_HEIGHT")
+                          )
                     ), 
                     box(width = 12,
-                        dyRadioSelectorUI(ns("graph_fit_plus"), c("original", "foreshifted", "comparison")),
-                        dyCornerDiv(randomizeInput(ns("fit_random_in"), label = "Random profile"))
+                        dyRadioSelectorUI(
+                          ns("graph_fit_plus"), 
+                          c("original", "foreshifted", "comparison")
+                          ),
+                        dyCornerDiv(
+                          randomizeInput(ns("fit_random_in"), label = "Random profile")
+                          )
                     )
             ),
             mreDiv(
@@ -97,10 +120,11 @@ mod_tab_fitting_server <- function(id) {
     callModule(dyRadioSelector, "factors_fit_basic", reactive(fitvars))
     
     fit_basic_formula <- reactive({
-      theformula <- sprintf("(%s * .demand) + (-%s * .production_fixed) + (%s * .price)",
-                            input$fit_basic_demand,
-                            input$fit_basic_solar,
-                            input$fit_basic_price
+      theformula <- sprintf(
+        "(%s * .demand) + (-%s * .production_fixed) + (%s * .price)",
+        input$fit_basic_demand,
+        input$fit_basic_solar,
+        input$fit_basic_price
       )
       if (input$switch_fit_basic_cap == TRUE) {
         theformula <- sprintf("ifelse(.demand < .cap, (%s), NA)", 
@@ -120,9 +144,11 @@ mod_tab_fitting_server <- function(id) {
       post <- viz_fore_output(fshifted, show_cap = cap_used)
       comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
       
-      bundle <- viz_bundle(pre, post, comp,
-                           ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
-                           names = c("original", "foreshifted", "comparison"))
+      bundle <- viz_bundle(
+        pre, post, comp,
+        ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
+        names = c("original", "foreshifted", "comparison")
+        )
       bundle
     })
     
@@ -141,9 +167,11 @@ mod_tab_fitting_server <- function(id) {
       comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
       fitcurve <- viz_fit(fshifted)
       
-      bundle <- viz_bundle(pre, post, comp,
-                           ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
-                           names = c("original", "foreshifted", "comparison"))
+      bundle <- viz_bundle(
+        pre, post, comp,
+        ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
+        names = c("original", "foreshifted", "comparison")
+        )
       bundle[["fitcurve"]] <- fitcurve
       bundle
     })
@@ -151,15 +179,18 @@ mod_tab_fitting_server <- function(id) {
     fit_random_profile <- reactive({
       fit_random_out()$button
       
-      o_random$set_demand(e_demand$new(fixed = base_demand,
-                                       flex = list(flex_mtx$new(data = cbind(vec_spiked(168, 2),
-                                                                             vec_spiked(168, 2),
-                                                                             vec_spiked(168, 2),
-                                                                             vec_spiked(168, 2),
-                                                                             vec_spiked(168, 2),
-                                                                             vec_spiked(168, 2)),
-                                                                steps = c(2,4,6,8,10,12),
-                                                                name = "obj"))))
+      o_random$set_demand(
+        e_demand$new(fixed = base_demand,
+                     flex = list(flex_mtx$new(data = cbind(vec_spiked(168, 2),
+                                                           vec_spiked(168, 2),
+                                                           vec_spiked(168, 2),
+                                                           vec_spiked(168, 2),
+                                                           vec_spiked(168, 2),
+                                                           vec_spiked(168, 2)),
+                                              steps = c(2,4,6,8,10,12),
+                                              name = "obj"))
+                     )
+        )
       
     })
     
@@ -172,9 +203,10 @@ mod_tab_fitting_server <- function(id) {
       post <- viz_fore_output(o_random, show_cap = cap_used)
       comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
       
-      viz_bundle(pre, post, comp,
-                 ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
-                 names = c("original", "foreshifted", "comparison"))
+      viz_bundle(
+        pre, post, comp,
+        ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
+        names = c("original", "foreshifted", "comparison"))
     })
     
     # build

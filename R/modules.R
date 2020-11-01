@@ -89,16 +89,17 @@ battslider <- function(input, output, session) {
 
 
 # fitSelector (associate input bar with predefined formulas) --------------
-list_formulas <- list(`Peak shaving` = "1* .demand", 
-                      `To the lowest demand` = "1*.demand_fixed",
-                      `To the minimum price` = "1* .price",
-                      `To the renewable energy` = "- 1*.production_fixed",
-                      `Profit within a limit` = "ifelse(.demand < .cap, .price, NA)", 
-                      `Net balance` = ".demand - .production_fixed",
-                      `Market price` = "(0.5 * .price) + (0.5 * .demand)",
-                      `The middle point` = "(0.3 * .price) + (0.4 * .demand) + (-0.3 * .production_fixed)",
-                      `Conditional day and night` = "ifelse(.production_fixed > 0, .demand - .production_fixed, (0.5 * .price) + (0.5 * .demand))",
-                      `Indifferent to other factors` = ".demand - .demand_fixed"
+list_formulas <- list(
+  `Peak shaving` = "1* .demand",
+  `To the lowest demand` = "1*.demand_fixed",
+  `To the minimum price` = "1* .price",
+  `To the renewable energy` = "- 1*.production_fixed",
+  `Profit within a limit` = "ifelse(.demand < .cap, .price, NA)",
+  `Net balance` = ".demand - .production_fixed",
+  `Market price` = "(0.5 * .price) + (0.5 * .demand)",
+  `The middle point` = "(0.3 * .price) + (0.4 * .demand) + (-0.3 * .production_fixed)",
+  `Conditional day and night` = "ifelse(.production_fixed > 0, .demand - .production_fixed, (0.5 * .price) + (0.5 * .demand))",
+  `Indifferent to other factors` = ".demand - .demand_fixed"
 )
 
 fitSelectorInput <- function(id) {
@@ -116,15 +117,28 @@ fitSelectorInput <- function(id) {
                          font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
                          } 
                          ')),
-    box(width = 12, class = "fitSelectorDiv", 
-        column(width = 9, style = "margin: 0px -5px -8px -5px;",
-               div(class = "formulaInput",
-               searchInput(ns("formula"), tagList("Fitting formula:", tags$code("fit = ~")),
-                           value = "1*.demand", btnSearch = icon("level-down"), width = "100%")
-               )
-        ), 
-        column(width = 3, style = "margin: 0px -5px -8px -5px; padding-right:0;",
-               selectInput(ns("predefined_formulas"), "Predefined formulas", choices = list_formulas))
+    box(
+      width = 12,
+      class = "fitSelectorDiv",
+      column(
+        width = 9,
+        style = "margin: 0px -5px -8px -5px;",
+        div(
+          class = "formulaInput",
+          searchInput(
+            ns("formula"),
+            tagList("Fitting formula:", tags$code("fit = ~")),
+            value = "1*.demand",
+            btnSearch = icon("level-down"),
+            width = "100%"
+          )
+        )
+      ),
+      column(
+        width = 3,
+        style = "margin: 0px -5px -8px -5px; padding-right:0;",
+        selectInput(ns("predefined_formulas"), "Predefined formulas", choices = list_formulas)
+      )
     )
     )
   }
@@ -145,8 +159,7 @@ fitSelector <- function(input, output, session) {
 
 
 # dyRadioSelector -----------------------------------------------------------
-# TODO: Parametrize height
-dyRadioSelectorUI <- function(id, tabs, height = 210) {
+dyRadioSelectorUI <- function(id, tabs, height = Sys.getenv("DYGRAPH_HEIGHT")) {
   ns <- NS(id)
   
   tags$div(

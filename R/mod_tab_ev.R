@@ -39,19 +39,36 @@ mod_tab_ev_ui <- function(id){
                     ),
                     
                     fitSelectorInput(ns("formula_ev")),
-                    
-                    box(width = 12, title = "Factors that influence the fitting curve", 
-                        collapsible = TRUE, collapsed = TRUE,
-                        dyRadioSelectorUI(ns("factors_ev"), c("demand", "production", "price", "grid capacity"))
+                    box(
+                      width = 12,
+                      title = "Factors that influence the fitting curve",
+                      collapsible = TRUE,
+                      collapsed = TRUE,
+                      dyRadioSelectorUI(
+                        ns("factors_ev"),
+                        c("demand", "production", "price", "grid capacity")
+                      )
                     ),
-                    box(width = 12, title = "Fitting curves", collapsible = TRUE, collapsed = TRUE,
-                        dygraphs::dygraphOutput(ns("ev_multi_fitcurve"), height = Sys.getenv("DYGRAPH_HEIGHT"))
-                    ), 
-                    box(width = 12, 
-                        dyRadioSelectorUI(ns("graph_evs"),
-                                          c("original", "foreshifted","aggregated by ev", 
-                                            "aggregated by flex", "comparison", "unstacked", "stacked"))
+                    box(
+                      width = 12,
+                      title = "Fitting curves",
+                      collapsible = TRUE,
+                      collapsed = TRUE,
+                      dygraphs::dygraphOutput(ns("ev_multi_fitcurve"), height = Sys.getenv("DYGRAPH_HEIGHT"))
                     ),
+                    box(width = 12,
+                        dyRadioSelectorUI(
+                          ns("graph_evs"),
+                          c(
+                            "original",
+                            "foreshifted",
+                            "aggregated by ev",
+                            "aggregated by flex",
+                            "comparison",
+                            "unstacked",
+                            "stacked"
+                          )
+                        )), 
                     column(12, include_md_text("ev/ev-plus-post.md"))
             ), 
             narrowDiv(
@@ -98,22 +115,43 @@ mod_tab_ev_ui <- function(id){
                            tabPanelPwrEV("5", 30, 40, 20, 3, ns = ns)
                     ),
                     inputDiv(
-                      column(4, sliderInput(ns("cap_evs_pwr"), "Grid capacity", min = 10, max = 100,
-                                            value = 40, step = 5, ticks = FALSE, post = " kW")
-                      ), 
-                      column(4, 
-                             div(style = "text-align:center; padding-top:22px;",
-                                 randomizeInput(ns("cap_random_in"), label = "Random capacity"))
+                      column(
+                        4,
+                        sliderInput(
+                          ns("cap_evs_pwr"),
+                          "Grid capacity",
+                          min = 10,
+                          max = 100,
+                          value = 40,
+                          step = 5,
+                          ticks = FALSE,
+                          post = " kW"
+                        )
                       ),
-                      column(4, sliderInput(ns("eff_evs_pwr"), "Battery charging efficiency", min = 0.75, max = 1, 
-                                            value = 0.9,ticks = FALSE)
+                      column(4,
+                             div(style = "text-align:center; padding-top:22px;",
+                                 randomizeInput(ns("cap_random_in"), label = "Random capacity"))),
+                      column(
+                        4,
+                        sliderInput(
+                          ns("eff_evs_pwr"),
+                          "Battery charging efficiency",
+                          min = 0.75,
+                          max = 1,
+                          value = 0.9,
+                          ticks = FALSE
+                        )
                       )
                     ),
-                    box(width = 12, title = "EVs State Of Charge", 
-                        dygraphs::dygraphOutput(ns("ev_pwr_soc"), height = Sys.getenv("DYGRAPH_HEIGHT"))
+                    box(
+                      width = 12,
+                      title = "EVs State Of Charge",
+                      dygraphs::dygraphOutput(ns("ev_pwr_soc"), height = Sys.getenv("DYGRAPH_HEIGHT"))
                     ),
-                    box(width = 12, title = "Power flow into EVs",
-                        dygraphs::dygraphOutput(ns("ev_pwr_flow"), height = Sys.getenv("DYGRAPH_HEIGHT"))
+                    box(
+                      width = 12,
+                      title = "Power flow into EVs",
+                      dygraphs::dygraphOutput(ns("ev_pwr_flow"), height = Sys.getenv("DYGRAPH_HEIGHT"))
                     ),
                     column(12, include_md_text("ev/ev-pwr-post.md"))
             ),
@@ -144,26 +182,37 @@ mod_tab_ev_server <- function(id) {
     # ev (ev) one -----------------------------------------------------------
     
     ev_one_bundle <- reactive({
-      ev0$data <- do_ev_prof(ev0$data, 
-                             inputs = c(input$ev0flex2, input$ev0flex6, input$ev0flex12), 
-                             pos = input$ev0pos,
-                             cap = input$ev0cap)
+      ev0$data <- do_ev_prof(
+        ev0$data,
+        inputs = c(input$ev0flex2, input$ev0flex6, input$ev0flex12),
+        pos = input$ev0pos,
+        cap = input$ev0cap
+      )
       pre <- eflows.viz::viz_fore_input(p_1ev, show_cap = FALSE)
       
-      ev0$data <- do_ev_prof(ev0$data, 
-                             inputs = c(input$ev0flex2, input$ev0flex6, input$ev0flex12), 
-                             pos = input$ev0pos,
-                             cap = 0)
+      ev0$data <- do_ev_prof(
+        ev0$data,
+        inputs = c(input$ev0flex2, input$ev0flex6, input$ev0flex12),
+        pos = input$ev0pos,
+        cap = 0
+      )
       ev0$cap <- input$ev0cap
       
       p_1ev$do_foreshift()
       post <- viz_fore_output(p_1ev, show_cap = FALSE)
       comp <- viz_compare(list(pre, post), c("original", "foreshifted"))
       
-      viz_bundle(pre, post, comp,
-                 ymax = max_yaxis(list_stacked = list(pre), list_unstacked = list(comp)),
-                 names = c("original", "foreshifted", "comparison"), 
-                 group = "initialgroup")
+      viz_bundle(
+        pre,
+        post,
+        comp,
+        ymax = max_yaxis(
+          list_stacked = list(pre),
+          list_unstacked = list(comp)
+        ),
+        names = c("original", "foreshifted", "comparison"),
+        group = "initialgroup"
+      )
       
     })
     
@@ -366,7 +415,7 @@ mod_tab_ev_server <- function(id) {
       s2 <- soc %>% 
         as.data.frame() %>% 
         dplyr::mutate(minutes = seq(1:nrow(.))) %>% 
-        dplyr::select(minutes, everything()) 
+        dplyr::select(minutes, dplyr::everything()) 
       colnames(s2) <- c("minutes", "EV 1", "EV 2", "EV 3", "EV 4", "EV 5")
       
       # flow
@@ -374,7 +423,7 @@ mod_tab_ev_server <- function(id) {
       f2 <- flow %>% 
         as.data.frame() %>% 
         dplyr::mutate(minutes = seq(1:nrow(.))) %>% 
-        dplyr::select(minutes, everything())
+        dplyr::select(minutes, dplyr::everything())
       colnames(f2) <- c("minutes", "EV 1", "EV 2", "EV 3", 
                         "EV 4", "EV 5")
       
@@ -386,19 +435,19 @@ mod_tab_ev_server <- function(id) {
     
     # graph: SOC
     output$ev_pwr_soc <- dygraphs::renderDygraph({
-      s2graph <- dygraph(socflow()[[1]]) %>% 
-        dyHighlight(highlightSeriesBackgroundAlpha = 0.6,
+      s2graph <- dygraphs::dygraph(socflow()[[1]]) %>% 
+        dygraphs::dyHighlight(highlightSeriesBackgroundAlpha = 0.6,
                     highlightSeriesOpts = list(strokeWidth = 2)) %>% 
-        dyLegend(show = "onmouseover", width = 50) %>% 
-        dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz")) %>% 
-        dyOptions(fillGraph = TRUE, 
+        dygraphs::dyLegend(show = "onmouseover", width = 50) %>% 
+        dygraphs::dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz")) %>% 
+        dygraphs::dyOptions(fillGraph = TRUE, 
                   colors = palette_pwr, 
                   mobileDisableYTouch = TRUE,
                   retainDateWindow = TRUE) %>% 
-        dyAxis("x", label = "minutes of charge") %>% 
-        dyAxis("y", "kWh")
+        dygraphs::dyAxis("x", label = "minutes of charge") %>% 
+        dygraphs::dyAxis("y", "kWh")
       for (i in 1:length(socflow()[[3]])) {
-        s2graph <-  dyEvent(s2graph,
+        s2graph <-  dygraphs::dyEvent(s2graph,
                             x = socflow()[[3]][i], 
                             label = paste0("EV", i, ": ", socflow()[[3]][i], " min."),
                             color = palette_pwr[i])
@@ -408,18 +457,18 @@ mod_tab_ev_server <- function(id) {
     
     # graph: power flow
     output$ev_pwr_flow <- dygraphs::renderDygraph({
-      dygraph(socflow()[[2]]) %>% 
-        dyHighlight(highlightSeriesBackgroundAlpha = 0.6,
+      dygraphs::dygraph(socflow()[[2]]) %>% 
+        dygraphs::dyHighlight(highlightSeriesBackgroundAlpha = 0.6,
                     highlightSeriesOpts = list(strokeWidth = 2)) %>%
-        dyOptions(
+        dygraphs::dyOptions(
           stackedGraph = TRUE,
           colors = palette_pwr, 
           mobileDisableYTouch = TRUE,
           retainDateWindow = TRUE) %>% 
-        dyAxis("x", label = "minutes of charge") %>% 
-        dyAxis("y", "kW") %>% 
-        dyLegend(show = "onmouseover") %>% 
-        dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz")) %>% 
+        dygraphs::dyAxis("x", label = "minutes of charge") %>% 
+        dygraphs::dyAxis("y", "kW") %>% 
+        dygraphs::dyLegend(show = "onmouseover") %>% 
+        dygraphs::dyCSS(system.file("css/dygraph_style.css", package = "eflows.viz")) %>% 
         eflows.viz:::add_cap(socflow()[[4]]*input$cap_evs_pwr)
     })
     
