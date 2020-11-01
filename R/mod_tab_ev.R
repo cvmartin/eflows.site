@@ -257,10 +257,10 @@ mod_tab_ev_server <- function(id) {
     ev_dist_bundle <- reactive({
       
       ev_dist_df <- ev_dist %>% 
-        filter(stadsdeel == input$ev_dist_match) %>% 
-        select(- stadsdeel) %>% 
-        spread(flex, kwh) %>% 
-        slice(1:168)
+        dplyr::filter(stadsdeel == input$ev_dist_match) %>% 
+        dplyr::select(- stadsdeel) %>% 
+        tidyr::spread(flex, kwh) %>% 
+        dplyr::slice(1:168)
       
       ev_dist_obj <- e_frame$new(ev_dist_df$datetime)
       
@@ -322,7 +322,7 @@ mod_tab_ev_server <- function(id) {
       
       defcap <- c()
       if (cap_random_out()$switch == TRUE) {
-        defcap[i] <- 1 + runif(1, -0.1, 0.1)
+        defcap[i] <- 1 + stats::runif(1, -0.1, 0.1)
       } else {
         defcap[i] <- 1
       }
@@ -332,7 +332,7 @@ mod_tab_ev_server <- function(id) {
         i <- i + 1
         
         if (cap_random_out()$switch == TRUE) {
-          defcap[i] <- defcap[i - 1] + runif(1, -0.1, 0.1)
+          defcap[i] <- defcap[i - 1] + stats::runif(1, -0.1, 0.1)
         } else {
           defcap[i] <- defcap[i - 1]
         }
@@ -365,16 +365,16 @@ mod_tab_ev_server <- function(id) {
       }
       s2 <- soc %>% 
         as.data.frame() %>% 
-        mutate(minutes = seq(1:nrow(.))) %>% 
-        select(minutes, everything()) 
+        dplyr::mutate(minutes = seq(1:nrow(.))) %>% 
+        dplyr::select(minutes, everything()) 
       colnames(s2) <- c("minutes", "EV 1", "EV 2", "EV 3", "EV 4", "EV 5")
       
       # flow
       flow <- do.call(rbind, f) 
       f2 <- flow %>% 
         as.data.frame() %>% 
-        mutate(minutes = seq(1:nrow(.))) %>% 
-        select(minutes, everything())
+        dplyr::mutate(minutes = seq(1:nrow(.))) %>% 
+        dplyr::select(minutes, everything())
       colnames(f2) <- c("minutes", "EV 1", "EV 2", "EV 3", 
                         "EV 4", "EV 5")
       

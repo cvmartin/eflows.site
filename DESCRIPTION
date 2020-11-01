@@ -6,7 +6,7 @@ Authors@R:
            family = "Varela",
            role = c("aut", "cre"),
            email = "cvarelamail@gmail.com")
-Description: Showcase eflows functions and showcase minimal reproducible examples
+Description: Showcase eflows functions and showcase minimal reproducible examples.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -29,7 +29,9 @@ Imports:
     pkgload,
     markdown,
     caTools,
-    rlang
+    rlang,
+    grDevices,
+    stats
 Depends: 
     R (>= 2.10)
 Remotes: 

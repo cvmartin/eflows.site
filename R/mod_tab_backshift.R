@@ -207,7 +207,7 @@ mod_tab_backshift_server <- function(id) {
     })
     
     # backshift (bsh) basic ----------------------------------------------------
-    data
+    # data
     bsh_basic_bundle <- reactive({
 
       o_only_demand()$

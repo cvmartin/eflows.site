@@ -139,7 +139,7 @@ fitSelector <- function(input, output, session) {
   })
   
   reactive( 
-    as.formula(paste("~", input$formula))
+    stats::as.formula(paste("~", input$formula))
   )
 }
 

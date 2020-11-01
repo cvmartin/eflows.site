@@ -1,7 +1,7 @@
 #' The application User-Interface
 #'
 #' @param request Internal parameter for `{shiny}`.
-#' @import shiny shinydashboard shinyWidgets dygraphs
+#' @import shiny shinydashboard shinyWidgets
 #' @noRd
 app_ui <- function(request) {
   # load UI content from modules --------------------------------------------

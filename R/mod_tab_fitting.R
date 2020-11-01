@@ -106,7 +106,7 @@ mod_tab_fitting_server <- function(id) {
         theformula <- sprintf("ifelse(.demand < .cap, (%s), NA)", 
                               theformula)
       }
-      as.formula(paste("~", theformula))
+      stats::as.formula(paste("~", theformula))
     })
     
     # data
