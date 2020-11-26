@@ -1,10 +1,17 @@
-<!-- badges: start -->
+# eflows.site
 
-## Rstudio
+Shiny app showcasing [eflows](https://github.com/cvmartin/eflows).
 
-[![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cvmartin/eflows-site/master?urlpath=rstudio)
+The application is deployed [here](https://cvmartin.shinyapps.io/eflows/).
 
-## Shiny
+## Installation
 
-[![Launch shiny Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cvmartin/eflows-site/master?urlpath=shiny)
-<!-- badges: end -->
+The application is an R package and can be installed as such from github:
+
+```
+remotes::install_github("cvmartin/eflows.site")
+```
+To launch the application, 
+```
+eflows.site::run_app()
+```
