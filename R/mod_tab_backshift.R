@@ -278,7 +278,13 @@ mod_tab_backshift_server <- function(id) {
     
     formula_bsh_fit <- callModule(fitSelector, "formula_bsh_fit")
     
-    callModule(dyRadioSelector, "factors_bsh_fit", reactive(fitvars))
+    callModule(dyRadioSelector, "factors_bsh_fit", reactive(
+      viz_bundle(viz_demand_fixed(o_1demand),
+                 viz_production_fixed(o_1demand),
+                 viz_price(o_1demand),
+                 viz_cap(o_1demand),
+                 names = c("demand", "production", "price", "grid capacity"))
+    ))
     
     callModule(dyRadioSelector, "graph_bsh_fit", reactive(bsh_fit_bundle()))
     
