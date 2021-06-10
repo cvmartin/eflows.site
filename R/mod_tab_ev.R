@@ -289,7 +289,13 @@ mod_tab_ev_server <- function(id) {
     #build
     formula_ev <- callModule(fitSelector, "formula_ev")
     
-    callModule(dyRadioSelector, "factors_ev", reactive(fitvars))
+    callModule(dyRadioSelector, "factors_ev", reactive(
+      viz_bundle(viz_demand_fixed(o_1demand),
+                 viz_production_fixed(o_1demand),
+                 viz_price(o_1demand),
+                 viz_cap(o_1demand),
+                 names = c("demand", "production", "price", "grid capacity"))
+    ))
     
     output$ev_multi_fitcurve <- dygraphs::renderDygraph({
       ev_multi_bundle()[["fitcurve"]]

@@ -15,15 +15,6 @@ o_1demand$set_production(e_production$new(fixed = list(solar = sept$solar[1:168]
 o_1demand$set_price(sept$eprice[1:168]*0.6, unit = "euro/mWh")
 o_1demand$set_cap((sin(seq.int(1,168)/10*3) + 55))
 
-
-##
-
-fitvars <- viz_bundle(viz_demand_fixed(o_1demand),
-                      viz_production_fixed(o_1demand),
-                      viz_price(o_1demand),
-                      viz_cap(o_1demand),
-                      names = c("demand", "production", "price", "grid capacity"))
-
 ###
 ev0 <- flex_mtx$new(data = cbind(rep(0,168), rep(0,168), rep(0,168)),
                     steps = c(2, 6, 12),
@@ -71,6 +62,6 @@ o_Xdemand$set_demand(e_demand$new(fixed = base_demand,
 
 usethis::use_data(
   base_demand, o_bare, o_1demand, o_1ev, o_Xev, o_Xdemand, 
-  ev0, ev1, ev2, ev3, ev4, fitvars,
+  ev0, ev1, ev2, ev3, ev4,
   internal = TRUE, overwrite = TRUE
   )
